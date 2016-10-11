@@ -5,14 +5,14 @@
  */
 export const APP_CONFIG = {
   "app": {
-    "baseUrl": "https://example.com", // TODO UPDATE
+    "baseUrl": "http://lessmoneymorehappy.com",
     "secondsBeforeReloginNeeded": 1000 * 60 * 60 * 24 * 365 * 10,
-    "expressSessionSecretKey": "changeThisSecretKey", // TODO UPDATE
+    "expressSessionSecretKey": "some123456789secret123456789key",
     "isHttps": false,
     "port": 3000,
     "apiSuffix": "/api"
   },
   "db": {
-    "url": "mongodb://localhost:27017/dbName>" // TODO UPDATE
+    "url": "mongodb://localhost:27017/LessMoneyMoreHappy"
   }
 }
