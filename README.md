@@ -1,29 +1,9 @@
-# MEEN Kickstarter
+# Less Money More Happy
 
-### Credit
-
-After a summer of working with [Radify](http://radify.io), a (hopefully) stable
-base for [mea2n applications](https://github.com/amilner42/mea2n-kickstarter)
-was developed mostly by @nateabele and myself. I then switched the Angular 2 for
-Elm, leaving us with meen-stack. While trying to build the `frontend`, an
-[example app](https://github.com/sporto/elm-tutorial-app/) created by @sporto
-was of great use to me. So huge thanks to both of them!
-
-### Quick Rant
-
-Ahh where to begin...I realized there were fundamental problems with Angular,
-with React, with all these front-end frameworks. I realized my frame of mind was
-off, I was building apps that were "easy" to develop on but they were very
-"complex". I needed to go for "simple", and the "easy" would come over time.
-This shift of mind was inspired by this incredible
-[talk](https://www.youtube.com/watch?v=rI8tNMsozo0). I highly recommend watching
-that...now. Then I discovered Elm, both faster than Angular 2 and React,
-with incredibly strong type inference, almost no runtime exceptions,
-forwards/backwards debugging, no null/undefined ... the list goes on ...
-
-Essentially, this kickstarter attempts to offer similar benefits to my last
-[mea2n kickstarter](https://github.com/amilner42/mea2n-kickstarter), but uses
-Elm for better **simple** software engineering.
+An app which helps you track the money you spend, the categories you are
+spending in, whether you are meeting your goals, and tons of random stats.
+It's a MEEN stack App (Mongo, Express, Elm, Node) and it is also all in
+Typescript.
 
 ### Local Dependencies
 
@@ -68,36 +48,6 @@ As well, the [frontend README](/frontend/README.md) and the
 [backend README](/backend/README.md) each have a segment on their file
 structure.
 
-### Versioning
-
-As this is a kickstarter and not a library, it seems unclear how I would go
-about using [semantic versioning](http://semver.org/) (also I don't expect
-anyone to ever update the kickstarter mid-project). So for now I will be simply
-upgrading the version (eg. 2 to 3) when I think enough new stuff is in the
-new version that it's worth upgrading (maybe I'll try and have a change-log...
-we'll see...).
-
-### Contributing
-
-Please :)
-
-Standard github PR model, please make a meaningful PR which ideally is divided
-into the following sections:
-  - Closes
-  - Description
-  - Screenshots (if applicable)
-  - Future (any possible future ideas that came up from this issue)
-
-Doc fixes can be sent without much care and are always appreciated.
-
-### Bugs / Feature Requests
-
-Go make an issue, thanks! I'll take a look as soon as I can, this project is
-currently being actively worked on by me.
-
 ### License
 
-3-clause BSD License.
-
-That being said, if you do make improvements to the kickstarter itself, I *ask*
-that you share your work (but I do not *force* it).
+Private.
