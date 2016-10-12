@@ -6,6 +6,7 @@ import Models.ApiError as ApiError
 import Components.Model exposing (Model)
 import Components.Home.Messages as HomeMessages
 import Components.Welcome.Messages as WelcomeMessages
+import Components.New.Messages as NewMessages
 
 
 {-| Base Component Msg.
@@ -20,3 +21,4 @@ type Msg
     | OnGetUserFailure ApiError.ApiError
     | HomeMessage HomeMessages.Msg
     | WelcomeMessage WelcomeMessages.Msg
+    | NewMessage NewMessages.Msg

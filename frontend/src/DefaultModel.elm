@@ -4,6 +4,7 @@ import Models.Route as Route
 import Components.Model as Model
 import Components.Home.Init as HomeInit
 import Components.Welcome.Init as WelcomeInit
+import Components.New.Init as NewInit
 
 
 {-| The default model (`Components/Model.elm`) for the application.
@@ -14,4 +15,5 @@ defaultModel =
     , route = Route.WelcomeComponentLogin
     , homeComponent = HomeInit.init
     , welcomeComponent = WelcomeInit.init
+    , newComponent = NewInit.init
     }

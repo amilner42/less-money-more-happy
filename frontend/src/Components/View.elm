@@ -7,6 +7,7 @@ import Components.Model exposing (Model)
 import Components.Messages exposing (Msg(..))
 import Components.Home.View as HomeView
 import Components.Welcome.View as WelcomeView
+import Components.New.View as NewView
 import DefaultServices.Util as Util
 import Models.Route as Route
 
@@ -29,6 +30,9 @@ view model =
 
         homeView =
             Html.App.map HomeMessage (HomeView.view model)
+
+        newView =
+            Html.App.map NewMessage (NewView.view model)
 
         componentViewForRoute =
             case loggedIn of

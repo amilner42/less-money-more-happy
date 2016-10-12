@@ -32,6 +32,8 @@ the following atom plugins:
   - elmjutsu : A combination of elm goodies wrapped up in one plugin.
   - elm-format : Allows you to run elm-format on save, very convenient.
   - atom-typescript : the only typescript plugin you will ever need.
+  - auto-detect-indentation : 2-space-tab in TS, 4-space-tab in Elm, get a
+    package to handle the switch for you automatically.
 
 I highly recommend getting Atom with the plugins above, it'll only take a few
 minutes and your development experience across the full stack will be great!

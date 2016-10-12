@@ -3,6 +3,7 @@ module Components.Update exposing (update, updateCacheIf)
 import Navigation
 import Components.Home.Update as HomeUpdate
 import Components.Welcome.Update as WelcomeUpdate
+import Components.New.Update as NewUpdate
 import Components.Welcome.Init as WelcomeInit
 import Components.Messages exposing (Msg(..))
 import Components.Model exposing (Model)
@@ -70,6 +71,13 @@ updateCacheIf msg model shouldCache =
                             WelcomeUpdate.update subMsg model
                     in
                         ( newModel, Cmd.map WelcomeMessage newSubMsg )
+
+                NewMessage subMsg ->
+                    let
+                        ( newModel, newSubMsg ) =
+                            NewUpdate.update subMsg model
+                    in
+                        ( newModel, Cmd.map NewMessage newSubMsg )
     in
         case shouldCache of
             True ->
