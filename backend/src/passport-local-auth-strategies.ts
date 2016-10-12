@@ -16,6 +16,23 @@ import { InvalidModelError } from './errors';
  */
 const usernameField = "email";
 
+
+/**
+ * Creates a default user from a login/register "basic user".
+ */
+const defaultUser = (basicUser: {email: string, password: string}): user => {
+  return {
+    email: basicUser.email,
+    password: basicUser.password,
+    categoriesWithGoals: [],
+    expenditures: [],
+    earnings: [],
+    employers: [],
+    currentBalance: undefined
+  }
+};
+
+
 /**
  * Check if a password is correct for a user.
  *
@@ -38,10 +55,10 @@ const correctPassword = (user, password) => {
 const register = (email, password): Promise<user> => {
   const salt = genSaltSync(10);
   const passwordAsHash = hashSync(password, salt);
-  const user = {
+  const user: user = defaultUser({
     email: email,
     password: passwordAsHash
-  };
+  });
 
   return collection('users')
   .then((Users) => Users.save(user))

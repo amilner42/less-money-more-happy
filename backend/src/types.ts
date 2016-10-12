@@ -4,6 +4,12 @@ import { Handler } from "express";
 
 
 /**
+ * A mongo unique id.
+ */
+type mongoID = string;
+
+
+/**
  * Format of the application's routes.
  */
 export interface appRoutes {
@@ -12,13 +18,73 @@ export interface appRoutes {
   }
 }
 
+
 /**
+ * An expenditure made by the user.
+ */
+interface expenditure {
+  date: Date;
+  categoryID: mongoID;
+  cost: number;
+}
+
+
+/**
+ * Table.
+ * The expenditure categories, the `color` field represets how we will literally
+ * color them on the frontend, it should be hex. The table here will just have
+ * the default categories users can make their own and choose their own colors.
+ */
+export interface expenditureCategory {
+  _id?: mongoID;
+  name: string;
+  color: string;
+}
+
+
+/**
+ * A goal for a category.
+ */
+export type expenditureCategoryWithGoals = {
+  // If undefined, the user has it as a category but it is not currently
+  // selected.
+  budget?: {
+    goalSpending: number;
+    perNumberOfDays: number;
+  }
+} & expenditureCategory;
+
+
+/**
+ * An employer that pays a user.
+ */
+export interface employer {
+  _id?: mongoID;
+  name: string;
+}
+
+/**
+ * The user will input when they recieve money, this seems easiest.
+ */
+export interface earning {
+  date: Date;
+  amount: number;
+  from?: mongoID;
+}
+
+/**
+ * Table.
  * A `user`.
  */
 export interface user {
-  _id?: string;
+  _id?: mongoID;
   email: string;
   password?: string;
+  categoriesWithGoals: expenditureCategoryWithGoals[];
+  expenditures: expenditure[];
+  earnings: earning[];
+  employers: employer[];
+  currentBalance: number;
 }
 
 /**
