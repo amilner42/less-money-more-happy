@@ -2,6 +2,7 @@ module Components.New.Update exposing (update)
 
 import Components.Model exposing (Model)
 import Components.New.Messages exposing (Msg(..))
+import Api
 
 
 {-| New Component Update.

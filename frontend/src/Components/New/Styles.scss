@@ -1,6 +1,46 @@
+@import '../../Styles/mixins';
+@import '../../Styles/variables';
+
+
 .new-component-wrapper {
 
+  @include full-screen-absolute();
+
   .new-component {
-    
+    @include absolutely-centered-min-box();
+    border: 2px solid $color2;
+    border-radius: 5px;
+    text-align: center;
+
+
+    .new-header {
+      margin-top: 170px;
+
+      input {
+        border: 1px solid $color3;
+        background-color: $color1;
+        display: block;
+        text-align: center;
+        margin: auto;
+        width: 270px;
+        height: 53px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+
+      button {
+        display: block;
+        height: 30px;
+        width: 270px;
+        margin: auto;
+        color: $color1;
+        background-color: $color2;
+        border: none;
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+      }
+    }
   }
 }

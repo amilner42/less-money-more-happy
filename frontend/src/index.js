@@ -8,6 +8,7 @@ require("./Styles/variables.scss");
 require("./Components/Styles.scss");
 require("./Components/Home/Styles.scss");
 require("./Components/Welcome/Styles.scss");
+require("./Components/New/Styles.scss");
 
 // Require index.html so it gets copied to dist
 require('./index.html');
