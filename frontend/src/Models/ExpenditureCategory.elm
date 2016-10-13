@@ -48,6 +48,6 @@ cacheEncoder expenditureCategory =
 
 {-| ExpenditureCategory `cacheDecoder`.
 -}
-cacheDecoder : Decode.Decoder Expenditure
+cacheDecoder : Decode.Decoder ExpenditureCategory
 cacheDecoder =
     decoder

@@ -1,4 +1,4 @@
-/// Module for encapsulating helper functions for the user model.
+/// Module for the user model.
 
 import { omit } from "ramda";
 

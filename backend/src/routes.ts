@@ -5,8 +5,9 @@ import passport from 'passport';
 import R from 'ramda';
 
 import { APP_CONFIG } from '../app-config';
-import { userModel } from './models/user.model';
-import { appRoutes } from './types';
+import { userModel, expenditureCategoryModel} from './models/';
+import { appRoutes, errorCodes, expenditureCategory } from './types';
+import { collection } from './db';
 
 
 /**
@@ -16,7 +17,8 @@ import { appRoutes } from './types';
  */
 export const apiAuthlessRoutes = [
   '/register',
-  '/login'
+  '/login',
+  '/defaultExpenditureCategories'
 ].map((route) => `${APP_CONFIG.app.apiSuffix}${route}`);
 
 /**
@@ -116,6 +118,28 @@ export const routes: appRoutes = {
         res.clearCookie('connect.sid');
         res.status(200).json({message: "Successfully logged out"});
         return;
+      });
+    }
+  },
+
+  '/defaultExpenditureCategories': {
+    /**
+     * Gets the default categories, not user-specific.
+     */
+    get: (req, res) => {
+      collection('expenditureCategories')
+      .then((ExpenditureCategories) => {
+        return ExpenditureCategories.find({}).toArray();
+      })
+      .then((defaultCategories: expenditureCategory[]) => {
+        const defaultCategoriesForResponse = defaultCategories.map(expenditureCategoryModel.stripSensitiveDataForResponse);
+        res.status(200).json(defaultCategoriesForResponse);
+      })
+      .catch((err) => {
+        res.status(400).json({
+          message: "Cannot get default services from DB",
+          errorCode: errorCodes.internalError
+        });
       });
     }
   }
