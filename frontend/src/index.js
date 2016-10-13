@@ -16,11 +16,11 @@ require('./index.html');
 var Elm = require('./Main.elm');
 var mountNode = document.getElementById('main');
 
-// The third value on embed are the initial values for incomming ports into Elm
-var app = Elm.Main.embed(mountNode);
-
 // The key for the model in localStorage.
 var modelKey = "model";
+
+// Load app with localStorage cachedModel as initial flag.
+var app = Elm.Main.embed(mountNode, JSON.parse(localStorage.getItem(modelKey)) || null);
 
 // Saves the model to local storage.
 app.ports.saveModelToLocalStorage.subscribe(function(model) {

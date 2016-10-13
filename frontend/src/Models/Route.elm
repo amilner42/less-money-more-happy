@@ -23,6 +23,7 @@ type Route
     | HomeComponentMain
     | WelcomeComponentLogin
     | WelcomeComponentRegister
+    | NewComponent
 
 
 {-| All the routes that don't require authentication. By default it will be
@@ -66,6 +67,9 @@ cacheEncoder route =
 
                 WelcomeComponentRegister ->
                     "WelcomeComponentRegister"
+
+                NewComponent ->
+                    "NewComponent"
     in
         Encode.string routeString
 
@@ -89,6 +93,9 @@ cacheDecoder =
                 "WelcomeComponentRegister" ->
                     Decode.succeed WelcomeComponentRegister
 
+                "NewComponent" ->
+                    Decode.succeed NewComponent
+
                 {- Technically string could be anything in local storage, `_` is a
                    wildcard.
                 -}
@@ -105,6 +112,7 @@ urlParsers =
     , UrlParser.format HomeComponentProfile (s "profile")
     , UrlParser.format WelcomeComponentRegister (s "welcome" </> s "register")
     , UrlParser.format WelcomeComponentLogin (s "welcome" </> s "login")
+    , UrlParser.format NewComponent (s "new-user")
     ]
 
 
@@ -124,3 +132,6 @@ toUrl route =
 
         WelcomeComponentRegister ->
             Config.baseUrl ++ "#welcome/register"
+
+        NewComponent ->
+            Config.baseUrl ++ "#new-user"

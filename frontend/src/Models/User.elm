@@ -40,7 +40,7 @@ encoder user =
         , ( "password", justValueOrNull Encode.string user.password )
         , ( "currentBalance", justValueOrNull Encode.float user.currentBalance )
         , ( "categoriesWithGoals", justValueOrNull (encodeList ExpenditureCategoryWithGoals.encoder) user.categoriesWithGoals )
-        , ( "expendiutres", justValueOrNull (encodeList Expenditure.encoder) user.expenditures )
+        , ( "expenditures", justValueOrNull (encodeList Expenditure.encoder) user.expenditures )
         , ( "earnings", justValueOrNull (encodeList Earning.encoder) user.earnings )
         , ( "employers", justValueOrNull (encodeList Employer.encoder) user.employers )
         ]
@@ -69,7 +69,7 @@ cacheEncoder user =
         , ( "password", Encode.null )
         , ( "currentBalance", justValueOrNull Encode.float user.currentBalance )
         , ( "categoriesWithGoals", justValueOrNull (encodeList ExpenditureCategoryWithGoals.cacheEncoder) user.categoriesWithGoals )
-        , ( "expendiutres", justValueOrNull (encodeList Expenditure.cacheEncoder) user.expenditures )
+        , ( "expenditures", justValueOrNull (encodeList Expenditure.cacheEncoder) user.expenditures )
         , ( "earnings", justValueOrNull (encodeList Earning.cacheEncoder) user.earnings )
         , ( "employers", justValueOrNull (encodeList Employer.cacheEncoder) user.employers )
         ]

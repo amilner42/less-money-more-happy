@@ -1,32 +1,42 @@
 module Components.Init exposing (init)
 
+import Json.Encode as Encode
+import Json.Decode as Decode exposing ((:=))
 import DefaultServices.Util as Util
 import DefaultServices.Router as Router
 import Components.Welcome.Init as WelcomeInit
 import Components.Home.Init as HomeInit
 import Components.Messages exposing (Msg(..))
-import Components.Model exposing (Model)
-import Components.Update exposing (updateCacheIf)
+import Components.Model exposing (Model, cacheDecoder)
+import Components.Update exposing (update)
 import Models.Route as Route
 import DefaultModel exposing (defaultModel)
 
 
 {-| Base Component Init.
 -}
-init : Result String Route.Route -> ( Model, Cmd Msg )
-init routeResult =
+init : Maybe Encode.Value -> Result String Route.Route -> ( Model, Cmd Msg )
+init maybeEncodedCachedModel routeResult =
     let
         route =
-            Util.resultOr routeResult Route.HomeComponentMain
+            case routeResult of
+                Ok aRoute ->
+                    aRoute
 
-        {- This is the first interesting case of Elm type inference not doing the
-           job perfectly. I say update takes a `model`, but I think because it
-           doesn't use anything Elm doesn't make it pass in a full model, but then
-           update calls other thing and causes runtime probelms with localStorage.
-           TODO report to github elm issues
-        -}
-        defaultModelWithRoute : Model
-        defaultModelWithRoute =
-            { defaultModel | route = route }
+                Err err ->
+                    Route.HomeComponentMain
+
+        initialModel =
+            case maybeEncodedCachedModel of
+                Nothing ->
+                    { defaultModel | route = route }
+
+                Just encodedCachedModel ->
+                    case (Decode.decodeValue cacheDecoder encodedCachedModel) of
+                        Ok cachedModel ->
+                            { cachedModel | route = route }
+
+                        Err err ->
+                            { defaultModel | route = route }
     in
-        updateCacheIf LoadModelFromLocalStorage defaultModelWithRoute False
+        update LoadModelFromLocalStorage initialModel

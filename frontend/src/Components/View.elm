@@ -56,6 +56,9 @@ view model =
 
                         Route.HomeComponentProfile ->
                             homeView
+
+                        Route.NewComponent ->
+                            newView
     in
         Util.cssComponentNamespace
             "base"

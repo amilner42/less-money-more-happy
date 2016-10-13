@@ -21,13 +21,15 @@ const usernameField = "email";
  * Creates a default user from a login/register "basic user".
  */
 const defaultUser = (basicUser: {email: string, password: string}): user => {
+  // Null instead of empty lists because null lets us now this is a new user.
+  // Perhaps for new users we want to display extra help.
   return {
     email: basicUser.email,
     password: basicUser.password,
-    categoriesWithGoals: [],
-    expenditures: [],
-    earnings: [],
-    employers: [],
+    categoriesWithGoals: null,
+    expenditures: null,
+    earnings: null,
+    employers: null,
     currentBalance: null
   }
 };

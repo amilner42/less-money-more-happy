@@ -2,7 +2,7 @@ module Components.New.View exposing (view)
 
 import Components.New.Messages exposing (Msg)
 import Components.Model exposing (Model)
-import Html exposing (Html, div)
+import Html exposing (Html, div, text)
 import DefaultServices.Util as Util
 
 
@@ -13,6 +13,6 @@ view model =
     let
         componentViewForRoute =
             div []
-                []
+                [ text "Hello, new Component!" ]
     in
         Util.cssComponentNamespace "new" Nothing componentViewForRoute

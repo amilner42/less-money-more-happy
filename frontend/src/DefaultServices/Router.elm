@@ -46,17 +46,38 @@ welcome or where the user isn't logged in and goes to an auth-page. You simply
 need to specify `routesNotNeedingAuth`, `defaultUnauthRoute`, and
 `defaultAuthRoute` in your `Routes` model. It also handles users going to
 routes that don't exist (just goes `back` to the route they were on before).
+
+TODO refactor this code, it's garbage...possibly keep it at one case statement
+using a tuple with all the cases, cause this nesting is awful...Alternatively
+fuck this entire function, go use something that does 2-way-data-binding
+between url and model, that would make way more sense...
 -}
 urlUpdate : Result String Route.Route -> Model -> ( Model, Cmd msg )
 urlUpdate routeResult model =
     case routeResult of
         Ok route ->
             let
+                user =
+                    model.user
+
                 loggedIn =
-                    Util.isNotNothing model.user
+                    Util.isNotNothing user
 
                 routeNeedsAuth =
                     not <| List.member route Route.routesNotNeedingAuth
+
+                onNewUserPage =
+                    model.route == Route.NewComponent
+
+                isNewUser =
+                    -- If they are logged in and currentBalance/categories is null.
+                    case user of
+                        Just aUser ->
+                            Util.isNothing aUser.currentBalance
+                                || Util.isNothing aUser.categoriesWithGoals
+
+                        Nothing ->
+                            False
 
                 modelWithRoute route =
                     { model | route = route }
@@ -102,13 +123,58 @@ urlUpdate routeResult model =
                                 in
                                     ( newModel, newCmd )
 
-                            -- logged in, route needs auth, good.
+                            -- logged in, route needs auth, good - but we do
+                            -- need to check if user is new.
                             True ->
-                                let
-                                    newModel =
-                                        modelWithRoute route
-                                in
-                                    ( newModel, LocalStorage.saveModel newModel )
+                                case isNewUser of
+                                    True ->
+                                        let
+                                            newModel =
+                                                modelWithRoute Route.NewComponent
+
+                                            newCmd =
+                                                case onNewUserPage of
+                                                    False ->
+                                                        Cmd.batch
+                                                            [ navigateTo newModel.route
+                                                            , LocalStorage.saveModel newModel
+                                                            ]
+
+                                                    True ->
+                                                        case route of
+                                                            Route.NewComponent ->
+                                                                Cmd.none
+
+                                                            _ ->
+                                                                Cmd.batch
+                                                                    [ navigateTo newModel.route
+                                                                    , LocalStorage.saveModel newModel
+                                                                    ]
+                                        in
+                                            ( newModel, newCmd )
+
+                                    False ->
+                                        let
+                                            ( newModel, newCmd ) =
+                                                case onNewUserPage of
+                                                    False ->
+                                                        ( { model | route = route }
+                                                        , LocalStorage.saveModel newModel
+                                                        )
+
+                                                    True ->
+                                                        let
+                                                            newModel =
+                                                                { model | route = Route.defaultAuthRoute }
+                                                        in
+                                                            ( newModel
+                                                            , Cmd.batch
+                                                                [ navigateTo Route.defaultAuthRoute
+                                                                , LocalStorage.saveModel newModel
+                                                                ]
+                                                            )
+                                        in
+                                            ( newModel, LocalStorage.saveModel newModel )
 
         Err err ->
             ( model, Navigation.back 1 )
