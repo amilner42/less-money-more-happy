@@ -9,6 +9,7 @@ import Config exposing (apiBaseUrl)
 import Models.User as User
 import Models.BasicResponse as BasicResponse
 import Components.Messages exposing (Msg)
+import DefaultServices.Util as Util
 
 
 {-| Gets the users account, or an error if unauthenticated.
@@ -30,11 +31,11 @@ getLogOut =
 -}
 postLogin : User.AuthUser -> (ApiError.ApiError -> b) -> (User.User -> b) -> Cmd b
 postLogin user =
-    HttpService.post (apiBaseUrl ++ "login") User.decoder (User.toAuthJsonString user)
+    HttpService.post (apiBaseUrl ++ "login") User.decoder (Util.toJsonString User.authEncoder user)
 
 
 {-| Registers the user and returns the user, unless invalid new credentials.
 -}
 postRegister : User.AuthUser -> (ApiError.ApiError -> b) -> (User.User -> b) -> Cmd b
 postRegister user =
-    HttpService.post (apiBaseUrl ++ "register") User.decoder (User.toAuthJsonString user)
+    HttpService.post (apiBaseUrl ++ "register") User.decoder (Util.toJsonString User.authEncoder user)

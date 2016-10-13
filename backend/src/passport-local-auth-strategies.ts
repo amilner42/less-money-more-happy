@@ -28,7 +28,7 @@ const defaultUser = (basicUser: {email: string, password: string}): user => {
     expenditures: [],
     earnings: [],
     employers: [],
-    currentBalance: undefined
+    currentBalance: null
   }
 };
 

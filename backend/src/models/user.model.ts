@@ -10,5 +10,8 @@ import { model, user } from '../types';
  */
 export const userModel: model<user> = {
   name: "user",
-  stripSensitiveDataForResponse: omit(['password', '_id'])
+  stripSensitiveDataForResponse: (user: user) => {
+    user.password = null;
+    return omit(['_id'])(user);
+  }
 };

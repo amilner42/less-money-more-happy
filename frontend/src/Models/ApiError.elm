@@ -1,4 +1,9 @@
-module Models.ApiError exposing (ApiError(..), getErrorCodeFromBackendError, humanReadable)
+module Models.ApiError
+    exposing
+        ( ApiError(..)
+        , getErrorCodeFromBackendError
+        , humanReadable
+        )
 
 import Http
 import Json.Encode as Encode
@@ -27,7 +32,7 @@ import Json.Decode as Decode exposing ((:=))
 {-| An error from the backend converted to a union.
 -}
 type ApiError
-    = UnexpectedPayload
+    = UnexpectedPayload String
     | RawTimeout
     | RawNetworkError
     | YouAreUnauthorized
@@ -60,8 +65,9 @@ a human readable message, in case they decide the API directly for instance.
 humanReadable : ApiError -> String
 humanReadable apiError =
     case apiError of
-        UnexpectedPayload ->
-            "Unexpected payload recieved"
+        UnexpectedPayload errMsg ->
+            -- For debugging add: ++ errMsg
+            "Unexpected payload recieved!"
 
         RawTimeout ->
             "Ooo something went wrong, try again!"
@@ -163,13 +169,13 @@ getErrorCodeFromBackendError response =
             in
                 case backendErrorResult of
                     Err error ->
-                        UnexpectedPayload
+                        UnexpectedPayload error
 
                     Ok backendError ->
                         fromErrorCode backendError.errorCode
 
         Http.Blob blob ->
-            UnexpectedPayload
+            UnexpectedPayload "Cannot use elm blobs yet..."
 
 
 {-| Decodes the API error from the backend `errorCodes` enum (top of file).

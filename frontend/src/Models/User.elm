@@ -5,16 +5,17 @@ module Models.User
         , decoder
         , cacheDecoder
         , cacheEncoder
-        , toJsonString
-        , fromJsonString
         , AuthUser
         , authEncoder
-        , toAuthJsonString
         )
 
 import Json.Decode as Decode exposing ((:=))
 import Json.Encode as Encode
-import DefaultServices.Util exposing (justValueOrNull)
+import DefaultServices.Util as Util exposing (justValueOrNull, encodeList)
+import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
+import Models.Expenditure as Expenditure
+import Models.Earning as Earning
+import Models.Employer as Employer
 
 
 {-| The User type.
@@ -22,23 +23,12 @@ import DefaultServices.Util exposing (justValueOrNull)
 type alias User =
     { email : String
     , password : Maybe (String)
+    , currentBalance : Maybe (Float)
+    , categoriesWithGoals : Maybe (List ExpenditureCategoryWithGoals.ExpenditureCategoryWithGoals)
+    , expenditures : Maybe (List Expenditure.Expenditure)
+    , earnings : Maybe (List Earning.Earning)
+    , employers : Maybe (List Employer.Employer)
     }
-
-
-{-| The User `decoder`.
--}
-decoder : Decode.Decoder User
-decoder =
-    Decode.object2 User
-        ("email" := Decode.string)
-        (Decode.maybe ("password" := Decode.string))
-
-
-{-| The User `cacheDecoder`.
--}
-cacheDecoder : Decode.Decoder User
-cacheDecoder =
-    decoder
 
 
 {-| The user `encoder`.
@@ -48,7 +38,26 @@ encoder user =
     Encode.object
         [ ( "email", Encode.string user.email )
         , ( "password", justValueOrNull Encode.string user.password )
+        , ( "currentBalance", justValueOrNull Encode.float user.currentBalance )
+        , ( "categoriesWithGoals", justValueOrNull (encodeList ExpenditureCategoryWithGoals.encoder) user.categoriesWithGoals )
+        , ( "expendiutres", justValueOrNull (encodeList Expenditure.encoder) user.expenditures )
+        , ( "earnings", justValueOrNull (encodeList Earning.encoder) user.earnings )
+        , ( "employers", justValueOrNull (encodeList Employer.encoder) user.employers )
         ]
+
+
+{-| The User `decoder`.
+-}
+decoder : Decode.Decoder User
+decoder =
+    Decode.object7 User
+        ("email" := Decode.string)
+        ("password" := Decode.maybe Decode.string)
+        ("currentBalance" := Decode.maybe Decode.float)
+        ("categoriesWithGoals" := (Decode.maybe <| Decode.list ExpenditureCategoryWithGoals.decoder))
+        ("expenditures" := (Decode.maybe <| Decode.list Expenditure.decoder))
+        ("earnings" := (Decode.maybe <| Decode.list Earning.decoder))
+        ("employers" := (Decode.maybe <| Decode.list Employer.decoder))
 
 
 {-| The User `cacheEncoder`.
@@ -58,35 +67,26 @@ cacheEncoder user =
     Encode.object
         [ ( "email", Encode.string user.email )
         , ( "password", Encode.null )
+        , ( "currentBalance", justValueOrNull Encode.float user.currentBalance )
+        , ( "categoriesWithGoals", justValueOrNull (encodeList ExpenditureCategoryWithGoals.cacheEncoder) user.categoriesWithGoals )
+        , ( "expendiutres", justValueOrNull (encodeList Expenditure.cacheEncoder) user.expenditures )
+        , ( "earnings", justValueOrNull (encodeList Earning.cacheEncoder) user.earnings )
+        , ( "employers", justValueOrNull (encodeList Employer.cacheEncoder) user.employers )
         ]
 
 
-{-| Turns a user into a JSON string.
+{-| The User `cacheDecoder`.
 -}
-toJsonString : User -> String
-toJsonString userRecord =
-    Encode.encode 0 (encoder userRecord)
-
-
-{-| The User `toCacheJsonString`
--}
-toCacheJsonString : User -> String
-toCacheJsonString userRecord =
-    Encode.encode 0 (cacheEncoder userRecord)
-
-
-{-| The User `fromJsonString`.
--}
-fromJsonString : String -> Result String User
-fromJsonString userJsonString =
-    Decode.decodeString decoder userJsonString
-
-
-{-| The User `fromCacheJsonString`.
--}
-fromCacheJsonString : String -> Result String User
-fromCacheJsonString userJsonString =
-    Decode.decodeString cacheDecoder userJsonString
+cacheDecoder : Decode.Decoder User
+cacheDecoder =
+    Decode.object7 User
+        ("email" := Decode.string)
+        ("password" := Decode.null Nothing)
+        ("currentBalance" := Decode.maybe Decode.float)
+        ("categoriesWithGoals" := (Decode.maybe <| Decode.list ExpenditureCategoryWithGoals.cacheDecoder))
+        ("expenditures" := (Decode.maybe <| Decode.list Expenditure.cacheDecoder))
+        ("earnings" := (Decode.maybe <| Decode.list Earning.cacheDecoder))
+        ("employers" := (Decode.maybe <| Decode.list Employer.cacheDecoder))
 
 
 {-| For authentication we only send an email and password.
@@ -105,10 +105,3 @@ authEncoder authUser =
         [ ( "email", Encode.string authUser.email )
         , ( "password", Encode.string authUser.password )
         ]
-
-
-{-| Converts an authUser to a string.
--}
-toAuthJsonString : AuthUser -> String
-toAuthJsonString authUser =
-    Encode.encode 0 <| authEncoder <| authUser

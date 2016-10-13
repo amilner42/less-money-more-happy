@@ -1,6 +1,7 @@
 module DefaultServices.Util exposing (..)
 
 import Json.Encode as Encode
+import Json.Decode as Decode exposing ((:=))
 import Html exposing (Html, div)
 import Html.Attributes exposing (class)
 
@@ -93,3 +94,24 @@ withClassesIf baseClasses additionalClasses boolean =
 
         False ->
             baseClasses
+
+
+{-| Helper for encoding a list, works well with `justValueOrNull`.
+-}
+encodeList : (a -> Encode.Value) -> List a -> Encode.Value
+encodeList encoder listOfA =
+    Encode.list <| List.map encoder listOfA
+
+
+{-| Turn a string into a record using a decoder.
+-}
+fromJsonString : Decode.Decoder a -> String -> Result String a
+fromJsonString decoder encodedString =
+    Decode.decodeString decoder encodedString
+
+
+{-| Turn a record into a string using an encoder.
+-}
+toJsonString : (a -> Encode.Value) -> a -> String
+toJsonString encoder record =
+    Encode.encode 0 (encoder record)

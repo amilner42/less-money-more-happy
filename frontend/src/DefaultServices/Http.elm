@@ -49,13 +49,13 @@ onRawSuccess onApiError onApiSuccess decoder response =
             Http.Text string ->
                 case (Decode.decodeString decoder string) of
                     Err error ->
-                        onApiError ApiError.UnexpectedPayload
+                        onApiError <| ApiError.UnexpectedPayload <| error
 
                     Ok decodedResponse ->
                         onApiSuccess decodedResponse
 
             Http.Blob blob ->
-                onApiError ApiError.UnexpectedPayload
+                onApiError <| ApiError.UnexpectedPayload <| "cannot use elm blobs yet..."
     else
         let
             apiError =
