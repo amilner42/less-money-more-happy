@@ -2,7 +2,7 @@ module Components.New.View exposing (view)
 
 import Components.New.Messages exposing (Msg(..))
 import Components.Model exposing (Model)
-import Html exposing (Html, div, text, input, h2, button)
+import Html exposing (Html, div, text, input, h2, button, span)
 import Html.Attributes exposing (placeholder, value, type', class, disabled)
 import Html.Events exposing (onInput, onClick)
 import DefaultServices.Util as Util
@@ -71,7 +71,15 @@ selectingExpenditureCategoriesView model =
                 toHtml category =
                     div
                         []
-                        [ text category.name ]
+                        [ span
+                            [ class "minus-selected-category"
+                            , onClick <| RemoveCategory category
+                            ]
+                            [ text " - " ]
+                        , span
+                            [ class "selected-category" ]
+                            [ text category.name ]
+                        ]
             in
                 div [] <|
                     (div

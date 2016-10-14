@@ -97,8 +97,25 @@ update msg model =
                 in
                     ( newModel, Cmd.none )
 
-            RemoveCategory category ->
-                todo
+            RemoveCategory removeCategory ->
+                let
+                    selectedCategories =
+                        newComponent.selectedCategories
+
+                    newSelectedCategories =
+                        List.filter
+                            (\category ->
+                                not (category == removeCategory)
+                            )
+                            selectedCategories
+
+                    newModel =
+                        newModelWithNewNewComponent
+                            { newComponent
+                                | selectedCategories = newSelectedCategories
+                            }
+                in
+                    ( newModel, Cmd.none )
 
             SetSelectedCategories ->
                 todo
