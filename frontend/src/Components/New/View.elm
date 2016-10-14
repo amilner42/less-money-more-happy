@@ -103,6 +103,20 @@ selectingExpenditureCategoriesView model =
 
                 False ->
                     "loading..."
+
+        defaultCategoriesLeft =
+            let
+                filterSelectedCategories defaultCategories =
+                    List.filter
+                        (\selectedCategory ->
+                            not <|
+                                List.member
+                                    selectedCategory
+                                    newComponent.selectedCategories
+                        )
+                        defaultCategories
+            in
+                Maybe.map filterSelectedCategories newComponent.defaultCategories
     in
         div
             [ class "new-header" ]
@@ -120,7 +134,7 @@ selectingExpenditureCategoriesView model =
                 ]
                 []
             , Dropdown.dropdown
-                newComponent.defaultCategories
+                defaultCategoriesLeft
                 .name
                 .name
                 AddCategory
