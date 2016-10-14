@@ -3,16 +3,34 @@
  */
 const defaultExpenditureCategories = [
   {
-    name: "Groceries",
-    color: "#893302"
+    name: "Groceries"
   },
   {
     name: "Rent",
-    color: "#082932"
   },
   {
-    name: "Casual Spending",
-    color: "#ad0211"
+    name: "Drugs"
+  },
+  {
+    name: "Concerts"
+  },
+  {
+    name: "Video Games"
+  },
+  {
+    name: "Athletics"
+  },
+  {
+    name: "Education"
+  },
+  {
+    name: "Eating out"
+  },
+  {
+    name: "Gambling"
+  },
+  {
+    name: "Other"
   }
 ]
 

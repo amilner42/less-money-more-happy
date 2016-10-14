@@ -16,7 +16,6 @@ shown when they are originally selecting there categories.
 -}
 type alias ExpenditureCategory =
     { name : String
-    , color : String
     }
 
 
@@ -26,7 +25,6 @@ encoder : ExpenditureCategory -> Encode.Value
 encoder expenditureCategory =
     Encode.object
         [ ( "name", Encode.string expenditureCategory.name )
-        , ( "color", Encode.string expenditureCategory.color )
         ]
 
 
@@ -34,9 +32,8 @@ encoder expenditureCategory =
 -}
 decoder : Decode.Decoder ExpenditureCategory
 decoder =
-    Decode.object2 ExpenditureCategory
+    Decode.object1 ExpenditureCategory
         ("name" := Decode.string)
-        ("color" := Decode.string)
 
 
 {-| ExpenditureCategory `cacheEncoder`.

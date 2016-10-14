@@ -38,14 +38,11 @@ interface expenditure {
 
 
 /**
- * The expenditure categories, the `color` field represets how we will literally
- * color them on the frontend, it should be hex. The table here will just have
- * the default categories users can make their own and choose their own colors.
+ * An expenditure category.
  */
 export interface expenditureCategory {
   _id?: mongoID;
   name: string;
-  color: string;
 }
 
 
