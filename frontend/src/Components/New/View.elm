@@ -66,6 +66,22 @@ selectingExpenditureCategoriesView model =
         selectedCategories =
             newComponent.selectedCategories
 
+        selectedCategoriesHtml =
+            let
+                toHtml category =
+                    div
+                        []
+                        [ text category.name ]
+            in
+                div [] <|
+                    (div
+                        [ class "selected-categories-title" ]
+                        [ text "SELECTED" ]
+                    )
+                        :: List.map
+                            toHtml
+                            selectedCategories
+
         defaultCategoriesLoaded =
             case newComponent.defaultCategories of
                 Nothing ->
@@ -93,6 +109,9 @@ selectingExpenditureCategoriesView model =
             [ h2
                 []
                 [ text "Select Your Categories" ]
+            , div
+                [ class <| Util.withClassesIf "selected-categories-list" "hidden" <| List.isEmpty selectedCategories ]
+                [ selectedCategoriesHtml ]
             , input
                 [ placeholder placeholderText
                 , disabled <| not defaultCategoriesLoaded

@@ -12,9 +12,25 @@
     border-radius: 5px;
     text-align: center;
 
+    .selected-categories-title {
+      color: $color3;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
 
     .new-header {
       margin-top: 170px;
+
+      .selected-categories-list {
+        position: absolute;
+        left: 25px;
+        width: 270px;
+        text-align: center;
+        margin-top: -170px;
+        height: 100px;
+        overflow-y: scroll;
+      }
 
       input {
         border: 1px solid $color3;
@@ -40,6 +56,10 @@
         &:disabled {
             cursor: not-allowed;
         }
+      }
+
+      .dropdown {
+        top: 320px;
       }
     }
   }
