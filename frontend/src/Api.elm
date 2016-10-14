@@ -1,4 +1,11 @@
-module Api exposing (getAccount, postLogin, postRegister, getLogOut)
+module Api
+    exposing
+        ( getAccount
+        , getLogOut
+        , postAccountBalance
+        , postLogin
+        , postRegister
+        )
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
@@ -8,6 +15,7 @@ import DefaultServices.Http as HttpService
 import Config exposing (apiBaseUrl)
 import Models.User as User
 import Models.BasicResponse as BasicResponse
+import Models.Balance as Balance
 import Models.ExpenditureCategory as ExpenditureCategory
 import Components.Messages exposing (Msg)
 import DefaultServices.Util as Util
@@ -47,3 +55,17 @@ postLogin user =
 postRegister : User.AuthUser -> (ApiError.ApiError -> a) -> (User.User -> a) -> Cmd a
 postRegister user =
     HttpService.post (apiBaseUrl ++ "register") User.decoder (Util.toJsonString User.authEncoder user)
+
+
+{-| Sets the account balance for the user, returning the user.
+-}
+postAccountBalance : String -> (ApiError.ApiError -> a) -> (User.User -> a) -> Cmd a
+postAccountBalance balance =
+    let
+        balanceAsObject =
+            { balance = balance }
+    in
+        HttpService.post
+            (apiBaseUrl ++ "account/setCurrentBalance")
+            User.decoder
+            (Util.toJsonString Balance.encoder balanceAsObject)

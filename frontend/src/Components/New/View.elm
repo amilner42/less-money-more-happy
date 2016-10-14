@@ -6,6 +6,7 @@ import Html exposing (Html, div, text, input, h2, button)
 import Html.Attributes exposing (placeholder, value, type', class, disabled)
 import Html.Events exposing (onInput, onClick)
 import DefaultServices.Util as Util
+import Templates.ErrorBox as ErrorBox
 
 
 {-| For nowing which stage of setting up the new account we are at.
@@ -24,12 +25,10 @@ settingCurrentBalanceView model =
             model.newComponent
 
         currentBalance =
-            case newComponent.currentBalance of
-                Nothing ->
-                    ""
+            newComponent.currentBalance
 
-                Just currentBalance ->
-                    currentBalance
+        currentBalanceError =
+            newComponent.currentBalanceApiError
 
         invalidForm =
             currentBalance == ""
@@ -40,12 +39,13 @@ settingCurrentBalanceView model =
                 []
                 [ text "Your Current Balance" ]
             , input
-                [ placeholder "Eg. 839.49"
+                [ placeholder "Eg. 839.49 or 20000"
                 , onInput OnCurrentBalanceInput
                 , value currentBalance
                 , type' "number"
                 ]
                 []
+            , ErrorBox.errorBox currentBalanceError
             , button
                 [ onClick SetCurrentBalance
                 , disabled invalidForm

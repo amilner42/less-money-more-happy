@@ -10,6 +10,8 @@ require("./Components/Home/Styles.scss");
 require("./Components/Welcome/Styles.scss");
 require("./Components/New/Styles.scss");
 
+require("./Templates/ErrorBox.scss");
+
 // Require index.html so it gets copied to dist
 require('./index.html');
 

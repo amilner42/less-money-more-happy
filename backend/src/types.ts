@@ -95,6 +95,15 @@ export interface user {
   employers?: employer[];
 }
 
+
+/**
+ * A `balance`.
+ */
+export interface balance {
+  balance: String; // string but value should be a float (money).
+}
+
+
 /**
  * A namespace for encapsulating all structures.
  *
@@ -252,5 +261,6 @@ export enum errorCodes {
   modelHasInvalidTypeStructure,     // This implies that the API was queried direclty with an incorrectly formed object.
   internalError,                    // For errors that are not handleable
   modelUnionTypeHasMultipleErrors,
-  passwordDoesNotMatchConfirmPassword
+  passwordDoesNotMatchConfirmPassword,
+  invalidBalance
 }

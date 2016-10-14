@@ -24,8 +24,10 @@ import Json.Decode as Decode exposing ((:=))
      modelHasInvalidTypeStructure,     // This implies that the API was queried direclty with an incorrectly formed object.
      internalError,                    // For errors that are not handleable
      modelUnionTypeHasMultipleErrors,
-     passwordDoesNotMatchConfirmPassword
+     passwordDoesNotMatchConfirmPassword,
+     invalidBalance
    }
+
 -}
 
 
@@ -47,6 +49,7 @@ type ApiError
     | InternalError
     | ModelUnionTypeHasMultipleErrors
     | PasswordDoesNotMatchConfirmPassword
+    | InvalidBalance
 
 
 {-| An error from the backend still in Json form.
@@ -111,6 +114,9 @@ humanReadable apiError =
         PasswordDoesNotMatchConfirmPassword ->
             "Passwords do not match!"
 
+        InvalidBalance ->
+            "Please enter a number!"
+
 
 {-| Turns an errorCode integer from the backend to it's respective ApiError.
 -}
@@ -152,6 +158,9 @@ fromErrorCode errorCode =
 
         12 ->
             PasswordDoesNotMatchConfirmPassword
+
+        13 ->
+            InvalidBalance
 
         _ ->
             InternalError

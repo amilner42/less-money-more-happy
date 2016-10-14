@@ -1,4 +1,4 @@
-module Components.New.Model exposing (Model, cacheEncoder, cacheDecoder, fromCacheJsonString, toCacheJsonString)
+module Components.New.Model exposing (Model, cacheEncoder, cacheDecoder)
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
@@ -9,7 +9,7 @@ import DefaultServices.Util as Util
 {-| The New Component Model.
 -}
 type alias Model =
-    { currentBalance : Maybe String
+    { currentBalance : String
     , currentBalanceApiError : Maybe ApiError.ApiError
     , selectedCategories : List String
     , selectedCategoriesApiError : Maybe ApiError.ApiError
@@ -21,7 +21,7 @@ type alias Model =
 cacheEncoder : Model -> Encode.Value
 cacheEncoder model =
     Encode.object
-        [ ( "currentBalance", Util.justValueOrNull Encode.string model.currentBalance )
+        [ ( "currentBalance", Encode.string model.currentBalance )
         , ( "currentBalanceApiError", Encode.null )
         , ( "selectedCategories", Encode.list <| List.map Encode.string model.selectedCategories )
         , ( "selectedCategoriesApiError", Encode.null )
@@ -33,21 +33,7 @@ cacheEncoder model =
 cacheDecoder : Decode.Decoder Model
 cacheDecoder =
     Decode.object4 Model
-        ("currentBalance" := Decode.maybe Decode.string)
+        ("currentBalance" := Decode.string)
         ("currentBalanceApiError" := Decode.null Nothing)
         ("selectedCategories" := Decode.list Decode.string)
         ("selectedCategoriesApiError" := Decode.null Nothing)
-
-
-{-| New Component `toCacheJsonString`.
--}
-toCacheJsonString : Model -> String
-toCacheJsonString model =
-    Encode.encode 0 (cacheEncoder model)
-
-
-{-| New Component `fromCacheJsonString`.
--}
-fromCacheJsonString : String -> Result String Model
-fromCacheJsonString modelJsonString =
-    Decode.decodeString cacheDecoder modelJsonString

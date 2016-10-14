@@ -9,6 +9,7 @@ import DefaultServices.Util as Util
 import DefaultServices.Router as Router
 import Models.Route as Route
 import Models.ApiError as ApiError
+import Templates.ErrorBox as ErrorBox
 
 
 {-| The welcome View.
@@ -19,28 +20,6 @@ view model =
         "welcome"
         Nothing
         (div [] [ displayViewForRoute model ])
-
-
-{-| Creates an error box with an appropriate message if there is an error,
-otherwise simply stays hidden.
--}
-errorBox : Maybe (ApiError.ApiError) -> Html Msg
-errorBox maybeApiError =
-    let
-        humanReadable maybeApiError =
-            case maybeApiError of
-                -- Hidden when no error so this doesn't matter
-                Nothing ->
-                    ""
-
-                Just apiError ->
-                    ApiError.humanReadable apiError
-    in
-        div
-            [ class "welcome-error-box"
-            , hidden <| Util.isNothing <| maybeApiError
-            ]
-            [ text <| humanReadable <| maybeApiError ]
 
 
 {-| If hightlight error returns the css class for input errors.
@@ -96,7 +75,7 @@ loginView model =
                     , value model.welcomeComponent.password
                     ]
                     []
-                , errorBox currentError
+                , ErrorBox.errorBox currentError
                 , button
                     [ onClick Login
                     , disabled invalidForm
@@ -172,7 +151,7 @@ registerView model =
                     , value model.welcomeComponent.confirmPassword
                     ]
                     []
-                , errorBox currentError
+                , ErrorBox.errorBox currentError
                 , button
                     [ onClick Register
                     , disabled invalidForm

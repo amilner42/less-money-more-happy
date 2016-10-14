@@ -16,28 +16,42 @@ update msg model =
         newComponent =
             model.newComponent
 
-        newModelWithHomeComponent newNewComponent =
+        newModelWithNewNewComponent newNewComponent =
             { model | newComponent = newNewComponent }
     in
         case msg of
             OnCurrentBalanceInput newBalance ->
                 let
                     newModel =
-                        newModelWithHomeComponent
+                        newModelWithNewNewComponent
                             { newComponent
-                                | currentBalance = Just newBalance
+                                | currentBalance = newBalance
+                                , currentBalanceApiError = Nothing
                             }
                 in
                     ( newModel, Cmd.none )
 
             SetCurrentBalance ->
-                todo
+                ( model
+                , Api.postAccountBalance
+                    newComponent.currentBalance
+                    OnSetCurrentBalanceFailure
+                    OnSetCurrentBalanceSuccess
+                )
 
             OnSetCurrentBalanceFailure apiError ->
-                todo
+                let
+                    newModel =
+                        newModelWithNewNewComponent { newComponent | currentBalanceApiError = Just apiError }
+                in
+                    ( newModel, Cmd.none )
 
             OnSetCurrentBalanceSuccess user ->
-                todo
+                let
+                    newModel =
+                        { model | user = Just user }
+                in
+                    ( newModel, Cmd.none )
 
             AddCategory categoryID ->
                 todo

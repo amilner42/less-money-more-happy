@@ -5,7 +5,7 @@ import passport from 'passport';
 import R from 'ramda';
 
 import { APP_CONFIG } from '../app-config';
-import { userModel, expenditureCategoryModel} from './models/';
+import { userModel, expenditureCategoryModel, validBalance} from './models/';
 import { appRoutes, errorCodes, expenditureCategory } from './types';
 import { collection } from './db';
 
@@ -101,6 +101,35 @@ export const routes: appRoutes = {
     get: (req, res, next) => {
       res.status(200).json(userModel.stripSensitiveDataForResponse(req.user));
       return;
+    }
+  },
+
+  '/account/setCurrentBalance': {
+    post: (req, res, next) => {
+      const user = req.user;
+      const balance = req.body.balance;
+
+      if(validBalance(balance)) {
+        user.currentBalance = parseFloat(balance);
+        collection("users")
+        .then((Users) => {
+          return Users.save(user);
+        })
+        .then(() => {
+          res.status(200).json(user);
+        })
+        .catch((error) => {
+          return {
+            message: 'Internal Error (maybe mongo)',
+            errorCode: errorCodes.internalError
+          }
+        });
+      } else {
+        res.status(400).json({
+          message: `Invalid balance: ${balance}`,
+          errorCode: errorCodes.invalidBalance
+        });
+      }
     }
   },
 

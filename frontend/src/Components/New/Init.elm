@@ -7,7 +7,7 @@ import Components.New.Model exposing (Model)
 -}
 init : Model
 init =
-    { currentBalance = Nothing
+    { currentBalance = ""
     , currentBalanceApiError = Nothing
     , selectedCategories = []
     , selectedCategoriesApiError = Nothing
