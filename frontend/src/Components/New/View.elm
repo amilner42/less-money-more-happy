@@ -7,6 +7,7 @@ import Html.Attributes exposing (placeholder, value, type', class, disabled)
 import Html.Events exposing (onInput, onClick)
 import DefaultServices.Util as Util
 import Templates.ErrorBox as ErrorBox
+import Templates.Dropdown as Dropdown
 
 
 {-| For nowing which stage of setting up the new account we are at.
@@ -58,9 +59,59 @@ settingCurrentBalanceView model =
 -}
 selectingExpenditureCategoriesView : Model -> Html Msg
 selectingExpenditureCategoriesView model =
-    div
-        []
-        [ text "Select your categories" ]
+    let
+        newComponent =
+            model.newComponent
+
+        selectedCategories =
+            newComponent.selectedCategories
+
+        defaultCategoriesLoaded =
+            case newComponent.defaultCategories of
+                Nothing ->
+                    False
+
+                Just something ->
+                    True
+
+        invalidForm =
+            not defaultCategoriesLoaded
+                || List.isEmpty selectedCategories
+                || Util.isNotNothing newComponent.selectedCategoriesApiError
+                || Util.isNotNothing newComponent.defaultCategoriesApiError
+
+        placeholderText =
+            case defaultCategoriesLoaded of
+                True ->
+                    "Eg. Groceries"
+
+                False ->
+                    "loading..."
+    in
+        div
+            [ class "new-header" ]
+            [ h2
+                []
+                [ text "Select Your Categories" ]
+            , input
+                [ placeholder placeholderText
+                , disabled <| not defaultCategoriesLoaded
+                , onInput OnCategoryInput
+                , value newComponent.currentCategoryInput
+                ]
+                []
+            , Dropdown.dropdown
+                newComponent.defaultCategories
+                .name
+                .name
+                AddCategory
+                newComponent.currentCategoryInput
+            , button
+                [ onClick SetSelectedCategories
+                , disabled invalidForm
+                ]
+                [ text "NEXT" ]
+            ]
 
 
 {-| New Component View.

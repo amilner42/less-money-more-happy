@@ -48,15 +48,56 @@ update msg model =
 
             OnSetCurrentBalanceSuccess user ->
                 let
-                    newModel =
+                    modelWithUser =
                         { model | user = Just user }
+
+                    ( newModel, newCmd ) =
+                        update GetDefaultCategories modelWithUser
+                in
+                    ( newModel, newCmd )
+
+            OnCategoryInput newCategoryInput ->
+                let
+                    newModel =
+                        newModelWithNewNewComponent
+                            { newComponent
+                                | selectedCategoriesApiError = Nothing
+                                , currentCategoryInput = newCategoryInput
+                            }
                 in
                     ( newModel, Cmd.none )
 
-            AddCategory categoryID ->
-                todo
+            GetDefaultCategories ->
+                ( model, (Api.getDefaultCategories OnGetDefaultCategoriesFailure OnGetDefaultCategoriesSuccess) )
 
-            RemoveCategory categoryID ->
+            OnGetDefaultCategoriesFailure apiError ->
+                let
+                    newModel =
+                        newModelWithNewNewComponent
+                            { newComponent | defaultCategoriesApiError = Just apiError }
+                in
+                    ( newModel, Cmd.none )
+
+            OnGetDefaultCategoriesSuccess defaultCategories ->
+                let
+                    newModel =
+                        newModelWithNewNewComponent
+                            { newComponent | defaultCategories = Just defaultCategories }
+                in
+                    ( newModel, Cmd.none )
+
+            AddCategory category ->
+                let
+                    newModel =
+                        newModelWithNewNewComponent
+                            { newComponent
+                                | selectedCategories = category :: newComponent.selectedCategories
+                                , currentCategoryInput = ""
+                            }
+                in
+                    ( newModel, Cmd.none )
+
+            RemoveCategory category ->
                 todo
 
             SetSelectedCategories ->

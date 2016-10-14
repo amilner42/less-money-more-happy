@@ -9,6 +9,9 @@ init : Model
 init =
     { currentBalance = ""
     , currentBalanceApiError = Nothing
+    , currentCategoryInput = ""
     , selectedCategories = []
     , selectedCategoriesApiError = Nothing
+    , defaultCategories = Nothing
+    , defaultCategoriesApiError = Nothing
     }

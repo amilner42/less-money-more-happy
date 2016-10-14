@@ -1,0 +1,13 @@
+.dropdown {
+  width: 270px;
+  position: absolute;
+  left: 25px;
+  text-align: center;
+  background-color: white;
+  z-index: 100;
+
+  .dropdown-box {
+    border: 2px solid black;
+    cursor: pointer;
+  }
+}

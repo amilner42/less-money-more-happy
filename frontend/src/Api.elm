@@ -2,6 +2,7 @@ module Api
     exposing
         ( getAccount
         , getLogOut
+        , getDefaultCategories
         , postAccountBalance
         , postLogin
         , postRegister
