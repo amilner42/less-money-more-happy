@@ -7,19 +7,28 @@
 
   .welcome-component {
     @include absolutely-centered-min-box();
-    background-color: $color1;
+    background-color: white;
     border-radius: 5px;
-    border: 2px solid $color2;
 
     text-align: center;
 
-    .welcome-form {
+    .welcome-title {
+      width: 310px;
+      padding-top: 30px;
+    }
 
+    .sub-title {
+      color: $color2;
+      margin-bottom: 15px;
+    }
+
+    .welcome-form {
       $form-width: 270px;
 
       input {
         border: 1px solid $color3;
-        background-color: $color1;
+        background-color: $color5;
+        color: white;
         display: block;
         text-align: center;
         margin: auto;
@@ -27,15 +36,18 @@
         height: 53px;
         border-radius: 5px;
         margin-bottom: 10px;
+        font-size: 20px;
       }
 
       button {
         display: block;
-        height: 30px;
+        height: 40px;
+        font-size: 16px;
         width: $form-width;
         margin: auto;
-        color: $color1;
-        background-color: $color2;
+        color: $color2;
+        background-color: $color3;
+        border-radius: 3px;
         border: none;
 
         &:disabled {
@@ -57,7 +69,11 @@
     }
 
     a {
+      display: block;
+      position: relative;
+      margin-top: 10px;
       color: $link-color1;
+      text-decoration: underline;
     }
   }
 }
