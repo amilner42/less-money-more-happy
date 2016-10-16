@@ -5,9 +5,12 @@ import Json.Encode as Encode
 import Components.Home.Model as HomeModel
 import Components.Welcome.Model as WelcomeModel
 import Components.New.Model as NewModel
+import Models.Colour as Colour
 import Models.Route as Route
-import DefaultServices.Util exposing (justValueOrNull)
+import Models.ExpenditureCategory as ExpenditureCategory
+import DefaultServices.Util exposing (justValueOrNull, encodeList)
 import Models.User as User
+import DefaultServices.Util as Util
 
 
 {-| Base Component Model.
@@ -18,6 +21,8 @@ type alias Model =
     , homeComponent : HomeModel.Model
     , welcomeComponent : WelcomeModel.Model
     , newComponent : NewModel.Model
+    , defaultColours : Maybe (List Colour.Colour)
+    , defaultCategories : Maybe (List ExpenditureCategory.ExpenditureCategory)
     }
 
 
@@ -25,12 +30,14 @@ type alias Model =
 -}
 cacheDecoder : Decode.Decoder Model
 cacheDecoder =
-    Decode.object5 Model
+    Decode.object7 Model
         ("user" := (Decode.maybe (User.cacheDecoder)))
         ("route" := Route.cacheDecoder)
         ("homeComponent" := (HomeModel.cacheDecoder))
         ("welcomeComponent" := (WelcomeModel.cacheDecoder))
         ("newComponent" := (NewModel.cacheDecoder))
+        ("defaultColours" := (Decode.maybe <| Decode.list <| Colour.cacheDecoder))
+        ("defaultCategories" := (Decode.maybe <| Decode.list ExpenditureCategory.cacheDecoder))
 
 
 {-| Base Component `cacheEncoder`.
@@ -43,6 +50,8 @@ cacheEncoder model =
         , ( "homeComponent", HomeModel.cacheEncoder model.homeComponent )
         , ( "welcomeComponent", WelcomeModel.cacheEncoder model.welcomeComponent )
         , ( "newComponent", NewModel.cacheEncoder model.newComponent )
+        , ( "defaultColours", justValueOrNull (encodeList Colour.cacheEncoder) model.defaultColours )
+        , ( "defaultCategories", Util.justValueOrNull (Util.encodeList ExpenditureCategory.cacheEncoder) model.defaultCategories )
         ]
 
 

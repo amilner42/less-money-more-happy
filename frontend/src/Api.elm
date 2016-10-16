@@ -3,6 +3,7 @@ module Api
         ( getAccount
         , getLogOut
         , getDefaultCategories
+        , getDefaultColours
         , postAccountBalance
         , postAccountCategories
         , postLogin
@@ -20,6 +21,7 @@ import Models.BasicResponse as BasicResponse
 import Models.Balance as Balance
 import Models.ExpenditureCategory as ExpenditureCategory
 import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
+import Models.Colour as Colour
 import Components.Messages exposing (Msg)
 import DefaultServices.Util as Util
 
@@ -39,11 +41,18 @@ getLogOut =
     HttpService.get (apiBaseUrl ++ "logOut") BasicResponse.decoder
 
 
-{-| Gets the default categories for a new user to select from.
+{-| Gets the default categories.
 -}
 getDefaultCategories : (ApiError.ApiError -> a) -> (List ExpenditureCategory.ExpenditureCategory -> a) -> Cmd a
 getDefaultCategories =
     HttpService.get (apiBaseUrl ++ "defaultExpenditureCategories") (Decode.list ExpenditureCategory.decoder)
+
+
+{-| Gets the default colors.
+-}
+getDefaultColours : (ApiError.ApiError -> a) -> (List Colour.Colour -> a) -> Cmd a
+getDefaultColours =
+    HttpService.get (apiBaseUrl ++ "defaultColors") (Decode.list Colour.decoder)
 
 
 {-| Logs user in and returns the user, unless invalid credentials.

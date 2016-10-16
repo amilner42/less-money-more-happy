@@ -12,6 +12,5 @@ init =
     , currentCategoryInput = ""
     , selectedCategories = []
     , selectedCategoriesApiError = Nothing
-    , defaultCategories = Nothing
-    , defaultCategoriesApiError = Nothing
+    , getDefaultsApiError = Nothing
     }

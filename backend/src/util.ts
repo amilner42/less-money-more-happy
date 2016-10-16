@@ -30,3 +30,13 @@ export const prepareErrorForFrontend = (error: frontendError): Promise<frontendE
     });
   });
 }
+
+
+/**
+ * Turns the '_id' field to 'mongoID', the frontend can't have an `_`.
+ */
+export const renameMongoIDField = (mongoObject: { _id?: string, mongoID?: string}) => {
+  mongoObject.mongoID = mongoObject._id;
+  delete mongoObject._id;
+  return mongoObject;
+}

@@ -16,4 +16,6 @@ defaultModel =
     , homeComponent = HomeInit.init
     , welcomeComponent = WelcomeInit.init
     , newComponent = NewInit.init
+    , defaultColours = Nothing
+    , defaultCategories = Nothing
     }

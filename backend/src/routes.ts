@@ -8,7 +8,7 @@ import { APP_CONFIG } from '../app-config';
 import { userModel, expenditureCategoryModel, validBalance, validExpenditureArray} from './models/';
 import { appRoutes, errorCodes, expenditureCategory, color, user, expenditureCategoryWithGoals } from './types';
 import { collection } from './db';
-import { prepareErrorForFrontend } from './util';
+import { prepareErrorForFrontend, renameMongoIDField } from './util';
 
 
 /**
@@ -19,7 +19,8 @@ import { prepareErrorForFrontend } from './util';
 export const apiAuthlessRoutes = [
   '/register',
   '/login',
-  '/defaultExpenditureCategories'
+  '/defaultExpenditureCategories',
+  '/defaultColors'
 ].map((route) => `${APP_CONFIG.app.apiSuffix}${route}`);
 
 /**
@@ -227,6 +228,27 @@ export const routes: appRoutes = {
         res.status(400).json({
           message: "Cannot get default services from DB",
           errorCode: errorCodes.internalError
+        });
+      });
+    }
+  },
+
+  '/defaultColors': {
+    /**
+     * Gets the default colors from the database, not user-specific.
+     */
+    get: (req, res) => {
+      return collection('colors')
+      .then((Colors) => {
+        return Colors.find({}).toArray();
+      })
+      .then((colors) => {
+        res.status(200).json(colors.map(renameMongoIDField));
+      })
+      .catch((error) => {
+        prepareErrorForFrontend(error)
+        .then((error) => {
+          res.status(400).json(error);
         });
       });
     }

@@ -54,7 +54,7 @@ update msg model =
                         { model | user = Just user }
 
                     ( newModel, newCmd ) =
-                        update GetDefaultCategories modelWithUser
+                        update GetDefaultCategoriesAndColours modelWithUser
                 in
                     ( newModel, newCmd )
 
@@ -69,22 +69,41 @@ update msg model =
                 in
                     ( newModel, Cmd.none )
 
-            GetDefaultCategories ->
-                ( model, (Api.getDefaultCategories OnGetDefaultCategoriesFailure OnGetDefaultCategoriesSuccess) )
+            GetDefaultCategoriesAndColours ->
+                ( model
+                , Cmd.batch
+                    [ (Api.getDefaultCategories OnGetDefaultCategoriesFailure OnGetDefaultCategoriesSuccess)
+                    , (Api.getDefaultColours OnGetDefaultColoursFailure OnGetDefaultColoursSuccess)
+                    ]
+                )
 
             OnGetDefaultCategoriesFailure apiError ->
                 let
                     newModel =
                         newModelWithNewNewComponent
-                            { newComponent | defaultCategoriesApiError = Just apiError }
+                            { newComponent | getDefaultsApiError = Just apiError }
                 in
                     ( newModel, Cmd.none )
 
             OnGetDefaultCategoriesSuccess defaultCategories ->
                 let
                     newModel =
+                        { model | defaultCategories = Just defaultCategories }
+                in
+                    ( newModel, Cmd.none )
+
+            OnGetDefaultColoursFailure apiError ->
+                let
+                    newModel =
                         newModelWithNewNewComponent
-                            { newComponent | defaultCategories = Just defaultCategories }
+                            { newComponent | getDefaultsApiError = Just apiError }
+                in
+                    ( newModel, Cmd.none )
+
+            OnGetDefaultColoursSuccess colours ->
+                let
+                    newModel =
+                        { model | defaultColours = Just colours }
                 in
                     ( newModel, Cmd.none )
 

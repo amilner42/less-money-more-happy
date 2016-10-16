@@ -15,8 +15,7 @@ type alias Model =
     , currentCategoryInput : String
     , selectedCategories : List ExpenditureCategory.ExpenditureCategory
     , selectedCategoriesApiError : Maybe ApiError.ApiError
-    , defaultCategories : Maybe (List ExpenditureCategory.ExpenditureCategory)
-    , defaultCategoriesApiError : Maybe ApiError.ApiError
+    , getDefaultsApiError : Maybe ApiError.ApiError
     }
 
 
@@ -30,8 +29,7 @@ cacheEncoder model =
         , ( "currentCategoryInput", Encode.string model.currentCategoryInput )
         , ( "selectedCategories", Util.encodeList ExpenditureCategory.cacheEncoder model.selectedCategories )
         , ( "selectedCategoriesApiError", Encode.null )
-        , ( "defaultCategories", Util.justValueOrNull (Util.encodeList ExpenditureCategory.cacheEncoder) model.defaultCategories )
-        , ( "defaultCategoriesApiError", Encode.null )
+        , ( "getDefaultsApiError", Encode.null )
         ]
 
 
@@ -39,11 +37,10 @@ cacheEncoder model =
 -}
 cacheDecoder : Decode.Decoder Model
 cacheDecoder =
-    Decode.object7 Model
+    Decode.object6 Model
         ("currentBalance" := Decode.string)
         ("currentBalanceApiError" := Decode.null Nothing)
         ("currentCategoryInput" := Decode.string)
         ("selectedCategories" := Decode.list ExpenditureCategory.cacheDecoder)
         ("selectedCategoriesApiError" := Decode.null Nothing)
-        ("defaultCategories" := (Decode.maybe <| Decode.list ExpenditureCategory.cacheDecoder))
-        ("defaultCategoriesApiError" := Decode.null Nothing)
+        ("getDefaultsApiError" := Decode.null Nothing)

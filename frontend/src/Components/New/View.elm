@@ -91,22 +91,18 @@ selectingExpenditureCategoriesView model =
                             toHtml
                             selectedCategories
 
-        defaultCategoriesLoaded =
-            case newComponent.defaultCategories of
-                Nothing ->
-                    False
-
-                Just something ->
-                    True
+        defaultsLoaded =
+            Util.isNotNothing model.defaultCategories
+                && Util.isNotNothing model.defaultColours
 
         invalidForm =
-            not defaultCategoriesLoaded
+            not defaultsLoaded
                 || List.isEmpty selectedCategories
                 || Util.isNotNothing newComponent.selectedCategoriesApiError
-                || Util.isNotNothing newComponent.defaultCategoriesApiError
+                || Util.isNotNothing newComponent.getDefaultsApiError
 
         placeholderText =
-            case defaultCategoriesLoaded of
+            case defaultsLoaded of
                 True ->
                     "Eg. Groceries"
 
@@ -125,7 +121,7 @@ selectingExpenditureCategoriesView model =
                         )
                         defaultCategories
             in
-                Maybe.map filterSelectedCategories newComponent.defaultCategories
+                Maybe.map filterSelectedCategories model.defaultCategories
     in
         div
             [ class "new-header" ]
@@ -137,7 +133,7 @@ selectingExpenditureCategoriesView model =
                 [ selectedCategoriesHtml ]
             , input
                 [ placeholder placeholderText
-                , disabled <| not defaultCategoriesLoaded
+                , disabled <| not defaultsLoaded
                 , onInput OnCategoryInput
                 , value newComponent.currentCategoryInput
                 ]
@@ -165,6 +161,35 @@ selectingExpenditureCategoriesView model =
             ]
 
 
+{-| The view for selecting the goals!
+-}
+selectingGoalsView : Model -> Html Msg
+selectingGoalsView model =
+    let
+        newComponent =
+            model.newComponent
+
+        selectedCategories =
+            case model.user of
+                -- Should never happen...
+                Nothing ->
+                    []
+
+                Just aUser ->
+                    case aUser.categoriesWithGoals of
+                        -- Should never happen...
+                        Nothing ->
+                            []
+
+                        Just someCategoriesWithGoals ->
+                            someCategoriesWithGoals
+    in
+        div
+            []
+            -- TODO code up this view!
+            [ text <| toString <| selectedCategories ]
+
+
 {-| New Component View.
 -}
 view : Model -> Html Msg
@@ -181,9 +206,14 @@ view model =
                         Nothing ->
                             settingCurrentBalanceView model
 
-                        -- If current balance set, next step is selecting expenditures.
+                        -- If current balance set, next step is selecting expenditures/goals.
                         Just something ->
-                            selectingExpenditureCategoriesView model
+                            case user.categoriesWithGoals of
+                                Nothing ->
+                                    selectingExpenditureCategoriesView model
+
+                                Just something ->
+                                    selectingGoalsView model
 
                 Nothing ->
                     -- should never happen cause of url updater (router).

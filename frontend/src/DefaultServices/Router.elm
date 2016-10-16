@@ -69,15 +69,32 @@ urlUpdate routeResult model =
                 onNewUserPage =
                     model.route == Route.NewComponent
 
+                -- A new user should be on the `new` page setting up their account.
                 isNewUser =
-                    -- If they are logged in and currentBalance/categories is null.
-                    case user of
-                        Just aUser ->
-                            Util.isNothing aUser.currentBalance
-                                || Util.isNothing aUser.categoriesWithGoals
+                    let
+                        categoryNotComplete category =
+                            Util.isNothing category.goalSpending
+                                || Util.isNothing category.perNumberOfDays
 
-                        Nothing ->
-                            False
+                        currentBalanceEntered aUser =
+                            Util.isNothing aUser.currentBalance
+
+                        categoriesEntered aUser =
+                            case aUser.categoriesWithGoals of
+                                Nothing ->
+                                    False
+
+                                Just allCategories ->
+                                    List.any categoryNotComplete allCategories
+                    in
+                        -- If they are logged in and currentBalance/categories are not fully entered.
+                        case user of
+                            Just aUser ->
+                                (not <| currentBalanceEntered aUser)
+                                    || (not <| categoriesEntered aUser)
+
+                            Nothing ->
+                                False
 
                 modelWithRoute route =
                     { model | route = route }

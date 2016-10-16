@@ -94,7 +94,7 @@ const defaultColors = [
   },
   {
     name: "indian red",
-    hex: "#B0171F	",
+    hex: "#B0171F",
     defaultColor: false,
     dark: true
   },
