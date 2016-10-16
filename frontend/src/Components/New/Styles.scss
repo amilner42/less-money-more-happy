@@ -61,6 +61,14 @@
       .dropdown {
         top: 320px;
       }
+
+      .add-custom-category-button {
+        position: absolute;
+        right: 30px;
+        top: 230px;
+        cursor: pointer;
+        font-size: 150%;
+      }
     }
   }
 }

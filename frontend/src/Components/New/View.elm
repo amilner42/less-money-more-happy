@@ -8,6 +8,7 @@ import Html.Events exposing (onInput, onClick)
 import DefaultServices.Util as Util
 import Templates.ErrorBox as ErrorBox
 import Templates.Dropdown as Dropdown
+import String
 
 
 {-| For nowing which stage of setting up the new account we are at.
@@ -141,6 +142,15 @@ selectingExpenditureCategoriesView model =
                 , value newComponent.currentCategoryInput
                 ]
                 []
+            , div
+                [ class <|
+                    Util.withClassesIf
+                        "add-custom-category-button"
+                        "hidden"
+                        (String.length newComponent.currentCategoryInput < 3)
+                , onClick <| AddCategory <| { name = newComponent.currentCategoryInput }
+                ]
+                [ text "+" ]
             , Dropdown.dropdown
                 defaultCategoriesLeft
                 .name
