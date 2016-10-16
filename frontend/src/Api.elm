@@ -4,6 +4,7 @@ module Api
         , getLogOut
         , getDefaultCategories
         , postAccountBalance
+        , postAccountCategories
         , postLogin
         , postRegister
         )
@@ -18,6 +19,7 @@ import Models.User as User
 import Models.BasicResponse as BasicResponse
 import Models.Balance as Balance
 import Models.ExpenditureCategory as ExpenditureCategory
+import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import Components.Messages exposing (Msg)
 import DefaultServices.Util as Util
 
@@ -70,3 +72,13 @@ postAccountBalance balance =
             (apiBaseUrl ++ "account/setCurrentBalance")
             User.decoder
             (Util.toJsonString Balance.encoder balanceAsObject)
+
+
+{-| Sets the account exependiture categories.
+-}
+postAccountCategories : List ExpenditureCategory.ExpenditureCategory -> (ApiError.ApiError -> a) -> (User.User -> a) -> Cmd a
+postAccountCategories listOfExpenditureCategories =
+    HttpService.post
+        (apiBaseUrl ++ "account/setExpenditureCategories")
+        User.decoder
+        (Util.toJsonString (Util.encodeList ExpenditureCategory.encoder) listOfExpenditureCategories)

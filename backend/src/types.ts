@@ -27,6 +27,17 @@ export interface appRoutes {
 
 
 /**
+ * A color.
+ */
+export interface color {
+  _id?: mongoID;
+  name: String;
+  hex: String;
+  defaultColor: boolean;
+  dark: boolean;
+}
+
+/**
  * An expenditure made by the user.
  */
 interface expenditure {
@@ -52,7 +63,7 @@ export interface expenditureCategory {
 export type expenditureCategoryWithGoals = {
   id: frontendID;
   name: string;
-  color: string;
+  colorID: mongoID;
   goalSpending?: number;
   perNumberOfDays?: number;
 };
@@ -259,5 +270,15 @@ export enum errorCodes {
   internalError,                    // For errors that are not handleable
   modelUnionTypeHasMultipleErrors,
   passwordDoesNotMatchConfirmPassword,
-  invalidBalance
+  invalidBalance,
+  invalidCategories
+}
+
+
+/**
+ * The error we always send to the frontend.
+ */
+export interface frontendError {
+  message: String;
+  errorCode: errorCodes;
 }

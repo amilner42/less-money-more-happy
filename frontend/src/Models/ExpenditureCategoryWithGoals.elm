@@ -19,7 +19,7 @@ can set their goals.
 type alias ExpenditureCategoryWithGoals =
     { id : Int
     , name : String
-    , color : String
+    , colorID : String
     , goalSpending : Maybe Int
     , perNumberOfDays : Maybe Int
     }
@@ -36,7 +36,7 @@ encoder expenditureCategoryWithGoals =
         Encode.object
             [ ( "id", Encode.int ecwg.id )
             , ( "name", Encode.string ecwg.name )
-            , ( "color", Encode.string ecwg.color )
+            , ( "colorID", Encode.string ecwg.colorID )
             , ( "goalSpending", Util.justValueOrNull Encode.int ecwg.goalSpending )
             , ( "perNumberOfDays", Util.justValueOrNull Encode.int ecwg.perNumberOfDays )
             ]
@@ -49,9 +49,9 @@ decoder =
     Decode.object5 ExpenditureCategoryWithGoals
         ("id" := Decode.int)
         ("name" := Decode.string)
-        ("color" := Decode.string)
+        ("colorID" := Decode.string)
         ("goalSpending" := Decode.maybe Decode.int)
-        ("perNumberOfdays" := Decode.maybe Decode.int)
+        ("perNumberOfDays" := Decode.maybe Decode.int)
 
 
 {-| ExpenditureCategoryWithGoals `cacheEncoder`.

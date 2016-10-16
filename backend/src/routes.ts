@@ -5,9 +5,10 @@ import passport from 'passport';
 import R from 'ramda';
 
 import { APP_CONFIG } from '../app-config';
-import { userModel, expenditureCategoryModel, validBalance} from './models/';
-import { appRoutes, errorCodes, expenditureCategory } from './types';
+import { userModel, expenditureCategoryModel, validBalance, validExpenditureArray} from './models/';
+import { appRoutes, errorCodes, expenditureCategory, color, user, expenditureCategoryWithGoals } from './types';
 import { collection } from './db';
+import { prepareErrorForFrontend } from './util';
 
 
 /**
@@ -116,13 +117,13 @@ export const routes: appRoutes = {
           return Users.save(user);
         })
         .then(() => {
-          res.status(200).json(user);
+          res.status(200).json(userModel.stripSensitiveDataForResponse(user));
         })
         .catch((error) => {
-          return {
-            message: 'Internal Error (maybe mongo)',
-            errorCode: errorCodes.internalError
-          }
+          prepareErrorForFrontend(error)
+          .then((error) => {
+            res.status(400).json(error);
+          });
         });
       } else {
         res.status(400).json({
@@ -130,6 +131,64 @@ export const routes: appRoutes = {
           errorCode: errorCodes.invalidBalance
         });
       }
+    }
+  },
+
+  /**
+   * Sets the expenditure categories for a user, asks only for the name, will
+   * automatically set the colors. This will override a users current categories
+   * use the `addCategory` and `removeCategory` routes to make modifications.
+   */
+  '/account/setExpenditureCategories': {
+    post: (req, res) => {
+      const user: user = req.user;
+      const expenditureCategories: expenditureCategoryWithGoals[] = req.body;
+
+      return validExpenditureArray(expenditureCategories)
+      .then(() => {
+        return collection('colors');
+      })
+      .then((Colors) => {
+        let lightDefaultColors: color[] = [];
+        let darkDefaultColors: color[] = [];
+
+        // parralel.
+        return Promise.all([
+          Colors.find({ defaultColor: true , dark: false}).toArray(),
+          Colors.find({ defaultColor: true, dark: true}).toArray()
+        ])
+        .then(lightAndDarkColors => {
+          [lightDefaultColors, darkDefaultColors] = lightAndDarkColors;
+
+          for(let index = 0; index < expenditureCategories.length; index++) {
+            let expenditureCategory = expenditureCategories[index];
+            expenditureCategory.id = index;
+            if(index % 2 == 0) {
+              expenditureCategory.colorID = lightDefaultColors[index % lightDefaultColors.length]._id;
+            } else {
+              expenditureCategory.colorID = darkDefaultColors[index % darkDefaultColors.length]._id;
+            }
+            expenditureCategory.goalSpending = null;
+            expenditureCategory.perNumberOfDays = null;
+          }
+
+          user.categoriesWithGoals = expenditureCategories;
+
+          return collection("users")
+          .then((Users) => {
+            return Users.save(user);
+          })
+          .then(() => {
+            res.status(200).json(userModel.stripSensitiveDataForResponse(user));
+          });
+        });
+      })
+      .catch((error) => {
+        prepareErrorForFrontend(error)
+        .then((error) => {
+          res.status(400).json(error);
+        })
+      });
     }
   },
 

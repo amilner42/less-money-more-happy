@@ -2,6 +2,8 @@ module Components.New.Update exposing (update)
 
 import Components.Model exposing (Model)
 import Components.New.Messages exposing (Msg(..))
+import Models.Route as Route
+import DefaultServices.Router as Router
 import Api
 
 
@@ -118,10 +120,23 @@ update msg model =
                     ( newModel, Cmd.none )
 
             SetSelectedCategories ->
-                todo
+                ( model, Api.postAccountCategories newComponent.selectedCategories OnSetSelectedCategoriesFailure OnSetSelectedCategoriesSuccess )
 
             OnSetSelectedCategoriesFailure apiError ->
-                todo
+                let
+                    newModel =
+                        newModelWithNewNewComponent
+                            { newComponent
+                                | selectedCategoriesApiError = Just apiError
+                            }
+                in
+                    ( newModel, Cmd.none )
 
             OnSetSelectedCategoriesSuccess user ->
-                todo
+                let
+                    newModel =
+                        { model
+                            | user = Just user
+                        }
+                in
+                    ( newModel, Router.navigateTo Route.HomeComponentMain )
