@@ -4,6 +4,8 @@ import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
 import Html exposing (Html, div)
 import Html.Attributes exposing (class)
+import String
+import Char
 
 
 {-| Useful for encoding, turns maybes into nulls / there actual value.
@@ -115,3 +117,19 @@ fromJsonString decoder encodedString =
 toJsonString : (a -> Encode.Value) -> a -> String
 toJsonString encoder record =
     Encode.encode 0 (encoder record)
+
+
+{-| Capatilize the first letter of every word.
+-}
+upperCaseFirstChars : String -> String
+upperCaseFirstChars string =
+    let
+        upperFirstChar word =
+            case String.uncons word of
+                Nothing ->
+                    ""
+
+                Just ( head, tail ) ->
+                    String.append (String.fromChar (Char.toUpper head)) tail
+    in
+        String.join " " <| List.map upperFirstChar <| String.words string

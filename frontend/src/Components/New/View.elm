@@ -3,7 +3,7 @@ module Components.New.View exposing (view)
 import Components.New.Messages exposing (Msg(..))
 import Components.Model exposing (Model)
 import Html exposing (Html, div, text, input, h2, button, span)
-import Html.Attributes exposing (placeholder, value, type', class, disabled)
+import Html.Attributes exposing (placeholder, value, type', class, disabled, style)
 import Html.Events exposing (onInput, onClick)
 import DefaultServices.Util as Util
 import Templates.ErrorBox as ErrorBox
@@ -148,7 +148,7 @@ selectingExpenditureCategoriesView model =
                 ]
                 [ text "+" ]
             , Dropdown.dropdown
-                defaultCategoriesLeft
+                (Maybe.map (List.take 5) defaultCategoriesLeft)
                 .name
                 .name
                 AddCategory
@@ -183,11 +183,60 @@ selectingGoalsView model =
 
                         Just someCategoriesWithGoals ->
                             someCategoriesWithGoals
+
+        colours =
+            case model.defaultColours of
+                -- Should never happen...
+                Nothing ->
+                    []
+
+                Just someColours ->
+                    someColours
+
+        getColorFromID colorID =
+            let
+                filteredList =
+                    List.filter (\colour -> colour.mongoID == colorID) colours
+
+                hex =
+                    case List.head filteredList of
+                        Nothing ->
+                            "#000000"
+
+                        Just aColour ->
+                            aColour.hex
+            in
+                hex
+
+        toHtml category =
+            let
+                colourOfCategory =
+                    getColorFromID category.colorID
+            in
+                div
+                    [ class "new-category"
+                    , style
+                        [ ( "border", "2px solid " ++ (colourOfCategory) )
+                        , ( "color", colourOfCategory )
+                        ]
+                    ]
+                    [ div
+                        [ class "new-category-name" ]
+                        [ text <| Util.upperCaseFirstChars <| category.name ]
+                    , input
+                        [ class "new-category-goal-input"
+                        , placeholder "Your Goal"
+                        , type' "number"
+                        ]
+                        []
+                    ]
     in
         div
             []
-            -- TODO code up this view!
-            [ text <| toString <| selectedCategories ]
+            (List.map
+                toHtml
+                selectedCategories
+            )
 
 
 {-| New Component View.
