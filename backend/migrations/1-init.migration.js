@@ -107,13 +107,13 @@ const defaultColors = [
   {
     name: "violet red",
     hex: "#FF3E96",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
     name: "hot pink",
     hex: "#FF69B4",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
@@ -131,19 +131,19 @@ const defaultColors = [
   {
     name: "maroon",
     hex: "#CD2990",
-    defaultColor: true,
+    defaultColor: false,
     dark: true
   },
   {
     name: "orchid",
     hex: "#DA70D6",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
     name: "dark orchid",
     hex: "#8B4789",
-    defaultColor: true,
+    defaultColor: false,
     dark: true
   },
   {
@@ -155,7 +155,7 @@ const defaultColors = [
   {
     name: "plum",
     hex: "#FFBBFF",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
@@ -167,13 +167,13 @@ const defaultColors = [
   {
     name: "dark magenta",
     hex: "#8B008B",
-    defaultColor: true,
+    defaultColor: false,
     dark: true
   },
   {
     name: "purple",
     hex: "#800080",
-    defaultColor: true,
+    defaultColor: false,
     dark: true
   },
   {
@@ -191,19 +191,19 @@ const defaultColors = [
   {
     name: "slate blue",
     hex: "#6A5ACD",
-    defaultColor: false,
+    defaultColor: true,
     dark: true
   },
   {
     name: "lavender",
     hex: "#E6E6FA",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
     name: "blue",
     hex: "#0000FF",
-    defaultColor: true,
+    defaultColor: false,
     dark: true
   },
   {
@@ -215,13 +215,13 @@ const defaultColors = [
   {
     name: "midnight blue",
     hex: "#191970",
-    defaultColor: true,
+    defaultColor: false,
     dark: true
   },
   {
     name: "cobolt",
     hex: "#3D59AB",
-    defaultColor: true,
+    defaultColor: false,
     dark: true
   },
   {
@@ -245,7 +245,7 @@ const defaultColors = [
   {
     name: "light sky blue",
     hex: "#87CEFA",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
@@ -263,7 +263,7 @@ const defaultColors = [
   {
     name: "light blue",
     hex: "#ADD8E6",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
@@ -275,7 +275,7 @@ const defaultColors = [
   {
     name: "turquoise",
     hex: "#00F5FF",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
@@ -293,7 +293,7 @@ const defaultColors = [
   {
     name: "cyan",
     hex: "#00FFFF",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
@@ -311,7 +311,7 @@ const defaultColors = [
   {
     name: "sea green",
     hex: "#54FF9F",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
@@ -341,7 +341,7 @@ const defaultColors = [
   {
     name: "green",
     hex: "#00EE00",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
@@ -377,7 +377,7 @@ const defaultColors = [
   {
     name: "yellow",
     hex: "#FFFF00",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
@@ -389,7 +389,7 @@ const defaultColors = [
   {
     name: "cold grey",
     hex: "#808A87",
-    defaultColor: false,
+    defaultColor: true,
     dark: true
   },
   {
@@ -401,19 +401,19 @@ const defaultColors = [
   {
     name: "khaki",
     hex: "#FFF68F",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
     name: "banana",
     hex: "#E3CF57",
-    defaultColor: true,
+    defaultColor: false,
     dark: false
   },
   {
     name: "gold",
     hex: "#FFD700",
-    defaultColor: false,
+    defaultColor: true,
     dark: false
   },
   {

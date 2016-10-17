@@ -20,3 +20,13 @@ html, body, #main {
 .hidden {
   display: none;
 }
+
+
+// Get rid of arrows on number inputs.
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}

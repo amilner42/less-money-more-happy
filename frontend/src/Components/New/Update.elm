@@ -156,6 +156,58 @@ update msg model =
                     newModel =
                         { model
                             | user = Just user
+                            , newComponent =
+                                { newComponent
+                                    | selectedCategoriesWithGoals = user.categoriesWithGoals
+                                }
                         }
                 in
-                    ( newModel, Router.navigateTo Route.HomeComponentMain )
+                    ( newModel, Cmd.none )
+
+            OnGoalInput categoryID goalInput ->
+                let
+                    updateCategory category =
+                        case category.id == categoryID of
+                            True ->
+                                { category
+                                    | goalSpending = Just goalInput
+                                }
+
+                            False ->
+                                category
+
+                    newMaybeSelectedCategoriesWithGoals =
+                        Maybe.map (List.map updateCategory) newComponent.selectedCategoriesWithGoals
+
+                    newModel =
+                        newModelWithNewNewComponent
+                            { newComponent
+                                | selectedCategoriesWithGoals =
+                                    newMaybeSelectedCategoriesWithGoals
+                            }
+                in
+                    ( newModel, Cmd.none )
+
+            OnDayInput categoryID dayInput ->
+                let
+                    updateCategory category =
+                        case category.id == categoryID of
+                            True ->
+                                { category
+                                    | perNumberOfDays = Just dayInput
+                                }
+
+                            False ->
+                                category
+
+                    newMaybeSelectedCategoriesWithGoals =
+                        Maybe.map (List.map updateCategory) newComponent.selectedCategoriesWithGoals
+
+                    newModel =
+                        newModelWithNewNewComponent
+                            { newComponent
+                                | selectedCategoriesWithGoals =
+                                    newMaybeSelectedCategoriesWithGoals
+                            }
+                in
+                    ( newModel, Cmd.none )

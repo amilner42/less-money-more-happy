@@ -4,6 +4,7 @@ import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
 import Models.ApiError as ApiError
 import Models.ExpenditureCategory as ExpenditureCategory
+import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import DefaultServices.Util as Util
 
 
@@ -16,6 +17,7 @@ type alias Model =
     , selectedCategories : List ExpenditureCategory.ExpenditureCategory
     , selectedCategoriesApiError : Maybe ApiError.ApiError
     , getDefaultsApiError : Maybe ApiError.ApiError
+    , selectedCategoriesWithGoals : Maybe (List ExpenditureCategoryWithGoals.ExpenditureCategoryWithGoals)
     }
 
 
@@ -30,6 +32,7 @@ cacheEncoder model =
         , ( "selectedCategories", Util.encodeList ExpenditureCategory.cacheEncoder model.selectedCategories )
         , ( "selectedCategoriesApiError", Encode.null )
         , ( "getDefaultsApiError", Encode.null )
+        , ( "selectedCategoriesWithGoals", Util.justValueOrNull (Util.encodeList ExpenditureCategoryWithGoals.cacheEncoder) model.selectedCategoriesWithGoals )
         ]
 
 
@@ -37,10 +40,11 @@ cacheEncoder model =
 -}
 cacheDecoder : Decode.Decoder Model
 cacheDecoder =
-    Decode.object6 Model
+    Decode.object7 Model
         ("currentBalance" := Decode.string)
         ("currentBalanceApiError" := Decode.null Nothing)
         ("currentCategoryInput" := Decode.string)
         ("selectedCategories" := Decode.list ExpenditureCategory.cacheDecoder)
         ("selectedCategoriesApiError" := Decode.null Nothing)
         ("getDefaultsApiError" := Decode.null Nothing)
+        ("selectedCategoriesWithGoals" := (Decode.maybe <| Decode.list ExpenditureCategoryWithGoals.cacheDecoder))

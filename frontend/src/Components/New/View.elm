@@ -170,19 +170,13 @@ selectingGoalsView model =
             model.newComponent
 
         selectedCategories =
-            case model.user of
+            case newComponent.selectedCategoriesWithGoals of
                 -- Should never happen...
                 Nothing ->
                     []
 
-                Just aUser ->
-                    case aUser.categoriesWithGoals of
-                        -- Should never happen...
-                        Nothing ->
-                            []
-
-                        Just someCategoriesWithGoals ->
-                            someCategoriesWithGoals
+                Just someCategoriesWithGoals ->
+                    someCategoriesWithGoals
 
         colours =
             case model.defaultColours of
@@ -223,19 +217,55 @@ selectingGoalsView model =
                     [ div
                         [ class "new-category-name" ]
                         [ text <| Util.upperCaseFirstChars <| category.name ]
-                    , input
-                        [ class "new-category-goal-input"
-                        , placeholder "Your Goal"
-                        , type' "number"
+                    , div
+                        [ class "new-category-entry-area"
                         ]
-                        []
+                        [ input
+                            [ class "new-category-goal-input"
+                            , placeholder "X"
+                            , type' "number"
+                            , onInput <| OnGoalInput category.id
+                            , value <| Maybe.withDefault "" category.goalSpending
+                            ]
+                            []
+                        , span
+                            []
+                            [ text " dollars for " ]
+                        , input
+                            [ class "new-category-goal-input"
+                            , placeholder "Y"
+                            , type' "number"
+                            , style
+                                [ ( "width", "22px" )
+                                ]
+                            , onInput <| OnDayInput category.id
+                            , value <| Maybe.withDefault "" category.perNumberOfDays
+                            ]
+                            []
+                        , span
+                            []
+                            [ text " days" ]
+                        ]
                     ]
     in
         div
             []
-            (List.map
-                toHtml
-                selectedCategories
+            (List.append
+                ((h2
+                    []
+                    [ text "Set Goals" ]
+                 )
+                    :: (List.map
+                            toHtml
+                            selectedCategories
+                       )
+                )
+                [ (button
+                    -- TODO
+                    [ disabled True ]
+                    [ text "NEXT" ]
+                  )
+                ]
             )
 
 

@@ -12,6 +12,20 @@
     border-radius: 5px;
     text-align: center;
 
+    button {
+      display: block;
+      height: 30px;
+      width: 270px;
+      margin: auto;
+      color: $color1;
+      background-color: $color2;
+      border: none;
+
+      &:disabled {
+          cursor: not-allowed;
+      }
+    }
+
     .selected-categories-title {
       color: $color3;
       margin-bottom: 10px;
@@ -44,20 +58,6 @@
         margin-bottom: 10px;
       }
 
-      button {
-        display: block;
-        height: 30px;
-        width: 270px;
-        margin: auto;
-        color: $color1;
-        background-color: $color2;
-        border: none;
-
-        &:disabled {
-            cursor: not-allowed;
-        }
-      }
-
       .dropdown {
         top: 320px;
       }
@@ -85,12 +85,22 @@
         font-size: 20px;
       }
 
-      .new-category-goal-input {
+      .new-category-entry-area {
         position: absolute;
-        width: 70px;
+        width: 190px;
         top: 29px;
         right:  5px;
         text-align: right;
+
+        .new-category-dollar-sign {
+          display: inline-block;
+        }
+
+        .new-category-goal-input {
+          display: inline-block;
+          width: 40px;
+          text-align: center;
+        }
       }
     }
   }

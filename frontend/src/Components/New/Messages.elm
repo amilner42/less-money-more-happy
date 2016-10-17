@@ -24,3 +24,5 @@ type Msg
     | OnGetDefaultCategoriesSuccess (List ExpenditureCategory.ExpenditureCategory)
     | OnGetDefaultColoursFailure ApiError.ApiError
     | OnGetDefaultColoursSuccess (List Colour.Colour)
+    | OnGoalInput Int String
+    | OnDayInput Int String

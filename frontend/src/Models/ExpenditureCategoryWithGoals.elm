@@ -20,8 +20,8 @@ type alias ExpenditureCategoryWithGoals =
     { id : Int
     , name : String
     , colorID : String
-    , goalSpending : Maybe Int
-    , perNumberOfDays : Maybe Int
+    , goalSpending : Maybe String
+    , perNumberOfDays : Maybe String
     }
 
 
@@ -37,8 +37,8 @@ encoder expenditureCategoryWithGoals =
             [ ( "id", Encode.int ecwg.id )
             , ( "name", Encode.string ecwg.name )
             , ( "colorID", Encode.string ecwg.colorID )
-            , ( "goalSpending", Util.justValueOrNull Encode.int ecwg.goalSpending )
-            , ( "perNumberOfDays", Util.justValueOrNull Encode.int ecwg.perNumberOfDays )
+            , ( "goalSpending", Util.justValueOrNull Encode.string ecwg.goalSpending )
+            , ( "perNumberOfDays", Util.justValueOrNull Encode.string ecwg.perNumberOfDays )
             ]
 
 
@@ -50,8 +50,8 @@ decoder =
         ("id" := Decode.int)
         ("name" := Decode.string)
         ("colorID" := Decode.string)
-        ("goalSpending" := Decode.maybe Decode.int)
-        ("perNumberOfDays" := Decode.maybe Decode.int)
+        ("goalSpending" := Decode.maybe Decode.string)
+        ("perNumberOfDays" := Decode.maybe Decode.string)
 
 
 {-| ExpenditureCategoryWithGoals `cacheEncoder`.
