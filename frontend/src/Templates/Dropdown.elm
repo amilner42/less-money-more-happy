@@ -9,8 +9,8 @@ import DefaultServices.Util as Util
 
 {-| Creates the view for the dropdown.
 -}
-createDropdown : List a -> (a -> String) -> (a -> msg) -> Html msg
-createDropdown filteredList toDisplayString toMsg =
+createDropdown : List a -> (a -> String) -> (a -> msg) -> Int -> Html msg
+createDropdown filteredList toDisplayString toMsg maxLength =
     let
         toHtml a =
             div
@@ -28,17 +28,21 @@ createDropdown filteredList toDisplayString toMsg =
             False ->
                 div
                     []
-                    (List.map
-                        toHtml
-                        filteredList
+                    (List.take
+                        maxLength
+                        (List.map
+                            toHtml
+                            filteredList
+                        )
                     )
 
 
 {-| A dropdown that searches over listOfType, using the `toSearchableString`
-function and then checking if `searchText` is in that string.
+function and then checking if `searchText` is in that string. Use `maxLength`
+to control the most results you'd ever like to display.
 -}
-dropdown : Maybe (List a) -> (a -> String) -> (a -> String) -> (a -> msg) -> String -> Html msg
-dropdown maybeListOfType toSearchableString toDisplayString toMsg searchText =
+dropdown : Maybe (List a) -> (a -> String) -> (a -> String) -> (a -> msg) -> Int -> String -> Html msg
+dropdown maybeListOfType toSearchableString toDisplayString toMsg maxLength searchText =
     case maybeListOfType of
         Nothing ->
             div
@@ -65,4 +69,4 @@ dropdown maybeListOfType toSearchableString toDisplayString toMsg searchText =
             in
                 div
                     [ class <| Util.withClassesIf "dropdown" "hidden" (searchText == "") ]
-                    [ createDropdown filteredList toDisplayString toMsg ]
+                    [ createDropdown filteredList toDisplayString toMsg maxLength ]

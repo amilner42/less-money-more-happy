@@ -148,10 +148,11 @@ selectingExpenditureCategoriesView model =
                 ]
                 [ text "+" ]
             , Dropdown.dropdown
-                (Maybe.map (List.take 5) defaultCategoriesLeft)
+                defaultCategoriesLeft
                 .name
                 .name
                 AddCategory
+                5
                 newComponent.currentCategoryInput
             , button
                 [ onClick SetSelectedCategories
