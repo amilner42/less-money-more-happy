@@ -271,7 +271,8 @@ export enum errorCodes {
   modelUnionTypeHasMultipleErrors,
   passwordDoesNotMatchConfirmPassword,
   invalidBalance,
-  invalidCategories
+  invalidCategories,
+  invalidCategoriesWithGoals
 }
 
 

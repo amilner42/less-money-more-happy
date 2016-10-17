@@ -5,10 +5,11 @@ import passport from 'passport';
 import R from 'ramda';
 
 import { APP_CONFIG } from '../app-config';
-import { userModel, expenditureCategoryModel, validBalance, validExpenditureArray} from './models/';
+import { userModel, expenditureCategoryModel, validExpenditureArray, validExpenditureCategoryWithGoalsArray} from './models/';
 import { appRoutes, errorCodes, expenditureCategory, color, user, expenditureCategoryWithGoals } from './types';
 import { collection } from './db';
 import { prepareErrorForFrontend, renameMongoIDField } from './util';
+import { validMoney } from './validifier';
 
 
 /**
@@ -107,11 +108,14 @@ export const routes: appRoutes = {
   },
 
   '/account/setCurrentBalance': {
+    /**
+     * Sets the balance for a user,
+     */
     post: (req, res, next) => {
       const user = req.user;
       const balance = req.body.balance;
 
-      if(validBalance(balance)) {
+      if(validMoney(balance)) {
         user.currentBalance = parseFloat(balance);
         collection("users")
         .then((Users) => {
@@ -135,12 +139,13 @@ export const routes: appRoutes = {
     }
   },
 
-  /**
-   * Sets the expenditure categories for a user, asks only for the name, will
-   * automatically set the colors. This will override a users current categories
-   * use the `addCategory` and `removeCategory` routes to make modifications.
-   */
   '/account/setExpenditureCategories': {
+    /**
+     * Sets the expenditure categories for a user, asks only for the name, will
+     * automatically set the color and id. This will overwrite all existing
+     * categories and set goalSpending and perNumberOfDays to null, this should
+     * really only be used when the user is first signing up.
+     */
     post: (req, res) => {
       const user: user = req.user;
       const expenditureCategories: expenditureCategoryWithGoals[] = req.body;
@@ -189,6 +194,36 @@ export const routes: appRoutes = {
         .then((error) => {
           res.status(400).json(error);
         })
+      });
+    }
+  },
+
+  'account/setExpenditureCategoriesWithGoals': {
+    /**
+     * Sets a users `categoriesWithGoals`, does full data validation returning
+     * errors if any of the category data is invalid.
+     */
+    post: (req, res) => {
+      const user = req.user;
+      const expenditureCategoryWithGoals = req.body.expenditureCategoryWithGoals;
+
+      return validExpenditureCategoryWithGoalsArray(expenditureCategoryWithGoals)
+      .then(() => {
+        user.categoriesWithGoals = expenditureCategoryWithGoals;
+
+        return collection('users')
+        .then((Users) => {
+          return Users.save(user);
+        })
+        .then(() => {
+          res.status(200).json(userModel.stripSensitiveDataForResponse(user));
+        });
+      })
+      .catch((error) => {
+        prepareErrorForFrontend(error)
+        .then((error) => {
+          res.status(400).json(error);
+        });
       });
     }
   },

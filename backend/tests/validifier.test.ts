@@ -5,7 +5,7 @@ import Bluebird from 'bluebird';
 import R from "ramda";
 
 import { validPhone, validEmail, validPassword, validMongoID,
-  validModel } from '../src/validifier';
+  validModel, validMoney, validPositiveInteger } from '../src/validifier';
 import { structures, errorCodes } from '../src/types';
 import { InvalidModelError } from '../src/errors';
 import { assertPromiseDoesntError, assertPromiseDoesError,
@@ -100,6 +100,87 @@ describe('Validifier', function() {
     });
   });
 
+  describe('#validMoney', function() {
+
+    it('shoud return false for invalid balances', function () {
+      const invalidBalances = [
+        "",
+        "-",
+        "3430.34.",
+        "34343a",
+        "-b",
+        "2323b232",
+        "a3223.2",
+        "a",
+        ".",
+        ".23",
+        "3.232222",
+        undefined,
+        null
+      ];
+
+      invalidBalances.map((balance) => {
+        if(validMoney(balance)) {
+          assert.fail("Valid balance (but shouldn't be): " + balance);
+        }
+      });
+    });
+
+    it('should return true for valid balances', function () {
+      const validBalances = [
+        "2",
+        "23423412341",
+        "23232.",
+        "232332.2",
+        "232322.23",
+        "-23",
+        "-2",
+        "-232.32"
+      ];
+
+      validBalances.map((balance) => {
+        if(!validMoney(balance)) {
+          assert.fail("Not a valid balance (but should be): " + balance);
+        }
+      });
+    });
+  });
+
+  describe('#validPositiveInteger', function() {
+
+    it('should return false for invalid positive integers', function() {
+      const invalidPositiveIntegers: string[] = [
+        null,
+        undefined,
+        "-3",
+        "3.2",
+        "0",
+        "asdf",
+        "23as"
+      ];
+
+      invalidPositiveIntegers.map((invalidPositiveInteger) => {
+        if(validPositiveInteger(invalidPositiveInteger)) {
+          assert.fail("Valid positive integer (but shouldn't be): " + invalidPositiveInteger);
+        }
+      });
+    });
+
+    it('should return true for valid positive integers', function() {
+      const validPositiveIntegers = [
+        "12",
+        "2323222",
+        "54"
+      ];
+
+      validPositiveIntegers.map((aValidPositiveInteger) => {
+        if(!validPositiveInteger(aValidPositiveInteger)) {
+          assert.fail("Invalid positive integer (but shouldn't be): " + aValidPositiveInteger);
+        }
+      });
+    });
+  });
+
   describe('#validMongoID', function() {
 
     it('should return false if the ID is undefined', function() {
@@ -158,14 +239,9 @@ describe('Validifier', function() {
       typeCategory: structures.typeCategory.primitive,
       type: structures.primitiveType.boolean,
       restriction: (booleanValue: boolean) => {
-        return new Promise((resolve, reject) => {
-          if(booleanValue) {
-            reject(new InvalidModelError('Some error message...', errorCodes.internalError));
-            return;
-          }
-
-          resolve();
-        });
+        if(booleanValue) {
+          return Promise.reject(new InvalidModelError('Some error message...', errorCodes.internalError));
+        }
       }
     }
 

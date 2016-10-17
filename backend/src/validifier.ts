@@ -24,6 +24,29 @@ export const validEmail = (email: string) => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()
 
 
 /**
+ * Checks that a balance is valid. Refer to tests to see what is currently
+ * considered valid.
+ */
+export const validMoney = (balance: string): boolean => {
+
+  const regex = /^-?\d+(\.\d{0,2})?$/;
+
+  return regex.test(balance);
+}
+
+
+/**
+ * Checks that a string is a valid positive integer, not including zero.
+ */
+export const validPositiveInteger = (positiveInteger: string): boolean => {
+
+  const regex = /^[1-9]\d+$/;
+
+  return regex.test(positiveInteger);
+}
+
+
+/**
  * Checks that a password is considered "strong" enough.
  *
  * Currently we only require 6-char passwords.
