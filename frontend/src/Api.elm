@@ -6,6 +6,7 @@ module Api
         , getDefaultColours
         , postAccountBalance
         , postAccountCategories
+        , postAccountCategoriesWithGoals
         , postLogin
         , postRegister
         )
@@ -91,3 +92,16 @@ postAccountCategories listOfExpenditureCategories =
         (apiBaseUrl ++ "account/setExpenditureCategories")
         User.decoder
         (Util.toJsonString (Util.encodeList ExpenditureCategory.encoder) listOfExpenditureCategories)
+
+
+{-| Sets the account expenditure categories with goals.
+-}
+postAccountCategoriesWithGoals : List ExpenditureCategoryWithGoals.ExpenditureCategoryWithGoals -> (ApiError.ApiError -> a) -> (User.User -> a) -> Cmd a
+postAccountCategoriesWithGoals listOfExpenditureCategoriesWithGoals =
+    HttpService.post
+        (apiBaseUrl ++ "account/setExpenditureCategoriesWithGoals")
+        User.decoder
+        (Util.toJsonString
+            (Util.encodeList ExpenditureCategoryWithGoals.encoder)
+            listOfExpenditureCategoriesWithGoals
+        )

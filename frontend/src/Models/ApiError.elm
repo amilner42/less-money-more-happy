@@ -25,8 +25,11 @@ import Json.Decode as Decode exposing ((:=))
      internalError,                    // For errors that are not handleable
      modelUnionTypeHasMultipleErrors,
      passwordDoesNotMatchConfirmPassword,
-     invalidBalance
+     invalidBalance,
+     invalidCategories,
+     invalidCategoriesWithGoals
    }
+
 
 -}
 
@@ -50,6 +53,8 @@ type ApiError
     | ModelUnionTypeHasMultipleErrors
     | PasswordDoesNotMatchConfirmPassword
     | InvalidBalance
+    | InvalidCategories
+    | InvalidCategoriesWithGoals
 
 
 {-| An error from the backend still in Json form.
@@ -117,6 +122,12 @@ humanReadable apiError =
         InvalidBalance ->
             "Please enter a number!"
 
+        InvalidCategories ->
+            "Invalid categories!"
+
+        InvalidCategoriesWithGoals ->
+            "Invalid categories with goals!"
+
 
 {-| Turns an errorCode integer from the backend to it's respective ApiError.
 -}
@@ -161,6 +172,12 @@ fromErrorCode errorCode =
 
         13 ->
             InvalidBalance
+
+        14 ->
+            InvalidCategories
+
+        15 ->
+            InvalidCategoriesWithGoals
 
         _ ->
             InternalError

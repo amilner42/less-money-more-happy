@@ -14,4 +14,5 @@ init =
     , selectedCategoriesApiError = Nothing
     , getDefaultsApiError = Nothing
     , selectedCategoriesWithGoals = Nothing
+    , selectedCategoriesWithGoalsApiError = Nothing
     }

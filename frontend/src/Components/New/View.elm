@@ -262,8 +262,9 @@ selectingGoalsView model =
                        )
                 )
                 [ (button
-                    -- TODO
-                    [ disabled True ]
+                    [ disabled False
+                    , onClick <| SetSelectedCategoriesWithGoals
+                    ]
                     [ text "NEXT" ]
                   )
                 ]

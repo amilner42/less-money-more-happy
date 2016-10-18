@@ -129,5 +129,5 @@ const arrayOfExpenditureCategoryWithGoalType: structures.arrayStructure = {
  * Checks if an array of expenditure categories with goals are valid.
  */
 export const validExpenditureCategoryWithGoalsArray = (obj): Promise<void> => {
-  return validModel(arrayOfExpenditureCategoryWithGoalType, obj);
+  return validModel(obj, arrayOfExpenditureCategoryWithGoalType);
 }

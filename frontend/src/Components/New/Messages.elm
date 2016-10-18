@@ -26,3 +26,6 @@ type Msg
     | OnGetDefaultColoursSuccess (List Colour.Colour)
     | OnGoalInput Int String
     | OnDayInput Int String
+    | SetSelectedCategoriesWithGoals
+    | OnSetSelectedCategoriesWithGoalsFailure ApiError.ApiError
+    | OnSetSelectedCategoriesWithGoalsSuccess User.User

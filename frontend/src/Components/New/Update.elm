@@ -211,3 +211,34 @@ update msg model =
                             }
                 in
                     ( newModel, Cmd.none )
+
+            SetSelectedCategoriesWithGoals ->
+                let
+                    newCategoriesWithGoals =
+                        Maybe.withDefault [] newComponent.selectedCategoriesWithGoals
+                in
+                    ( model
+                    , Api.postAccountCategoriesWithGoals
+                        newCategoriesWithGoals
+                        OnSetSelectedCategoriesWithGoalsFailure
+                        OnSetSelectedCategoriesWithGoalsSuccess
+                    )
+
+            OnSetSelectedCategoriesWithGoalsFailure apiError ->
+                let
+                    newModel =
+                        newModelWithNewNewComponent
+                            { newComponent
+                                | selectedCategoriesWithGoalsApiError = Just apiError
+                            }
+                in
+                    ( newModel, Cmd.none )
+
+            OnSetSelectedCategoriesWithGoalsSuccess user ->
+                let
+                    newModel =
+                        { model
+                            | user = Just user
+                        }
+                in
+                    ( newModel, Router.navigateTo Route.HomeComponentMain )

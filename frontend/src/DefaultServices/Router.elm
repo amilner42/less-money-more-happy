@@ -76,10 +76,10 @@ urlUpdate routeResult model =
                             Util.isNothing category.goalSpending
                                 || Util.isNothing category.perNumberOfDays
 
-                        currentBalanceEntered aUser =
+                        currentBalanceNotEntered aUser =
                             Util.isNothing aUser.currentBalance
 
-                        categoriesEntered aUser =
+                        categoriesNotEntered aUser =
                             case aUser.categoriesWithGoals of
                                 Nothing ->
                                     False
@@ -90,8 +90,8 @@ urlUpdate routeResult model =
                         -- If they are logged in and currentBalance/categories are not fully entered.
                         case user of
                             Just aUser ->
-                                (not <| currentBalanceEntered aUser)
-                                    || (not <| categoriesEntered aUser)
+                                (currentBalanceNotEntered aUser)
+                                    || (categoriesNotEntered aUser)
 
                             Nothing ->
                                 False

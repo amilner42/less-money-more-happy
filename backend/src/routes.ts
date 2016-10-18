@@ -198,14 +198,14 @@ export const routes: appRoutes = {
     }
   },
 
-  'account/setExpenditureCategoriesWithGoals': {
+  '/account/setExpenditureCategoriesWithGoals': {
     /**
      * Sets a users `categoriesWithGoals`, does full data validation returning
      * errors if any of the category data is invalid.
      */
     post: (req, res) => {
       const user = req.user;
-      const expenditureCategoryWithGoals = req.body.expenditureCategoryWithGoals;
+      const expenditureCategoryWithGoals = req.body;
 
       return validExpenditureCategoryWithGoalsArray(expenditureCategoryWithGoals)
       .then(() => {
