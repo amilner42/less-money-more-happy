@@ -155,6 +155,7 @@ selectingExpenditureCategoriesView model =
                 AddCategory
                 5
                 newComponent.currentCategoryInput
+            , ErrorBox.errorBox newComponent.selectedCategoriesApiError
             , button
                 [ onClick SetSelectedCategories
                 , disabled invalidForm

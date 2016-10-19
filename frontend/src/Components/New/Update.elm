@@ -147,6 +147,7 @@ update msg model =
                         newModelWithNewNewComponent
                             { newComponent
                                 | selectedCategoriesApiError = Just apiError
+                                , currentCategoryInput = ""
                             }
                 in
                     ( newModel, Cmd.none )
@@ -184,6 +185,8 @@ update msg model =
                             { newComponent
                                 | selectedCategoriesWithGoals =
                                     newMaybeSelectedCategoriesWithGoals
+                                , selectedCategoriesWithGoalsApiError =
+                                    Nothing
                             }
                 in
                     ( newModel, Cmd.none )
@@ -208,6 +211,8 @@ update msg model =
                             { newComponent
                                 | selectedCategoriesWithGoals =
                                     newMaybeSelectedCategoriesWithGoals
+                                , selectedCategoriesWithGoalsApiError =
+                                    Nothing
                             }
                 in
                     ( newModel, Cmd.none )
