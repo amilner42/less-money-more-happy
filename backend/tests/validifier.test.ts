@@ -170,7 +170,8 @@ describe('Validifier', function() {
       const validPositiveIntegers = [
         "12",
         "2323222",
-        "54"
+        "54",
+        "2"
       ];
 
       validPositiveIntegers.map((aValidPositiveInteger) => {

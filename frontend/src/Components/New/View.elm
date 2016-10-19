@@ -2,6 +2,7 @@ module Components.New.View exposing (view)
 
 import Components.New.Messages exposing (Msg(..))
 import Components.Model exposing (Model)
+import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import Html exposing (Html, div, text, input, h2, button, span)
 import Html.Attributes exposing (placeholder, value, type', class, disabled, style)
 import Html.Events exposing (onInput, onClick)
@@ -248,6 +249,14 @@ selectingGoalsView model =
                             [ text " days" ]
                         ]
                     ]
+
+        filledOut category =
+            ExpenditureCategoryWithGoals.isFilledOut category
+                && (category.goalSpending /= Just "")
+                && (category.perNumberOfDays /= Just "")
+
+        categoriesFilledOut =
+            List.all filledOut selectedCategories
     in
         div
             []
@@ -261,8 +270,9 @@ selectingGoalsView model =
                             selectedCategories
                        )
                 )
-                [ (button
-                    [ disabled False
+                [ ErrorBox.errorBox newComponent.selectedCategoriesWithGoalsApiError
+                , (button
+                    [ disabled (not categoriesFilledOut)
                     , onClick <| SetSelectedCategoriesWithGoals
                     ]
                     [ text "NEXT" ]

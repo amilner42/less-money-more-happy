@@ -5,6 +5,7 @@ module Models.ExpenditureCategoryWithGoals
         , decoder
         , cacheEncoder
         , cacheDecoder
+        , isFilledOut
         )
 
 import Json.Encode as Encode
@@ -66,3 +67,12 @@ cacheEncoder expenditureCategoryWithGoals =
 cacheDecoder : Decode.Decoder ExpenditureCategoryWithGoals
 cacheDecoder =
     decoder
+
+
+{-| Checks if the `goalSpending` and `perNumberOfDays` fields have been filled
+out.
+-}
+isFilledOut : ExpenditureCategoryWithGoals -> Bool
+isFilledOut category =
+    Util.isNotNothing category.goalSpending
+        && Util.isNotNothing category.perNumberOfDays

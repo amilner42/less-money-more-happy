@@ -40,7 +40,7 @@ export const validMoney = (balance: string): boolean => {
  */
 export const validPositiveInteger = (positiveInteger: string): boolean => {
 
-  const regex = /^[1-9]\d+$/;
+  const regex = /^[1-9]\d*$/;
 
   return regex.test(positiveInteger);
 }

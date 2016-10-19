@@ -5,6 +5,7 @@ import Navigation
 import Config
 import UrlParser
 import Models.Route as Route
+import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import Components.Model exposing (Model)
 import DefaultServices.Util as Util
 import DefaultServices.LocalStorage as LocalStorage
@@ -73,8 +74,7 @@ urlUpdate routeResult model =
                 isNewUser =
                     let
                         categoryNotComplete category =
-                            Util.isNothing category.goalSpending
-                                || Util.isNothing category.perNumberOfDays
+                            not <| ExpenditureCategoryWithGoals.isFilledOut category
 
                         currentBalanceNotEntered aUser =
                             Util.isNothing aUser.currentBalance
