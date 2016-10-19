@@ -82,7 +82,7 @@ urlUpdate routeResult model =
                         categoriesNotEntered aUser =
                             case aUser.categoriesWithGoals of
                                 Nothing ->
-                                    False
+                                    True
 
                                 Just allCategories ->
                                     List.any categoryNotComplete allCategories
