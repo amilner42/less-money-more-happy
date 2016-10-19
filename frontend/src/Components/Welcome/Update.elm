@@ -95,9 +95,9 @@ update msg model =
         OnRegisterSuccess newUser ->
             let
                 newModel =
-                    { model | user = Just newUser, route = Route.HomeComponentMain }
+                    { model | user = Just newUser }
             in
-                ( newModel, Router.navigateTo newModel.route )
+                ( newModel, Router.navigateTo Route.HomeComponentMain )
 
         Login ->
             let
@@ -111,9 +111,9 @@ update msg model =
         OnLoginSuccess newUser ->
             let
                 newModel =
-                    { model | user = Just newUser, route = Route.HomeComponentMain }
+                    { model | user = Just newUser }
             in
-                ( newModel, Router.navigateTo newModel.route )
+                ( newModel, Router.navigateTo Route.HomeComponentMain )
 
         OnLoginFailure newApiError ->
             let

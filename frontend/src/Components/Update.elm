@@ -36,7 +36,7 @@ updateCacheIf msg model shouldCache =
                     ( model, LocalStorage.loadModel () )
 
                 OnLoadModelFromLocalStorageSuccess newModel ->
-                    ( newModel, Router.navigateTo model.route )
+                    ( newModel, Router.navigateTo newModel.route )
 
                 OnLoadModelFromLocalStorageFailure err ->
                     ( model, getUser () )
@@ -49,14 +49,10 @@ updateCacheIf msg model shouldCache =
                         newModel =
                             { model | user = Just user }
                     in
-                        ( newModel, Router.navigateTo newModel.route )
+                        ( newModel, Cmd.none )
 
                 OnGetUserFailure newApiError ->
-                    let
-                        newModel =
-                            { model | route = Route.WelcomeComponentRegister }
-                    in
-                        ( model, Router.navigateTo newModel.route )
+                    ( model, Router.navigateTo Route.WelcomeComponentRegister )
 
                 HomeMessage subMsg ->
                     let
