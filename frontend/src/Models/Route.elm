@@ -21,6 +21,8 @@ import UrlParser exposing (s, (</>))
 type Route
     = HomeComponentProfile
     | HomeComponentMain
+    | HomeComponentGoals
+    | HomeComponentStats
     | WelcomeComponentLogin
     | WelcomeComponentRegister
     | NewComponent
@@ -62,6 +64,12 @@ cacheEncoder route =
                 HomeComponentMain ->
                     "HomeComponentMain"
 
+                HomeComponentGoals ->
+                    "HomeComponentGoals"
+
+                HomeComponentStats ->
+                    "HomeComponentStats"
+
                 WelcomeComponentLogin ->
                     "WelcomeComponentLogin"
 
@@ -87,6 +95,12 @@ cacheDecoder =
                 "HomeComponentMain" ->
                     Decode.succeed HomeComponentMain
 
+                "HomeComponentGoals" ->
+                    Decode.succeed HomeComponentGoals
+
+                "HomeComponentStats" ->
+                    Decode.succeed HomeComponentStats
+
                 "WelcomeComponentLogin" ->
                     Decode.succeed WelcomeComponentLogin
 
@@ -109,6 +123,8 @@ cacheDecoder =
 -}
 urlParsers =
     [ UrlParser.format HomeComponentMain (s "")
+    , UrlParser.format HomeComponentGoals (s "goals")
+    , UrlParser.format HomeComponentStats (s "stats")
     , UrlParser.format HomeComponentProfile (s "profile")
     , UrlParser.format WelcomeComponentRegister (s "welcome" </> s "register")
     , UrlParser.format WelcomeComponentLogin (s "welcome" </> s "login")
@@ -126,6 +142,12 @@ toUrl route =
 
         HomeComponentProfile ->
             Config.baseUrl ++ "#profile"
+
+        HomeComponentGoals ->
+            Config.baseUrl ++ "#goals"
+
+        HomeComponentStats ->
+            Config.baseUrl ++ "#stats"
 
         WelcomeComponentLogin ->
             Config.baseUrl ++ "#welcome/login"

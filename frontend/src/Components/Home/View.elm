@@ -34,6 +34,12 @@ displayViewForRoute model =
         Route.HomeComponentProfile ->
             profileView model
 
+        Route.HomeComponentGoals ->
+            goalsView model
+
+        Route.HomeComponentStats ->
+            statsView model
+
         -- This should never happen.
         _ ->
             mainView model
@@ -44,11 +50,17 @@ displayViewForRoute model =
 navbar : Model -> Html Msg
 navbar model =
     let
-        profileViewSelected =
-            model.route == Route.HomeComponentProfile
-
         mainViewSelected =
             model.route == Route.HomeComponentMain
+
+        goalsViewSelected =
+            model.route == Route.HomeComponentGoals
+
+        statsViewSelected =
+            model.route == Route.HomeComponentStats
+
+        profileViewSelected =
+            model.route == Route.HomeComponentProfile
     in
         div [ class "nav" ]
             [ div
@@ -56,6 +68,16 @@ navbar model =
                 , onClick GoToMainView
                 ]
                 [ text "Home" ]
+            , div
+                [ class <| Util.withClassesIf "nav-btn left" "selected" goalsViewSelected
+                , onClick GoToGoalsView
+                ]
+                [ text "Goals" ]
+            , div
+                [ class <| Util.withClassesIf "nav-btn left" "selected" statsViewSelected
+                , onClick GoToStatsView
+                ]
+                [ text "Stats" ]
             , div
                 [ class <| Util.withClassesIf "nav-btn right" "selected" profileViewSelected
                 , onClick GoToProfileView
@@ -114,3 +136,21 @@ mainView model =
             ]
             []
         ]
+
+
+{-| The Goals view.
+-}
+goalsView : Model -> Html Msg
+goalsView model =
+    div
+        []
+        [ text "The goals view." ]
+
+
+{-| The Stats view.
+-}
+statsView : Model -> Html Msg
+statsView model =
+    div
+        []
+        [ text "The stats view." ]

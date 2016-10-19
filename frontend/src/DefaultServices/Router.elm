@@ -191,7 +191,7 @@ urlUpdate routeResult model =
                                                                 ]
                                                             )
                                         in
-                                            ( newModel, LocalStorage.saveModel newModel )
+                                            ( newModel, newCmd )
 
         Err err ->
             ( model, Navigation.back 1 )

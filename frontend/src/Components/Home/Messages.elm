@@ -9,6 +9,8 @@ import Models.BasicResponse as BasicResponse
 type Msg
     = GoToMainView
     | GoToProfileView
+    | GoToGoalsView
+    | GoToStatsView
     | OnDataOneChange String
     | OnDataTwoChange String
     | LogOut

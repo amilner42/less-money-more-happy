@@ -17,18 +17,16 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GoToMainView ->
-            let
-                newModel =
-                    { model | route = Route.HomeComponentMain }
-            in
-                ( newModel, Router.navigateTo newModel.route )
+            ( model, Router.navigateTo Route.HomeComponentMain )
 
         GoToProfileView ->
-            let
-                newModel =
-                    { model | route = Route.HomeComponentProfile }
-            in
-                ( newModel, Router.navigateTo newModel.route )
+            ( model, Router.navigateTo Route.HomeComponentProfile )
+
+        GoToGoalsView ->
+            ( model, Router.navigateTo Route.HomeComponentGoals )
+
+        GoToStatsView ->
+            ( model, Router.navigateTo Route.HomeComponentStats )
 
         OnDataOneChange newDataOne ->
             let

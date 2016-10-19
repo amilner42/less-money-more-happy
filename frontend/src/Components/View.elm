@@ -35,30 +35,27 @@ view model =
             Html.App.map NewMessage (NewView.view model)
 
         componentViewForRoute =
-            case loggedIn of
-                False ->
+            case model.route of
+                Route.WelcomeComponentRegister ->
                     welcomeView
 
-                True ->
-                    {- For now this case is not needed, but for future if the
-                       user is loggedIn we want them to be able to go straight
-                       to their page.
-                    -}
-                    case model.route of
-                        Route.WelcomeComponentRegister ->
-                            homeView
+                Route.WelcomeComponentLogin ->
+                    welcomeView
 
-                        Route.WelcomeComponentLogin ->
-                            homeView
+                Route.HomeComponentMain ->
+                    homeView
 
-                        Route.HomeComponentMain ->
-                            homeView
+                Route.HomeComponentProfile ->
+                    homeView
 
-                        Route.HomeComponentProfile ->
-                            homeView
+                Route.HomeComponentGoals ->
+                    homeView
 
-                        Route.NewComponent ->
-                            newView
+                Route.HomeComponentStats ->
+                    homeView
+
+                Route.NewComponent ->
+                    newView
     in
         Util.cssComponentNamespace
             "base"
