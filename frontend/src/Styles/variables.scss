@@ -1,10 +1,13 @@
 // Avoid naming variables "main-grey", "or light-grey", it's best to not have
 // the color in the variable name, that way it's easier to change color schemes
 // without having your "light-grey" be blue...
-$color1: white;
-$color2: black;
-$color3: grey;
-$link-color1: blue;
+$color1: #3DCCC7;
+$color2: #5CC8FF;
+$color3: #99F7E4;
+$color4: #80A1C1;
+$color5: #ADE3FF;
+
+$link-color1: $color2;
 
 $error-color1: red;
 $error-color2: #ec437d;

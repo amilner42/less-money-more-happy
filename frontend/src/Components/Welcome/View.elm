@@ -1,7 +1,7 @@
 module Components.Welcome.View exposing (view)
 
-import Html exposing (Html, div, text, button, h1, input, form, a)
-import Html.Attributes exposing (class, placeholder, type', value, hidden, disabled)
+import Html exposing (Html, div, text, button, h1, input, form, a, img)
+import Html.Attributes exposing (class, placeholder, type', value, hidden, disabled, src)
 import Html.Events exposing (onClick, onInput)
 import Components.Model exposing (Model)
 import Components.Welcome.Messages exposing (Msg(..))
@@ -19,7 +19,16 @@ view model =
     Util.cssComponentNamespace
         "welcome"
         Nothing
-        (div [] [ displayViewForRoute model ])
+        (div
+            []
+            [ img
+                [ class "welcome-title"
+                , src "/images/welcome-title.png"
+                ]
+                []
+            , displayViewForRoute model
+            ]
+        )
 
 
 {-| If hightlight error returns the css class for input errors.
@@ -55,8 +64,8 @@ loginView model =
     in
         div
             []
-            [ h1
-                [ class "title" ]
+            [ div
+                [ class "sub-title" ]
                 [ text "Login" ]
             , div
                 [ class "welcome-form" ]
@@ -80,7 +89,7 @@ loginView model =
                     [ onClick Login
                     , disabled invalidForm
                     ]
-                    [ text "Login" ]
+                    [ text "LOGIN" ]
                 ]
             , a
                 [ onClick GoToRegisterView ]
@@ -123,8 +132,8 @@ registerView model =
     in
         div
             []
-            [ h1
-                [ class "title" ]
+            [ div
+                [ class "sub-title" ]
                 [ text "Register" ]
             , div
                 [ class "welcome-form" ]
@@ -156,7 +165,7 @@ registerView model =
                     [ onClick Register
                     , disabled invalidForm
                     ]
-                    [ text "Register" ]
+                    [ text "REGISTER" ]
                 ]
             , a
                 [ onClick GoToLoginView ]
