@@ -91,21 +91,10 @@ navbar model =
 profileView : Model -> Html Msg
 profileView model =
     div []
-        [ h1
-            []
-            [ text "Profile View" ]
-        , h3
-            []
-            [ text <|
-                "Notice going back and forth (navigation) works between the"
-                    ++ " home view and the profile view."
-            ]
+        [ text "The profile view."
         , button
             [ onClick LogOut ]
-            [ text "Log out" ]
-        , div
-            [ hidden <| Util.isNothing model.homeComponent.logOutError ]
-            [ text "Cannot log out right now, try again shortly." ]
+            [ text "LOG OUT" ]
         ]
 
 
@@ -114,28 +103,7 @@ profileView model =
 mainView : Model -> Html Msg
 mainView model =
     div []
-        [ h1
-            []
-            [ text "Main View" ]
-        , h3
-            []
-            [ text <|
-                "Check out cacheing by entering data and closing/reopening"
-                    ++ " browser"
-            ]
-        , input
-            [ onInput OnDataOneChange
-            , placeholder "Random data 1"
-            , value model.homeComponent.dataOne
-            ]
-            []
-        , input
-            [ onInput OnDataTwoChange
-            , placeholder "Random data 2"
-            , value model.homeComponent.dataTwo
-            ]
-            []
-        ]
+        [ text "The main view." ]
 
 
 {-| The Goals view.
