@@ -17,14 +17,6 @@ import Models.Route as Route
 view : Model -> Html.Html Msg
 view model =
     let
-        loggedIn =
-            case model.user of
-                Nothing ->
-                    False
-
-                Just user ->
-                    True
-
         welcomeView =
             Html.App.map WelcomeMessage (WelcomeView.view model)
 
