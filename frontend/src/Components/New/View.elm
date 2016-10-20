@@ -1,7 +1,7 @@
 module Components.New.View exposing (view)
 
 import Components.New.Messages exposing (Msg(..))
-import Components.Model exposing (Model)
+import Components.Model exposing (NewUserModel)
 import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import Html exposing (Html, div, text, input, h2, button, span)
 import Html.Attributes exposing (placeholder, value, type', class, disabled, style)
@@ -21,7 +21,7 @@ type ShowView
 
 {-| The view for when they are setting their current balance.
 -}
-settingCurrentBalanceView : Model -> Html Msg
+settingCurrentBalanceView : NewUserModel -> Html Msg
 settingCurrentBalanceView model =
     let
         newComponent =
@@ -59,7 +59,7 @@ settingCurrentBalanceView model =
 
 {-| The view for when they are selecting their expenditure categories.
 -}
-selectingExpenditureCategoriesView : Model -> Html Msg
+selectingExpenditureCategoriesView : NewUserModel -> Html Msg
 selectingExpenditureCategoriesView model =
     let
         newComponent =
@@ -166,7 +166,7 @@ selectingExpenditureCategoriesView model =
 
 {-| The view for selecting the goals!
 -}
-selectingGoalsView : Model -> Html Msg
+selectingGoalsView : NewUserModel -> Html Msg
 selectingGoalsView model =
     let
         newComponent =
@@ -284,31 +284,25 @@ selectingGoalsView model =
 
 {-| New Component View.
 -}
-view : Model -> Html Msg
+view : NewUserModel -> Html Msg
 view model =
     let
-        maybeUser =
+        user =
             model.user
 
         componentViewForRoute =
-            case maybeUser of
-                Just user ->
-                    case user.currentBalance of
-                        -- Step 1 is setting your current balance.
-                        Nothing ->
-                            settingCurrentBalanceView model
-
-                        -- If current balance set, next step is selecting expenditures/goals.
-                        Just something ->
-                            case user.categoriesWithGoals of
-                                Nothing ->
-                                    selectingExpenditureCategoriesView model
-
-                                Just something ->
-                                    selectingGoalsView model
-
+            case user.currentBalance of
+                -- Step 1 is setting your current balance.
                 Nothing ->
-                    -- should never happen cause of url updater (router).
                     settingCurrentBalanceView model
+
+                -- If current balance set, next step is selecting expenditures/goals.
+                Just something ->
+                    case user.categoriesWithGoals of
+                        Nothing ->
+                            selectingExpenditureCategoriesView model
+
+                        Just something ->
+                            selectingGoalsView model
     in
         Util.cssComponentNamespace "new" Nothing componentViewForRoute

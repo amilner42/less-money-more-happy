@@ -1,4 +1,14 @@
-module Components.Model exposing (Model, cacheDecoder, cacheEncoder, toCacheJsonString, fromCacheJsonString)
+module Components.Model
+    exposing
+        ( Model
+        , LoggedOutModel
+        , NewUserModel
+        , ReturningUserModel
+        , cacheDecoder
+        , cacheEncoder
+        , toCacheJsonString
+        , fromCacheJsonString
+        )
 
 import Json.Decode as Decode exposing ((:=))
 import Json.Encode as Encode
@@ -17,6 +27,38 @@ import DefaultServices.Util as Util
 -}
 type alias Model =
     { user : Maybe (User.User)
+    , route : Route.Route
+    , homeComponent : HomeModel.Model
+    , welcomeComponent : WelcomeModel.Model
+    , newComponent : NewModel.Model
+    , defaultColours : Maybe (List Colour.Colour)
+    , defaultCategories : Maybe (List ExpenditureCategory.ExpenditureCategory)
+    }
+
+
+{-| Passed to the `welcome` component.
+-}
+type alias LoggedOutModel =
+    Model
+
+
+{-| Passed to the `new` component.
+-}
+type alias NewUserModel =
+    { user : User.NewUser
+    , route : Route.Route
+    , homeComponent : HomeModel.Model
+    , welcomeComponent : WelcomeModel.Model
+    , newComponent : NewModel.Model
+    , defaultColours : Maybe (List Colour.Colour)
+    , defaultCategories : Maybe (List ExpenditureCategory.ExpenditureCategory)
+    }
+
+
+{-| Passed to the `home` component.
+-}
+type alias ReturningUserModel =
+    { user : User.ReturningUser
     , route : Route.Route
     , homeComponent : HomeModel.Model
     , welcomeComponent : WelcomeModel.Model

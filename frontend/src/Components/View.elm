@@ -10,6 +10,7 @@ import Components.Welcome.View as WelcomeView
 import Components.New.View as NewView
 import DefaultServices.Util as Util
 import Models.Route as Route
+import Models.User as User
 
 
 {-| Base Component View.
@@ -17,37 +18,65 @@ import Models.Route as Route
 view : Model -> Html.Html Msg
 view model =
     let
-        welcomeView =
-            Html.App.map WelcomeMessage (WelcomeView.view model)
+        welcomeView welcomeViewModel =
+            Html.App.map WelcomeMessage (WelcomeView.view welcomeViewModel)
 
-        homeView =
-            Html.App.map HomeMessage (HomeView.view model)
+        homeView homeViewModel =
+            Html.App.map HomeMessage (HomeView.view homeViewModel)
 
-        newView =
-            Html.App.map NewMessage (NewView.view model)
+        newView newViewModel =
+            Html.App.map NewMessage (NewView.view newViewModel)
 
         componentViewForRoute =
-            case model.route of
-                Route.WelcomeComponentRegister ->
-                    welcomeView
+            case model.user of
+                -- Logged out
+                Nothing ->
+                    welcomeView model
 
-                Route.WelcomeComponentLogin ->
-                    welcomeView
+                -- Logged in.
+                Just aUser ->
+                    let
+                        theNewView =
+                            newView
+                                { user = aUser
+                                , route = model.route
+                                , homeComponent = model.homeComponent
+                                , welcomeComponent = model.welcomeComponent
+                                , newComponent = model.newComponent
+                                , defaultColours = model.defaultColours
+                                , defaultCategories = model.defaultCategories
+                                }
+                    in
+                        case aUser.currentBalance of
+                            Nothing ->
+                                theNewView
 
-                Route.HomeComponentMain ->
-                    homeView
+                            Just theCurrentBalance ->
+                                case aUser.categoriesWithGoals of
+                                    Nothing ->
+                                        theNewView
 
-                Route.HomeComponentProfile ->
-                    homeView
-
-                Route.HomeComponentGoals ->
-                    homeView
-
-                Route.HomeComponentStats ->
-                    homeView
-
-                Route.NewComponent ->
-                    newView
+                                    Just theCategoriesWithGoals ->
+                                        let
+                                            theReturningUser =
+                                                { email = aUser.email
+                                                , password = aUser.password
+                                                , currentBalance = theCurrentBalance
+                                                , categoriesWithGoals = theCategoriesWithGoals
+                                                , expenditures = aUser.expenditures
+                                                , earnings = aUser.earnings
+                                                , employers = aUser.employers
+                                                }
+                                        in
+                                            homeView
+                                                { user = theReturningUser
+                                                , route = model.route
+                                                , homeComponent = model.homeComponent
+                                                , welcomeComponent = model.welcomeComponent
+                                                , newComponent = model.newComponent
+                                                , defaultColours = model.defaultColours
+                                                , defaultCategories = model.defaultCategories
+                                                }
     in
         Util.cssComponentNamespace
             "base"

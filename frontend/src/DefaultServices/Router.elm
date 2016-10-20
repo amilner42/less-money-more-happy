@@ -5,6 +5,7 @@ import Navigation
 import Config
 import UrlParser
 import Models.Route as Route
+import Models.User as User
 import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import Components.Model exposing (Model)
 import DefaultServices.Util as Util
@@ -70,32 +71,6 @@ urlUpdate routeResult model =
                 onNewUserPage =
                     model.route == Route.NewComponent
 
-                -- A new user should be on the `new` page setting up their account.
-                isNewUser =
-                    let
-                        categoryNotComplete category =
-                            not <| ExpenditureCategoryWithGoals.isFilledOut category
-
-                        currentBalanceNotEntered aUser =
-                            Util.isNothing aUser.currentBalance
-
-                        categoriesNotEntered aUser =
-                            case aUser.categoriesWithGoals of
-                                Nothing ->
-                                    True
-
-                                Just allCategories ->
-                                    List.any categoryNotComplete allCategories
-                    in
-                        -- If they are logged in and currentBalance/categories are not fully entered.
-                        case user of
-                            Just aUser ->
-                                (currentBalanceNotEntered aUser)
-                                    || (categoriesNotEntered aUser)
-
-                            Nothing ->
-                                False
-
                 modelWithRoute route =
                     { model | route = route }
             in
@@ -143,7 +118,7 @@ urlUpdate routeResult model =
                             -- logged in, route needs auth, good - but we do
                             -- need to check if user is new.
                             True ->
-                                case isNewUser of
+                                case (User.isNewUser model.user) of
                                     True ->
                                         let
                                             newModel =

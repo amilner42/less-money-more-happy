@@ -3,7 +3,7 @@ module Components.Welcome.View exposing (view)
 import Html exposing (Html, div, text, button, h1, input, form, a, img)
 import Html.Attributes exposing (class, placeholder, type', value, hidden, disabled, src)
 import Html.Events exposing (onClick, onInput)
-import Components.Model exposing (Model)
+import Components.Model exposing (LoggedOutModel)
 import Components.Welcome.Messages exposing (Msg(..))
 import DefaultServices.Util as Util
 import DefaultServices.Router as Router
@@ -14,7 +14,7 @@ import Templates.ErrorBox as ErrorBox
 
 {-| The welcome View.
 -}
-view : Model -> Html Msg
+view : LoggedOutModel -> Html Msg
 view model =
     Util.cssComponentNamespace
         "welcome"
@@ -40,7 +40,7 @@ inputErrorClassIf highlightError =
 
 {-| The welcome login view
 -}
-loginView : Model -> Html Msg
+loginView : LoggedOutModel -> Html Msg
 loginView model =
     let
         currentError =
@@ -99,7 +99,7 @@ loginView model =
 
 {-| The welcome register view
 -}
-registerView : Model -> Html Msg
+registerView : LoggedOutModel -> Html Msg
 registerView model =
     let
         currentError =
@@ -175,7 +175,7 @@ registerView model =
 
 {-| Displays the welcome sub-view based on the sub-route (login or register)
 -}
-displayViewForRoute : Model -> Html Msg
+displayViewForRoute : LoggedOutModel -> Html Msg
 displayViewForRoute model =
     let
         route =

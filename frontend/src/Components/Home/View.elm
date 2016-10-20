@@ -5,13 +5,13 @@ import Html exposing (Html, div, text, button, input, h1, h3)
 import Html.Attributes exposing (class, placeholder, value, hidden)
 import Html.Events exposing (onClick, onInput)
 import DefaultServices.Util as Util
-import Components.Model exposing (Model)
+import Components.Model exposing (ReturningUserModel)
 import Components.Home.Messages exposing (Msg(..))
 
 
 {-| Home Component View.
 -}
-view : Model -> Html Msg
+view : ReturningUserModel -> Html Msg
 view model =
     Util.cssComponentNamespace
         "home"
@@ -25,7 +25,7 @@ view model =
 
 {-| Displays the correct view based on the model.
 -}
-displayViewForRoute : Model -> Html Msg
+displayViewForRoute : ReturningUserModel -> Html Msg
 displayViewForRoute model =
     case model.route of
         Route.HomeComponentMain ->
@@ -47,7 +47,7 @@ displayViewForRoute model =
 
 {-| Horizontal navbar to go above the views.
 -}
-navbar : Model -> Html Msg
+navbar : ReturningUserModel -> Html Msg
 navbar model =
     let
         mainViewSelected =
@@ -88,7 +88,7 @@ navbar model =
 
 {-| The Profile view.
 -}
-profileView : Model -> Html Msg
+profileView : ReturningUserModel -> Html Msg
 profileView model =
     div []
         [ text "The profile view."
@@ -100,7 +100,7 @@ profileView model =
 
 {-| The Main view.
 -}
-mainView : Model -> Html Msg
+mainView : ReturningUserModel -> Html Msg
 mainView model =
     div []
         [ text "The main view." ]
@@ -108,7 +108,7 @@ mainView model =
 
 {-| The Goals view.
 -}
-goalsView : Model -> Html Msg
+goalsView : ReturningUserModel -> Html Msg
 goalsView model =
     div
         []
@@ -117,7 +117,7 @@ goalsView model =
 
 {-| The Stats view.
 -}
-statsView : Model -> Html Msg
+statsView : ReturningUserModel -> Html Msg
 statsView model =
     div
         []

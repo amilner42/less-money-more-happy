@@ -1,12 +1,15 @@
 module Models.User
     exposing
         ( User
+        , NewUser
+        , ReturningUser
         , encoder
         , decoder
         , cacheDecoder
         , cacheEncoder
         , AuthUser
         , authEncoder
+        , isNewUser
         )
 
 import Json.Decode as Decode exposing ((:=))
@@ -25,6 +28,26 @@ type alias User =
     , password : Maybe (String)
     , currentBalance : Maybe (Float)
     , categoriesWithGoals : Maybe (List ExpenditureCategoryWithGoals.ExpenditureCategoryWithGoals)
+    , expenditures : Maybe (List Expenditure.Expenditure)
+    , earnings : Maybe (List Earning.Earning)
+    , employers : Maybe (List Employer.Employer)
+    }
+
+
+{-| A new user has nothing additional set.
+-}
+type alias NewUser =
+    User
+
+
+{-| A returning user has `currentBalance` and `categoriesWithGoals` already
+set.
+-}
+type alias ReturningUser =
+    { email : String
+    , password : Maybe (String)
+    , currentBalance : Float
+    , categoriesWithGoals : List ExpenditureCategoryWithGoals.ExpenditureCategoryWithGoals
     , expenditures : Maybe (List Expenditure.Expenditure)
     , earnings : Maybe (List Earning.Earning)
     , employers : Maybe (List Employer.Employer)
@@ -105,3 +128,33 @@ authEncoder authUser =
         [ ( "email", Encode.string authUser.email )
         , ( "password", Encode.string authUser.password )
         ]
+
+
+{-| Checks if a user is a new user (the categories with goals or balance is not
+filled in. )
+-}
+isNewUser : Maybe (User) -> Bool
+isNewUser user =
+    let
+        categoryNotComplete category =
+            not <| ExpenditureCategoryWithGoals.isFilledOut category
+
+        currentBalanceNotEntered aUser =
+            Util.isNothing aUser.currentBalance
+
+        categoriesNotEntered aUser =
+            case aUser.categoriesWithGoals of
+                Nothing ->
+                    True
+
+                Just allCategories ->
+                    List.any categoryNotComplete allCategories
+    in
+        -- If they are logged in and currentBalance/categories are not fully entered.
+        case user of
+            Just aUser ->
+                (currentBalanceNotEntered aUser)
+                    || (categoriesNotEntered aUser)
+
+            Nothing ->
+                False
