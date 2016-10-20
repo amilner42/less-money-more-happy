@@ -40,7 +40,7 @@ export interface color {
 /**
  * An expenditure made by the user.
  */
-interface expenditure {
+export interface expenditure {
   id: frontendID;
   date: Date;
   categoryID: frontendID;
@@ -272,7 +272,8 @@ export enum errorCodes {
   passwordDoesNotMatchConfirmPassword,
   invalidBalance,
   invalidCategories,
-  invalidCategoriesWithGoals
+  invalidCategoriesWithGoals,
+  invalidExpenditure
 }
 
 

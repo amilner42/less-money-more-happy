@@ -5,11 +5,13 @@ import passport from 'passport';
 import R from 'ramda';
 
 import { APP_CONFIG } from '../app-config';
-import { userModel, expenditureCategoryModel, validExpenditureArray, validExpenditureCategoryWithGoalsArray} from './models/';
-import { appRoutes, errorCodes, expenditureCategory, color, user, expenditureCategoryWithGoals } from './types';
+import { userModel, expenditureCategoryModel, validExpenditureArray,
+  validExpenditureCategoryWithGoalsArray, postExpenditureType} from './models/';
+import { appRoutes, errorCodes, expenditureCategory, color, user,
+  expenditureCategoryWithGoals, structures, expenditure } from './types';
 import { collection } from './db';
-import { prepareErrorForFrontend, renameMongoIDField } from './util';
-import { validMoney } from './validifier';
+import { prepareErrorForFrontend, renameMongoIDField, isNullOrUndefined } from './util';
+import { validMoney, validModel } from './validifier';
 
 
 /**
@@ -223,6 +225,50 @@ export const routes: appRoutes = {
         prepareErrorForFrontend(error)
         .then((error) => {
           res.status(400).json(error);
+        });
+      });
+    }
+  },
+
+  '/account/addExpenditure': {
+    /**
+     * Adds an expenditure to the users list of expenditures.
+     */
+    post: (req, res) => {
+      const user: user = req.user;
+      const expenditure = req.body;
+
+      return validModel(expenditure, postExpenditureType)
+      .then(() => {
+        if(isNullOrUndefined(user.expenditures)) {
+          user.expenditures = [];
+        }
+        const numberOfExpenditures = user.expenditures.length;
+
+        // The new expenditure (backend fills `id` and `date`) as well as
+        // converting fields from strings to the correct type.
+        const newExpenditure: expenditure = {
+          id: numberOfExpenditures + 1,
+          date: new Date(),
+          categoryID: parseInt(expenditure.categoryID),
+          cost: parseFloat(expenditure.cost)
+        };
+
+        return collection('users')
+        .then((Users) => {
+          user.expenditures.push(newExpenditure);
+          return Users.save(user);
+        })
+        .then(() => {
+          res.status(200).json(userModel.stripSensitiveDataForResponse(user));
+          return;
+        });
+      })
+      .catch((error) => {
+        return prepareErrorForFrontend(error)
+        .then((error) => {
+          res.status(400).json(error);
+          return;
         });
       });
     }
