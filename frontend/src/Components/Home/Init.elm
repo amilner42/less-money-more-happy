@@ -7,7 +7,12 @@ import Components.Home.Model exposing (Model)
 -}
 init : Model
 init =
-    { dataOne = ""
-    , dataTwo = ""
+    { incomeAmount = ""
+    , incomeEmployerID = ""
+    , incomeError = Nothing
+    , expenditureCost = ""
+    , expenditureCategoryID = ""
+    , expenditureCategoryIDSelectOpen = False
+    , expenditureError = Nothing
     , logOutError = Nothing
     }

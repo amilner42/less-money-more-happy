@@ -27,7 +27,8 @@ import Json.Decode as Decode exposing ((:=))
      passwordDoesNotMatchConfirmPassword,
      invalidBalance,
      invalidCategories,
-     invalidCategoriesWithGoals
+     invalidCategoriesWithGoals,
+     invalidExpenditure
    }
 
 
@@ -55,6 +56,7 @@ type ApiError
     | InvalidBalance
     | InvalidCategories
     | InvalidCategoriesWithGoals
+    | InvalidExpenditure
 
 
 {-| An error from the backend still in Json form.
@@ -128,6 +130,9 @@ humanReadable apiError =
         InvalidCategoriesWithGoals ->
             "Invalid categories with goals!"
 
+        InvalidExpenditure ->
+            "Enter a valid expenditure!"
+
 
 {-| Turns an errorCode integer from the backend to it's respective ApiError.
 -}
@@ -178,6 +183,9 @@ fromErrorCode errorCode =
 
         15 ->
             InvalidCategoriesWithGoals
+
+        16 ->
+            InvalidExpenditure
 
         _ ->
             InternalError

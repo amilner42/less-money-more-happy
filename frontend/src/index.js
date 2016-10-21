@@ -12,6 +12,7 @@ require("./Components/New/Styles.scss");
 
 require("./Templates/ErrorBox.scss");
 require("./Templates/Dropdown.scss");
+require("./Templates/Select.scss");
 
 // Require index.html so it gets copied to dist
 require('./index.html');

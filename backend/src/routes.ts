@@ -256,7 +256,9 @@ export const routes: appRoutes = {
 
         return collection('users')
         .then((Users) => {
+          // Update the user.
           user.expenditures.push(newExpenditure);
+          user.currentBalance -= newExpenditure.cost;
           return Users.save(user);
         })
         .then(() => {

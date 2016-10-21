@@ -1,0 +1,23 @@
+.select {
+  position: absolute;
+  display: inline-block;
+  border: 2px solid black;
+  width: 120px;
+  text-align: center;
+  z-index: 1000;
+
+  .select-title {
+    width: 120px;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .select-item {
+    position: relative;
+    display: block;
+    width: 120px;
+    cursor: pointer;
+    border-top: 2px solid black;
+    background-color: white;
+  }
+}

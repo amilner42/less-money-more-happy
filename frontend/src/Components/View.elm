@@ -11,6 +11,7 @@ import Components.New.View as NewView
 import DefaultServices.Util as Util
 import Models.Route as Route
 import Models.User as User
+import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 
 
 {-| Base Component View.
@@ -67,16 +68,26 @@ view model =
                                                 , earnings = aUser.earnings
                                                 , employers = aUser.employers
                                                 }
+
+                                            categoriesFilledOut =
+                                                List.all
+                                                    ExpenditureCategoryWithGoals.isFilledOut
+                                                    theCategoriesWithGoals
                                         in
-                                            homeView
-                                                { user = theReturningUser
-                                                , route = model.route
-                                                , homeComponent = model.homeComponent
-                                                , welcomeComponent = model.welcomeComponent
-                                                , newComponent = model.newComponent
-                                                , defaultColours = model.defaultColours
-                                                , defaultCategories = model.defaultCategories
-                                                }
+                                            case categoriesFilledOut of
+                                                False ->
+                                                    theNewView
+
+                                                True ->
+                                                    homeView
+                                                        { user = theReturningUser
+                                                        , route = model.route
+                                                        , homeComponent = model.homeComponent
+                                                        , welcomeComponent = model.welcomeComponent
+                                                        , newComponent = model.newComponent
+                                                        , defaultColours = model.defaultColours
+                                                        , defaultCategories = model.defaultCategories
+                                                        }
     in
         Util.cssComponentNamespace
             "base"

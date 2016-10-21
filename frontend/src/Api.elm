@@ -7,6 +7,7 @@ module Api
         , postAccountBalance
         , postAccountCategories
         , postAccountCategoriesWithGoals
+        , postExpenditure
         , postLogin
         , postRegister
         )
@@ -20,6 +21,7 @@ import Config exposing (apiBaseUrl)
 import Models.User as User
 import Models.BasicResponse as BasicResponse
 import Models.Balance as Balance
+import Models.PostExpenditure as PostExpenditure
 import Models.ExpenditureCategory as ExpenditureCategory
 import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import Models.Colour as Colour
@@ -105,3 +107,13 @@ postAccountCategoriesWithGoals listOfExpenditureCategoriesWithGoals =
             (Util.encodeList ExpenditureCategoryWithGoals.encoder)
             listOfExpenditureCategoriesWithGoals
         )
+
+
+{-| Adds an expenditure.
+-}
+postExpenditure : PostExpenditure.PostExpenditure -> (ApiError.ApiError -> a) -> (User.User -> a) -> Cmd a
+postExpenditure expenditure =
+    HttpService.post
+        (apiBaseUrl ++ "account/addExpenditure")
+        User.decoder
+        (Util.toJsonString PostExpenditure.encoder expenditure)

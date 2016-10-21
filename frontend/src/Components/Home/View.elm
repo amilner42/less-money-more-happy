@@ -1,12 +1,15 @@
 module Components.Home.View exposing (..)
 
+import Json.Decode as Decode exposing ((:=))
 import Models.Route as Route
-import Html exposing (Html, div, text, button, input, h1, h3)
-import Html.Attributes exposing (class, placeholder, value, hidden)
-import Html.Events exposing (onClick, onInput)
+import Html exposing (Html, div, text, button, input, h1, h3, select, option, hr)
+import Html.Attributes exposing (class, placeholder, value, hidden, disabled, selected, type')
+import Html.Events exposing (onClick, onInput, on, targetValue)
 import DefaultServices.Util as Util
 import Components.Model exposing (ReturningUserModel)
 import Components.Home.Messages exposing (Msg(..))
+import Templates.Select as Select
+import Templates.ErrorBox as ErrorBox
 
 
 {-| Home Component View.
@@ -102,8 +105,114 @@ profileView model =
 -}
 mainView : ReturningUserModel -> Html Msg
 mainView model =
-    div []
-        [ text "The main view." ]
+    let
+        user =
+            model.user
+
+        homeComponent =
+            model.homeComponent
+
+        htmlCategorySelectOptions =
+            let
+                categories =
+                    user.categoriesWithGoals
+
+                optionFromCategory category =
+                    option
+                        [ selected <|
+                            homeComponent.expenditureCategoryID
+                                == category.name
+                        ]
+                        [ text category.name ]
+
+                headerOption =
+                    option
+                        [ disabled True
+                        , hidden True
+                        , selected <| homeComponent.expenditureCategoryID == ""
+                        ]
+                        [ text "select category" ]
+            in
+                headerOption :: List.map optionFromCategory categories
+
+        expenditureCategorySelectText =
+            case (homeComponent.expenditureCategoryID == "") of
+                False ->
+                    let
+                        filterFunction category =
+                            homeComponent.expenditureCategoryID == (toString category.id)
+
+                        maybeCategory =
+                            List.head <| List.filter filterFunction user.categoriesWithGoals
+                    in
+                        case maybeCategory of
+                            -- Strange case, we have an ID that's not in the users list.
+                            Nothing ->
+                                "Select Category"
+
+                            Just category ->
+                                category.name
+
+                True ->
+                    "Select Category"
+
+        validExpenditureForm =
+            (homeComponent.expenditureCost /= "")
+                && (homeComponent.expenditureCategoryID /= "")
+                && (Util.isNothing homeComponent.expenditureError)
+    in
+        div []
+            [ h1
+                []
+                [ text <| "Current Balance: " ++ toString user.currentBalance ]
+            , hr
+                []
+                []
+            , div
+                []
+                [ button
+                    [ onClick AddIncome ]
+                    [ text "ADD INCOME" ]
+                , input
+                    []
+                    []
+                , select
+                    []
+                    []
+                ]
+            , hr
+                []
+                []
+            , div
+                []
+                [ button
+                    [ onClick AddExpenditure
+                    , disabled <| not validExpenditureForm
+                    ]
+                    [ text "ADD EXPENDITURE" ]
+                , input
+                    [ placeholder "cost"
+                    , value homeComponent.expenditureCost
+                    , onInput OnExpenditureCostInput
+                    , type' "number"
+                    ]
+                    []
+                , Select.select
+                    OnExpenditureSelectAction
+                    expenditureCategorySelectText
+                    "Cancel"
+                    .name
+                    (\category ->
+                        OnExpenditureCategoryIDSelect <| toString category.id
+                    )
+                    homeComponent.expenditureCategoryIDSelectOpen
+                    user.categoriesWithGoals
+                , ErrorBox.errorBox homeComponent.expenditureError
+                ]
+            , hr
+                []
+                []
+            ]
 
 
 {-| The Goals view.

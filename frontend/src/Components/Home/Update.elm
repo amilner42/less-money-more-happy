@@ -9,66 +9,172 @@ import Components.Model exposing (Model)
 import Models.Route as Route
 import Api
 import DefaultModel exposing (defaultModel)
+import Templates.Select as Select
 
 
 {-| Home Component Update.
 -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        GoToMainView ->
-            ( model, Router.navigateTo Route.HomeComponentMain )
+    let
+        homeComponent =
+            model.homeComponent
 
-        GoToProfileView ->
-            ( model, Router.navigateTo Route.HomeComponentProfile )
+        toDo =
+            ( model, Cmd.none )
+    in
+        case msg of
+            GoToMainView ->
+                ( model, Router.navigateTo Route.HomeComponentMain )
 
-        GoToGoalsView ->
-            ( model, Router.navigateTo Route.HomeComponentGoals )
+            GoToProfileView ->
+                ( model, Router.navigateTo Route.HomeComponentProfile )
 
-        GoToStatsView ->
-            ( model, Router.navigateTo Route.HomeComponentStats )
+            GoToGoalsView ->
+                ( model, Router.navigateTo Route.HomeComponentGoals )
 
-        OnDataOneChange newDataOne ->
-            let
-                homeComponent =
-                    model.homeComponent
+            GoToStatsView ->
+                ( model, Router.navigateTo Route.HomeComponentStats )
 
-                newModel =
-                    { model
-                        | homeComponent =
-                            { homeComponent | dataOne = newDataOne }
-                    }
-            in
-                ( newModel, Cmd.none )
+            LogOut ->
+                ( model, Api.getLogOut OnLogOutFailure OnLogOutSuccess )
 
-        OnDataTwoChange newDataTwo ->
-            let
-                homeComponent =
-                    model.homeComponent
+            OnLogOutFailure apiError ->
+                let
+                    homeComponent =
+                        model.homeComponent
 
-                newModel =
-                    { model
-                        | homeComponent =
-                            { homeComponent | dataTwo = newDataTwo }
-                    }
-            in
-                ( newModel, Cmd.none )
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent | logOutError = Just apiError }
+                        }
+                in
+                    ( newModel, Cmd.none )
 
-        LogOut ->
-            ( model, Api.getLogOut OnLogOutFailure OnLogOutSuccess )
+            OnLogOutSuccess basicResponse ->
+                ( defaultModel, Router.navigateTo Route.WelcomeComponentLogin )
 
-        OnLogOutFailure apiError ->
-            let
-                homeComponent =
-                    model.homeComponent
+            OnExpenditureCostInput expenditureCost ->
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | expenditureCost = expenditureCost
+                                    , expenditureError = Nothing
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
 
-                newModel =
-                    { model
-                        | homeComponent =
-                            { homeComponent | logOutError = Just apiError }
-                    }
-            in
-                ( newModel, Cmd.none )
+            OnExpenditureCategoryIDSelect expenditureCategoryID ->
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | expenditureCategoryID = expenditureCategoryID
+                                    , expenditureCategoryIDSelectOpen = False
+                                    , expenditureError = Nothing
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
 
-        OnLogOutSuccess basicResponse ->
-            ( defaultModel, Router.navigateTo Route.WelcomeComponentLogin )
+            OnExpenditureSelectAction subMsg ->
+                case subMsg of
+                    Select.OpenSelect ->
+                        let
+                            newModel =
+                                { model
+                                    | homeComponent =
+                                        { homeComponent
+                                            | expenditureCategoryIDSelectOpen = True
+                                            , expenditureError = Nothing
+                                        }
+                                }
+                        in
+                            ( newModel, Cmd.none )
+
+                    Select.CloseSelect ->
+                        let
+                            newModel =
+                                { model
+                                    | homeComponent =
+                                        { homeComponent
+                                            | expenditureCategoryIDSelectOpen = False
+                                            , expenditureError = Nothing
+                                        }
+                                }
+                        in
+                            ( newModel, Cmd.none )
+
+            AddExpenditure ->
+                let
+                    expenditure =
+                        { cost = homeComponent.expenditureCost
+                        , categoryID = homeComponent.expenditureCategoryID
+                        }
+                in
+                    ( model, Api.postExpenditure expenditure OnAddExpenditureFailure OnAddExpenditureSuccess )
+
+            OnAddExpenditureFailure apiError ->
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | expenditureError = Just apiError
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            OnAddExpenditureSuccess user ->
+                let
+                    newModel =
+                        { model
+                            | user = Just user
+                            , homeComponent =
+                                { homeComponent
+                                    | expenditureCost = ""
+                                    , expenditureCategoryID = ""
+                                    , expenditureCategoryIDSelectOpen = False
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            OnIncomeAmountInput incomeAmount ->
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | incomeAmount = incomeAmount
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            OnIncomeEmployerIDSelect incomeEmployerID ->
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | incomeEmployerID = incomeEmployerID
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            AddIncome ->
+                toDo
+
+            OnAddIncomeFailure apiError ->
+                toDo
+
+            OnAddIncomeSuccess user ->
+                toDo

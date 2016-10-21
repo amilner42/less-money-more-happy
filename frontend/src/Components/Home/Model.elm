@@ -9,8 +9,13 @@ import Models.ApiError as ApiError
 random data (strings) to display the cacheing.
 -}
 type alias Model =
-    { dataOne : String
-    , dataTwo : String
+    { incomeAmount : String
+    , incomeEmployerID : String
+    , incomeError : Maybe ApiError.ApiError
+    , expenditureCost : String
+    , expenditureCategoryID : String
+    , expenditureCategoryIDSelectOpen : Bool
+    , expenditureError : Maybe ApiError.ApiError
     , logOutError : Maybe ApiError.ApiError
     }
 
@@ -20,8 +25,13 @@ type alias Model =
 cacheEncoder : Model -> Encode.Value
 cacheEncoder model =
     Encode.object
-        [ ( "dataOne", Encode.string model.dataOne )
-        , ( "dataTwo", Encode.string model.dataTwo )
+        [ ( "incomeAmount", Encode.string model.incomeAmount )
+        , ( "incomeEmployerID", Encode.string model.incomeEmployerID )
+        , ( "incomeError", Encode.null )
+        , ( "expenditureCost", Encode.string model.expenditureCost )
+        , ( "expenditureCategoryID", Encode.string model.expenditureCategoryID )
+        , ( "expenditureCategoryIDSelectOpen", Encode.bool False )
+        , ( "expenditureError", Encode.null )
         , ( "logOutError", Encode.null )
         ]
 
@@ -30,7 +40,12 @@ cacheEncoder model =
 -}
 cacheDecoder : Decode.Decoder Model
 cacheDecoder =
-    Decode.object3 Model
-        ("dataOne" := Decode.string)
-        ("dataTwo" := Decode.string)
+    Decode.object8 Model
+        ("incomeAmount" := Decode.string)
+        ("incomeEmployerID" := Decode.string)
+        ("incomeError" := Decode.null Nothing)
+        ("expenditureCost" := Decode.string)
+        ("expenditureCategoryID" := Decode.string)
+        ("expenditureCategoryIDSelectOpen" := Decode.bool)
+        ("expenditureError" := Decode.null Nothing)
         ("logOutError" := Decode.null Nothing)
