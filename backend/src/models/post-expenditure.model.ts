@@ -27,6 +27,13 @@ export const postExpenditureType: structures.interfaceStructure = {
             errorCode: errorCodes.invalidExpenditure
           });
         }
+
+        if(parseFloat(cost) <= 0) {
+          return Promise.reject({
+            message: "Cost must be positive!",
+            errorCode: errorCodes.invalidExpenditure
+          });
+        }
       }
     },
     "categoryID": {
