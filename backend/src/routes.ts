@@ -170,7 +170,7 @@ export const routes: appRoutes = {
 
           for(let index = 0; index < expenditureCategories.length; index++) {
             let expenditureCategory = expenditureCategories[index];
-            expenditureCategory.id = index;
+            expenditureCategory.id = index + 1;
             if(index % 2 == 0) {
               expenditureCategory.colorID = lightDefaultColors[index % lightDefaultColors.length]._id;
             } else {
