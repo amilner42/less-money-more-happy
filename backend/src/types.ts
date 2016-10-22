@@ -85,7 +85,7 @@ export interface earning {
   id: number;
   date: Date;
   amount: number;
-  fromEmployerID?: number;
+  fromEmployerID: number;
 }
 
 
@@ -273,7 +273,8 @@ export enum errorCodes {
   invalidBalance,
   invalidCategories,
   invalidCategoriesWithGoals,
-  invalidExpenditure
+  invalidExpenditure,
+  invalidEarning
 }
 
 
