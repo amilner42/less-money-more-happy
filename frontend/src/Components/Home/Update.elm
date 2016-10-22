@@ -170,6 +170,34 @@ update msg model =
                 in
                     ( newModel, Cmd.none )
 
+            OnEarningSelectAction subMsg ->
+                case subMsg of
+                    Select.OpenSelect ->
+                        let
+                            newModel =
+                                { model
+                                    | homeComponent =
+                                        { homeComponent
+                                            | earningEmployerIDSelectOpen = True
+                                            , earningError = Nothing
+                                        }
+                                }
+                        in
+                            ( newModel, Cmd.none )
+
+                    Select.CloseSelect ->
+                        let
+                            newModel =
+                                { model
+                                    | homeComponent =
+                                        { homeComponent
+                                            | earningEmployerIDSelectOpen = False
+                                            , earningError = Nothing
+                                        }
+                                }
+                        in
+                            ( newModel, Cmd.none )
+
             AddEarning ->
                 toDo
 

@@ -156,10 +156,30 @@ mainView model =
                 True ->
                     "Select Category"
 
+        earningEmployerSelectText =
+            case (homeComponent.earningEmployerID == "") of
+                False ->
+                    Maybe.withDefault [] user.employers
+                        |> List.filter
+                            (\employer ->
+                                homeComponent.earningEmployerID == (toString employer.id)
+                            )
+                        |> List.head
+                        |> Maybe.map .name
+                        |> Maybe.withDefault "Select Employer"
+
+                True ->
+                    "Select Employer"
+
         validExpenditureForm =
             (homeComponent.expenditureCost /= "")
                 && (homeComponent.expenditureCategoryID /= "")
                 && (Util.isNothing homeComponent.expenditureError)
+
+        validEarningForm =
+            (homeComponent.earningAmount /= "")
+                && (homeComponent.earningEmployerID /= "")
+                && (Util.isNothing homeComponent.earningError)
     in
         div []
             [ h1
@@ -171,14 +191,28 @@ mainView model =
             , div
                 []
                 [ button
-                    [ onClick AddEarning ]
+                    [ onClick AddEarning
+                    , disabled <| not validEarningForm
+                    ]
                     [ text "ADD EARNING" ]
                 , input
+                    [ placeholder "amount"
+                    , value homeComponent.earningAmount
+                    , onInput OnEarningAmountInput
+                    , type' "number"
+                    ]
                     []
-                    []
-                , select
-                    []
-                    []
+                , Select.select
+                    OnEarningSelectAction
+                    earningEmployerSelectText
+                    "Cancel"
+                    .name
+                    (\employer ->
+                        toString employer.id
+                            |> OnEarningEmployerIDSelect
+                    )
+                    homeComponent.earningEmployerIDSelectOpen
+                    (Maybe.withDefault [] user.employers)
                 ]
             , hr
                 []

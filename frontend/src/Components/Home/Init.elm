@@ -9,6 +9,7 @@ init : Model
 init =
     { earningAmount = ""
     , earningEmployerID = ""
+    , earningEmployerIDSelectOpen = False
     , earningError = Nothing
     , expenditureCost = ""
     , expenditureCategoryID = ""

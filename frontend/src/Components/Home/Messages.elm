@@ -24,6 +24,7 @@ type Msg
     | OnAddExpenditureFailure ApiError.ApiError
     | OnEarningAmountInput String
     | OnEarningEmployerIDSelect String
+    | OnEarningSelectAction Select.SelectMessage
     | AddEarning
     | OnAddEarningFailure ApiError.ApiError
     | OnAddEarningSuccess User.User

@@ -12,6 +12,7 @@ random data (strings) to display the cacheing.
 type alias Model =
     { earningAmount : String
     , earningEmployerID : String
+    , earningEmployerIDSelectOpen : Bool
     , earningError : Maybe ApiError.ApiError
     , expenditureCost : String
     , expenditureCategoryID : String
@@ -28,6 +29,7 @@ cacheEncoder model =
     Encode.object
         [ ( "earningAmount", Encode.string model.earningAmount )
         , ( "earningEmployerID", Encode.string model.earningEmployerID )
+        , ( "earningEmployerIDSelectOpen", Encode.bool model.earningEmployerIDSelectOpen )
         , ( "earningError", Encode.null )
         , ( "expenditureCost", Encode.string model.expenditureCost )
         , ( "expenditureCategoryID", Encode.string model.expenditureCategoryID )
@@ -44,6 +46,7 @@ cacheDecoder =
     decode Model
         |> required "earningAmount" Decode.string
         |> required "earningEmployerID" Decode.string
+        |> required "earningEmployerIDSelectOpen" Decode.bool
         |> hardcoded Nothing
         |> required "expenditureCost" Decode.string
         |> required "expenditureCategoryID" Decode.string
