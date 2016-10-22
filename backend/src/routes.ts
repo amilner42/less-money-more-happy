@@ -5,12 +5,28 @@ import passport from 'passport';
 import R from 'ramda';
 
 import { APP_CONFIG } from '../app-config';
-import { userModel, expenditureCategoryModel, validExpenditureArray,
-  validExpenditureCategoryWithGoalsArray, postExpenditureType} from './models/';
-import { appRoutes, errorCodes, expenditureCategory, color, user,
-  expenditureCategoryWithGoals, structures, expenditure } from './types';
+import {
+  userModel,
+  expenditureCategoryModel,
+  validExpenditureArray,
+  validExpenditureCategoryWithGoalsArray,
+  postExpenditureType,
+  postEarningType } from './models/';
+import {
+  appRoutes,
+  errorCodes,
+  expenditureCategory,
+  color,
+  user,
+  expenditureCategoryWithGoals,
+  structures,
+  expenditure,
+  earning } from './types';
 import { collection } from './db';
-import { prepareErrorForFrontend, renameMongoIDField, isNullOrUndefined } from './util';
+import {
+  prepareErrorForFrontend,
+  renameMongoIDField,
+  isNullOrUndefined } from './util';
 import { validMoney, validModel } from './validifier';
 
 
@@ -232,7 +248,8 @@ export const routes: appRoutes = {
 
   '/account/addExpenditure': {
     /**
-     * Adds an expenditure to the users list of expenditures.
+     * Adds an expenditure to the users list of expenditures. Recomputes
+     * currentBalance.
      */
     post: (req, res) => {
       const user: user = req.user;
@@ -271,6 +288,49 @@ export const routes: appRoutes = {
         .then((error) => {
           res.status(400).json(error);
           return;
+        });
+      });
+    }
+  },
+
+  '/account/addEarning': {
+    /**
+     * Adds an earning to the users list of earnings. Recomputes currentBalance.
+     */
+    post: (req, res) => {
+      const user = req.user;
+      const earning = req.body;
+
+      return validModel(earning, postEarningType)
+      .then(() => {
+        if(isNullOrUndefined(user.earnings)) {
+          user.earnings = [];
+        }
+
+        const numberOfEarnings = user.earnings.length;
+
+        const newEarning: earning = {
+          id: numberOfEarnings + 1,
+          fromEmployerID: parseInt(earning.fromEmployerID),
+          amount: parseFloat(earning.amount),
+          date: new Date()
+        };
+
+        return collection('users')
+        .then((Users) => {
+          user.earnings.push(newEarning);
+          user.currentBalance += newEarning.amount;
+
+          return Users.save(user);
+        })
+        .then(() => {
+          res.status(200).json(userModel.stripSensitiveDataForResponse(user));
+        });
+      })
+      .catch((error) => {
+        return prepareErrorForFrontend(error)
+        .then((error) => {
+          res.status(400).json(error);
         });
       });
     }
