@@ -146,35 +146,35 @@ update msg model =
                 in
                     ( newModel, Cmd.none )
 
-            OnIncomeAmountInput incomeAmount ->
+            OnEarningAmountInput earningAmount ->
                 let
                     newModel =
                         { model
                             | homeComponent =
                                 { homeComponent
-                                    | incomeAmount = incomeAmount
+                                    | earningAmount = earningAmount
                                 }
                         }
                 in
                     ( newModel, Cmd.none )
 
-            OnIncomeEmployerIDSelect incomeEmployerID ->
+            OnEarningEmployerIDSelect earningEmployerID ->
                 let
                     newModel =
                         { model
                             | homeComponent =
                                 { homeComponent
-                                    | incomeEmployerID = incomeEmployerID
+                                    | earningEmployerID = earningEmployerID
                                 }
                         }
                 in
                     ( newModel, Cmd.none )
 
-            AddIncome ->
+            AddEarning ->
                 toDo
 
-            OnAddIncomeFailure apiError ->
+            OnAddEarningFailure apiError ->
                 toDo
 
-            OnAddIncomeSuccess user ->
+            OnAddEarningSuccess user ->
                 toDo

@@ -22,8 +22,8 @@ type Msg
     | AddExpenditure
     | OnAddExpenditureSuccess User.User
     | OnAddExpenditureFailure ApiError.ApiError
-    | OnIncomeAmountInput String
-    | OnIncomeEmployerIDSelect String
-    | AddIncome
-    | OnAddIncomeFailure ApiError.ApiError
-    | OnAddIncomeSuccess User.User
+    | OnEarningAmountInput String
+    | OnEarningEmployerIDSelect String
+    | AddEarning
+    | OnAddEarningFailure ApiError.ApiError
+    | OnAddEarningSuccess User.User

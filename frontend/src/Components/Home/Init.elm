@@ -7,9 +7,9 @@ import Components.Home.Model exposing (Model)
 -}
 init : Model
 init =
-    { incomeAmount = ""
-    , incomeEmployerID = ""
-    , incomeError = Nothing
+    { earningAmount = ""
+    , earningEmployerID = ""
+    , earningError = Nothing
     , expenditureCost = ""
     , expenditureCategoryID = ""
     , expenditureCategoryIDSelectOpen = False

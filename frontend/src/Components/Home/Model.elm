@@ -10,9 +10,9 @@ import Models.ApiError as ApiError
 random data (strings) to display the cacheing.
 -}
 type alias Model =
-    { incomeAmount : String
-    , incomeEmployerID : String
-    , incomeError : Maybe ApiError.ApiError
+    { earningAmount : String
+    , earningEmployerID : String
+    , earningError : Maybe ApiError.ApiError
     , expenditureCost : String
     , expenditureCategoryID : String
     , expenditureCategoryIDSelectOpen : Bool
@@ -26,9 +26,9 @@ type alias Model =
 cacheEncoder : Model -> Encode.Value
 cacheEncoder model =
     Encode.object
-        [ ( "incomeAmount", Encode.string model.incomeAmount )
-        , ( "incomeEmployerID", Encode.string model.incomeEmployerID )
-        , ( "incomeError", Encode.null )
+        [ ( "earningAmount", Encode.string model.earningAmount )
+        , ( "earningEmployerID", Encode.string model.earningEmployerID )
+        , ( "earningError", Encode.null )
         , ( "expenditureCost", Encode.string model.expenditureCost )
         , ( "expenditureCategoryID", Encode.string model.expenditureCategoryID )
         , ( "expenditureCategoryIDSelectOpen", Encode.bool False )
@@ -42,8 +42,8 @@ cacheEncoder model =
 cacheDecoder : Decode.Decoder Model
 cacheDecoder =
     decode Model
-        |> required "incomeAmount" Decode.string
-        |> required "incomeEmployerID" Decode.string
+        |> required "earningAmount" Decode.string
+        |> required "earningEmployerID" Decode.string
         |> hardcoded Nothing
         |> required "expenditureCost" Decode.string
         |> required "expenditureCategoryID" Decode.string

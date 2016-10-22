@@ -171,8 +171,8 @@ mainView model =
             , div
                 []
                 [ button
-                    [ onClick AddIncome ]
-                    [ text "ADD INCOME" ]
+                    [ onClick AddEarning ]
+                    [ text "ADD EARNING" ]
                 , input
                     []
                     []
