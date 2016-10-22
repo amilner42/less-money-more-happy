@@ -8,6 +8,7 @@ module Api
         , postAccountCategories
         , postAccountCategoriesWithGoals
         , postExpenditure
+        , postEarning
         , postLogin
         , postRegister
         )
@@ -22,6 +23,7 @@ import Models.User as User
 import Models.BasicResponse as BasicResponse
 import Models.Balance as Balance
 import Models.PostExpenditure as PostExpenditure
+import Models.PostEarning as PostEarning
 import Models.ExpenditureCategory as ExpenditureCategory
 import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import Models.Colour as Colour
@@ -117,3 +119,13 @@ postExpenditure expenditure =
         (apiBaseUrl ++ "account/addExpenditure")
         User.decoder
         (Util.toJsonString PostExpenditure.encoder expenditure)
+
+
+{-| Adds an earning.
+-}
+postEarning : PostEarning.PostEarning -> (ApiError.ApiError -> a) -> (User.User -> a) -> Cmd a
+postEarning earning =
+    HttpService.post
+        (apiBaseUrl ++ "account/addEarning")
+        User.decoder
+        (Util.toJsonString PostEarning.encoder earning)

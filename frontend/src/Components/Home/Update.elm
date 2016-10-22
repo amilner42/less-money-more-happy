@@ -153,6 +153,7 @@ update msg model =
                             | homeComponent =
                                 { homeComponent
                                     | earningAmount = earningAmount
+                                    , earningError = Nothing
                                 }
                         }
                 in
@@ -165,6 +166,8 @@ update msg model =
                             | homeComponent =
                                 { homeComponent
                                     | earningEmployerID = earningEmployerID
+                                    , earningError = Nothing
+                                    , earningEmployerIDSelectOpen = False
                                 }
                         }
                 in
@@ -199,10 +202,36 @@ update msg model =
                             ( newModel, Cmd.none )
 
             AddEarning ->
-                toDo
+                let
+                    newEarning =
+                        { amount = homeComponent.earningAmount
+                        , fromEmployerID = homeComponent.earningEmployerID
+                        }
+                in
+                    ( model, Api.postEarning newEarning OnAddEarningFailure OnAddEarningSuccess )
 
             OnAddEarningFailure apiError ->
-                toDo
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | earningError = Just apiError
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
 
             OnAddEarningSuccess user ->
-                toDo
+                let
+                    newModel =
+                        { model
+                            | user = Just user
+                            , homeComponent =
+                                { homeComponent
+                                    | earningAmount = ""
+                                    , earningEmployerID = ""
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )

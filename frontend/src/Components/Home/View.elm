@@ -213,6 +213,7 @@ mainView model =
                     )
                     homeComponent.earningEmployerIDSelectOpen
                     (Maybe.withDefault [] user.employers)
+                , ErrorBox.errorBox homeComponent.earningError
                 ]
             , hr
                 []

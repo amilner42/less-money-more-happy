@@ -29,7 +29,8 @@ import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nul
      invalidBalance,
      invalidCategories,
      invalidCategoriesWithGoals,
-     invalidExpenditure
+     invalidExpenditure,
+     invalidEarning
    }
 
 
@@ -58,6 +59,7 @@ type ApiError
     | InvalidCategories
     | InvalidCategoriesWithGoals
     | InvalidExpenditure
+    | InvalidEarning
 
 
 {-| An error from the backend still in Json form.
@@ -134,6 +136,9 @@ humanReadable apiError =
         InvalidExpenditure ->
             "Enter a valid expenditure!"
 
+        InvalidEarning ->
+            "Enter a valid earning!"
+
 
 {-| Turns an errorCode integer from the backend to it's respective ApiError.
 -}
@@ -187,6 +192,9 @@ fromErrorCode errorCode =
 
         16 ->
             InvalidExpenditure
+
+        17 ->
+            InvalidEarning
 
         _ ->
             InternalError
