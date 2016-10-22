@@ -9,6 +9,7 @@ module Models.ExpenditureCategory
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 
 
 {-| The expenditure categories will be the default categories that the user is
@@ -32,8 +33,8 @@ encoder expenditureCategory =
 -}
 decoder : Decode.Decoder ExpenditureCategory
 decoder =
-    Decode.object1 ExpenditureCategory
-        ("name" := Decode.string)
+    decode ExpenditureCategory
+        |> required "name" Decode.string
 
 
 {-| ExpenditureCategory `cacheEncoder`.

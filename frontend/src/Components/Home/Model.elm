@@ -2,6 +2,7 @@ module Components.Home.Model exposing (Model, cacheEncoder, cacheDecoder)
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 import Models.ApiError as ApiError
 
 
@@ -40,12 +41,12 @@ cacheEncoder model =
 -}
 cacheDecoder : Decode.Decoder Model
 cacheDecoder =
-    Decode.object8 Model
-        ("incomeAmount" := Decode.string)
-        ("incomeEmployerID" := Decode.string)
-        ("incomeError" := Decode.null Nothing)
-        ("expenditureCost" := Decode.string)
-        ("expenditureCategoryID" := Decode.string)
-        ("expenditureCategoryIDSelectOpen" := Decode.bool)
-        ("expenditureError" := Decode.null Nothing)
-        ("logOutError" := Decode.null Nothing)
+    decode Model
+        |> required "incomeAmount" Decode.string
+        |> required "incomeEmployerID" Decode.string
+        |> hardcoded Nothing
+        |> required "expenditureCost" Decode.string
+        |> required "expenditureCategoryID" Decode.string
+        |> required "expenditureCategoryIDSelectOpen" Decode.bool
+        |> hardcoded Nothing
+        |> hardcoded Nothing

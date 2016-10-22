@@ -2,6 +2,7 @@ module Models.BasicResponse exposing (BasicResponse, decoder)
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 
 
 {-| To avoid worrying about handling empty responses, we use a basic object
@@ -15,5 +16,5 @@ type alias BasicResponse =
 -}
 decoder : Decode.Decoder BasicResponse
 decoder =
-    Decode.object1 BasicResponse
-        ("message" := Decode.string)
+    decode BasicResponse
+        |> required "message" Decode.string

@@ -10,6 +10,7 @@ module Models.ExpenditureCategoryWithGoals
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 import DefaultServices.Util as Util
 
 
@@ -47,12 +48,12 @@ encoder expenditureCategoryWithGoals =
 -}
 decoder : Decode.Decoder ExpenditureCategoryWithGoals
 decoder =
-    Decode.object5 ExpenditureCategoryWithGoals
-        ("id" := Decode.int)
-        ("name" := Decode.string)
-        ("colorID" := Decode.string)
-        ("goalSpending" := Decode.maybe Decode.string)
-        ("perNumberOfDays" := Decode.maybe Decode.string)
+    decode ExpenditureCategoryWithGoals
+        |> required "id" Decode.int
+        |> required "name" Decode.string
+        |> required "colorID" Decode.string
+        |> required "goalSpending" (nullable Decode.string)
+        |> required "perNumberOfDays" (nullable Decode.string)
 
 
 {-| ExpenditureCategoryWithGoals `cacheEncoder`.

@@ -9,6 +9,7 @@ module Models.Colour
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 
 
 {-| Colours used for making the UX nicer for categories. Canadian spelling to
@@ -40,12 +41,12 @@ encoder colour =
 -}
 decoder : Decode.Decoder Colour
 decoder =
-    Decode.object5 Colour
-        ("mongoID" := Decode.string)
-        ("name" := Decode.string)
-        ("hex" := Decode.string)
-        ("defaultColor" := Decode.bool)
-        ("dark" := Decode.bool)
+    decode Colour
+        |> required "mongoID" Decode.string
+        |> required "name" Decode.string
+        |> required "hex" Decode.string
+        |> required "defaultColor" Decode.bool
+        |> required "dark" Decode.bool
 
 
 {-| Colour `cacheEncoder`.

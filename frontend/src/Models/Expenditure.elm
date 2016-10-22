@@ -9,6 +9,7 @@ module Models.Expenditure
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 import Models.DateWrapper as DateWrapper
 import Date
 
@@ -39,11 +40,11 @@ encoder expenditure =
 -}
 decoder : Decode.Decoder Expenditure
 decoder =
-    Decode.object4 Expenditure
-        ("id" := Decode.int)
-        ("date" := DateWrapper.decoder)
-        ("categoryID" := Decode.int)
-        ("cost" := Decode.float)
+    decode Expenditure
+        |> required "id" Decode.int
+        |> required "date" DateWrapper.decoder
+        |> required "categoryID" Decode.int
+        |> required "cost" Decode.float
 
 
 {-| The Expenditure `cacheEncoder`.

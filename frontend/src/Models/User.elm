@@ -14,6 +14,7 @@ module Models.User
 
 import Json.Decode as Decode exposing ((:=))
 import Json.Encode as Encode
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 import DefaultServices.Util as Util exposing (justValueOrNull, encodeList)
 import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import Models.Expenditure as Expenditure
@@ -73,14 +74,14 @@ encoder user =
 -}
 decoder : Decode.Decoder User
 decoder =
-    Decode.object7 User
-        ("email" := Decode.string)
-        ("password" := Decode.maybe Decode.string)
-        ("currentBalance" := Decode.maybe Decode.float)
-        ("categoriesWithGoals" := (Decode.maybe <| Decode.list ExpenditureCategoryWithGoals.decoder))
-        ("expenditures" := (Decode.maybe <| Decode.list Expenditure.decoder))
-        ("earnings" := (Decode.maybe <| Decode.list Earning.decoder))
-        ("employers" := (Decode.maybe <| Decode.list Employer.decoder))
+    decode User
+        |> required "email" Decode.string
+        |> required "password" (nullable Decode.string)
+        |> required "currentBalance" (nullable Decode.float)
+        |> required "categoriesWithGoals" (nullable <| Decode.list ExpenditureCategoryWithGoals.decoder)
+        |> required "expenditures" (nullable <| Decode.list Expenditure.decoder)
+        |> required "earnings" (nullable <| Decode.list Earning.decoder)
+        |> required "employers" (nullable <| Decode.list Employer.decoder)
 
 
 {-| The User `cacheEncoder`.
@@ -102,14 +103,7 @@ cacheEncoder user =
 -}
 cacheDecoder : Decode.Decoder User
 cacheDecoder =
-    Decode.object7 User
-        ("email" := Decode.string)
-        ("password" := Decode.null Nothing)
-        ("currentBalance" := Decode.maybe Decode.float)
-        ("categoriesWithGoals" := (Decode.maybe <| Decode.list ExpenditureCategoryWithGoals.cacheDecoder))
-        ("expenditures" := (Decode.maybe <| Decode.list Expenditure.cacheDecoder))
-        ("earnings" := (Decode.maybe <| Decode.list Earning.cacheDecoder))
-        ("employers" := (Decode.maybe <| Decode.list Employer.cacheDecoder))
+    decoder
 
 
 {-| For authentication we only send an email and password.

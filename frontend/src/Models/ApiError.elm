@@ -8,6 +8,7 @@ module Models.ApiError
 import Http
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 
 
 {- COPIED from the backend, needs to stay up to date with the backend!
@@ -216,6 +217,6 @@ getErrorCodeFromBackendError response =
 -}
 decodeBackendError : Decode.Decoder BackendError
 decodeBackendError =
-    Decode.object2 BackendError
-        ("message" := Decode.string)
-        ("errorCode" := Decode.int)
+    decode BackendError
+        |> required "message" Decode.string
+        |> required "errorCode" Decode.int

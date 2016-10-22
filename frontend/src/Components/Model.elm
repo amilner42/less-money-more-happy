@@ -10,8 +10,9 @@ module Components.Model
         , fromCacheJsonString
         )
 
-import Json.Decode as Decode exposing ((:=))
 import Json.Encode as Encode
+import Json.Decode as Decode exposing ((:=))
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 import Components.Home.Model as HomeModel
 import Components.Welcome.Model as WelcomeModel
 import Components.New.Model as NewModel
@@ -68,20 +69,6 @@ type alias ReturningUserModel =
     }
 
 
-{-| Base Component `cacheDecoder`.
--}
-cacheDecoder : Decode.Decoder Model
-cacheDecoder =
-    Decode.object7 Model
-        ("user" := (Decode.maybe (User.cacheDecoder)))
-        ("route" := Route.cacheDecoder)
-        ("homeComponent" := (HomeModel.cacheDecoder))
-        ("welcomeComponent" := (WelcomeModel.cacheDecoder))
-        ("newComponent" := (NewModel.cacheDecoder))
-        ("defaultColours" := (Decode.maybe <| Decode.list <| Colour.cacheDecoder))
-        ("defaultCategories" := (Decode.maybe <| Decode.list ExpenditureCategory.cacheDecoder))
-
-
 {-| Base Component `cacheEncoder`.
 -}
 cacheEncoder : Model -> Encode.Value
@@ -95,6 +82,20 @@ cacheEncoder model =
         , ( "defaultColours", justValueOrNull (encodeList Colour.cacheEncoder) model.defaultColours )
         , ( "defaultCategories", Util.justValueOrNull (Util.encodeList ExpenditureCategory.cacheEncoder) model.defaultCategories )
         ]
+
+
+{-| Base Component `cacheDecoder`.
+-}
+cacheDecoder : Decode.Decoder Model
+cacheDecoder =
+    decode Model
+        |> required "user" (nullable User.cacheDecoder)
+        |> required "route" Route.cacheDecoder
+        |> required "homeComponent" HomeModel.cacheDecoder
+        |> required "welcomeComponent" WelcomeModel.cacheDecoder
+        |> required "newComponent" NewModel.cacheDecoder
+        |> required "defaultColours" (nullable <| Decode.list Colour.cacheDecoder)
+        |> required "defaultCategories" (nullable <| Decode.list ExpenditureCategory.cacheDecoder)
 
 
 {-| Base Component `toCacheJsonString`.

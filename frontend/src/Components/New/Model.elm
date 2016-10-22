@@ -2,6 +2,7 @@ module Components.New.Model exposing (Model, cacheEncoder, cacheDecoder)
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 import Models.ApiError as ApiError
 import Models.ExpenditureCategory as ExpenditureCategory
 import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
@@ -42,12 +43,12 @@ cacheEncoder model =
 -}
 cacheDecoder : Decode.Decoder Model
 cacheDecoder =
-    Decode.object8 Model
-        ("currentBalance" := Decode.string)
-        ("currentBalanceApiError" := Decode.null Nothing)
-        ("currentCategoryInput" := Decode.string)
-        ("selectedCategories" := Decode.list ExpenditureCategory.cacheDecoder)
-        ("selectedCategoriesApiError" := Decode.null Nothing)
-        ("getDefaultsApiError" := Decode.null Nothing)
-        ("selectedCategoriesWithGoals" := (Decode.maybe <| Decode.list ExpenditureCategoryWithGoals.cacheDecoder))
-        ("selectedCategoriesWithGoalsApiError" := Decode.null Nothing)
+    decode Model
+        |> required "currentBalance" Decode.string
+        |> hardcoded Nothing
+        |> required "currentCategoryInput" Decode.string
+        |> required "selectedCategories" (Decode.list ExpenditureCategory.cacheDecoder)
+        |> hardcoded Nothing
+        |> hardcoded Nothing
+        |> required "selectedCategoriesWithGoals" (nullable <| Decode.list ExpenditureCategoryWithGoals.cacheDecoder)
+        |> hardcoded Nothing

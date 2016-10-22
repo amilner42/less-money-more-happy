@@ -9,6 +9,7 @@ module Models.Employer
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 
 
 {-| The source of a user's input, helpful if the user wants to be able to view
@@ -34,9 +35,9 @@ encoder employer =
 -}
 decoder : Decode.Decoder Employer
 decoder =
-    Decode.object2 Employer
-        ("id" := Decode.int)
-        ("name" := Decode.string)
+    decode Employer
+        |> required "id" Decode.int
+        |> required "name" Decode.string
 
 
 {-| Employer `cacheEncoder`.

@@ -9,6 +9,7 @@ module Models.Earning
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 import DefaultServices.Util as Util
 import Models.DateWrapper as DateWrapper
 import Date
@@ -40,11 +41,11 @@ encoder earning =
 -}
 decoder : Decode.Decoder Earning
 decoder =
-    Decode.object4 Earning
-        ("id" := Decode.int)
-        ("date" := DateWrapper.decoder)
-        ("amount" := Decode.int)
-        ("fromEmployerID" := Decode.maybe Decode.int)
+    decode Earning
+        |> required "id" Decode.int
+        |> required "date" DateWrapper.decoder
+        |> required "amount" Decode.int
+        |> required "fromEmployerID" (nullable Decode.int)
 
 
 {-| Earning `cacheEncoder`.
