@@ -18,6 +18,8 @@ type alias Model =
     , expenditureCategoryID : String
     , expenditureCategoryIDSelectOpen : Bool
     , expenditureError : Maybe ApiError.ApiError
+    , employerName : String
+    , employerNameError : Maybe ApiError.ApiError
     , logOutError : Maybe ApiError.ApiError
     }
 
@@ -35,6 +37,8 @@ cacheEncoder model =
         , ( "expenditureCategoryID", Encode.string model.expenditureCategoryID )
         , ( "expenditureCategoryIDSelectOpen", Encode.bool False )
         , ( "expenditureError", Encode.null )
+        , ( "employerName", Encode.string model.employerName )
+        , ( "employerNameError", Encode.null )
         , ( "logOutError", Encode.null )
         ]
 
@@ -51,5 +55,7 @@ cacheDecoder =
         |> required "expenditureCost" Decode.string
         |> required "expenditureCategoryID" Decode.string
         |> required "expenditureCategoryIDSelectOpen" Decode.bool
+        |> hardcoded Nothing
+        |> required "employerName" Decode.string
         |> hardcoded Nothing
         |> hardcoded Nothing

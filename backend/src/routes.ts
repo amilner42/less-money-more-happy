@@ -337,7 +337,7 @@ export const routes: appRoutes = {
     }
   },
 
-  '/addEmployer': {
+  '/account/addEmployer': {
     /**
      * Adds an employer.
      */

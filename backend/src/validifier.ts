@@ -47,6 +47,20 @@ export const validPositiveInteger = (positiveInteger: string): boolean => {
 
 
 /**
+ * Checks that a string is not null/undefined and has at least one non space.
+ */
+export const validNotJustSpacesString = (someString: string): boolean => {
+  if(isNullOrUndefined(someString)) {
+    return false;
+  }
+
+  const regex = /\S/;
+
+  return regex.test(someString);
+}
+
+
+/**
  * Checks that a password is considered "strong" enough.
  *
  * Currently we only require 6-char passwords.

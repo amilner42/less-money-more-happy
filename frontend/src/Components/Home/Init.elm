@@ -15,5 +15,7 @@ init =
     , expenditureCategoryID = ""
     , expenditureCategoryIDSelectOpen = False
     , expenditureError = Nothing
+    , employerName = ""
+    , employerNameError = Nothing
     , logOutError = Nothing
     }

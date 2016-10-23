@@ -13,18 +13,26 @@ type Msg
     | GoToProfileView
     | GoToGoalsView
     | GoToStatsView
+      --
     | LogOut
     | OnLogOutFailure ApiError.ApiError
     | OnLogOutSuccess BasicResponse.BasicResponse
+      --
     | OnExpenditureCostInput String
     | OnExpenditureCategoryIDSelect String
     | OnExpenditureSelectAction Select.SelectMessage
     | AddExpenditure
     | OnAddExpenditureSuccess User.User
     | OnAddExpenditureFailure ApiError.ApiError
+      --
     | OnEarningAmountInput String
     | OnEarningEmployerIDSelect String
     | OnEarningSelectAction Select.SelectMessage
     | AddEarning
     | OnAddEarningFailure ApiError.ApiError
     | OnAddEarningSuccess User.User
+      --
+    | OnAddEmployerInput String
+    | AddEmployer
+    | OnAddEmployerFailure ApiError.ApiError
+    | OnAddEmployerSuccess User.User

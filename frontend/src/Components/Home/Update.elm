@@ -235,3 +235,48 @@ update msg model =
                         }
                 in
                     ( newModel, Cmd.none )
+
+            OnAddEmployerInput employerName ->
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | employerName = employerName
+                                    , employerNameError = Nothing
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            AddEmployer ->
+                let
+                    newEmployer =
+                        { name = homeComponent.employerName }
+                in
+                    ( model, Api.postEmployer newEmployer OnAddEmployerFailure OnAddEmployerSuccess )
+
+            OnAddEmployerFailure apiError ->
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | employerNameError = Just apiError
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            OnAddEmployerSuccess user ->
+                let
+                    newModel =
+                        { model
+                            | user = Just user
+                            , homeComponent =
+                                { homeComponent
+                                    | employerName = ""
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )

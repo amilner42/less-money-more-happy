@@ -3,23 +3,23 @@
 
 import { structures, errorCodes } from '../types';
 import { isNullOrUndefined } from '../util';
-import { validPositiveInteger, validMoney} from '../validifier';
+import { validNotJustSpacesString } from '../validifier';
 
 
 /**
  * The type of a `PostEmployer` from the frontend, must contain a single field,
  * the `name` of the employer.
  */
-export const postEmployerType: structures.interfaceStructure {
+export const postEmployerType: structures.interfaceStructure = {
   typeCategory: structures.typeCategory.interface,
   properties: {
     "name": {
       typeCategory: structures.typeCategory.primitive,
       type: structures.primitiveType.string,
       restriction: (name: string) => {
-        if(isNullOrUndefined(name)) {
+        if(!validNotJustSpacesString(name)) {
           return Promise.reject({
-            message: "name cannot be null/undefined",
+            message: "name cannot be null/undefined/just-spaces",
             errorCode: errorCodes.invalidEmployer
           });
         }

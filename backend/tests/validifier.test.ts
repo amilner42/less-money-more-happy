@@ -4,14 +4,22 @@ import assert from 'assert';
 import Bluebird from 'bluebird';
 import R from "ramda";
 
-import { validPhone, validEmail, validPassword, validMongoID,
-  validModel, validMoney, validPositiveInteger } from '../src/validifier';
-import { structures, errorCodes } from '../src/types';
-import { InvalidModelError } from '../src/errors';
-import { assertPromiseDoesntError, assertPromiseDoesError,
+import {
+  validPhone,
+  validEmail,
+  validPassword,
+  validMongoID,
+  validModel,
+  validMoney,
+  validPositiveInteger,
+  validNotJustSpacesString } from '../src/validifier';
+import {
+  assertPromiseDoesntError,
+  assertPromiseDoesError,
   assertPromiseErrorsWithCode } from './util';
 import { isNullOrUndefined } from '../src/util';
-
+import { structures, errorCodes } from '../src/types';
+import { InvalidModelError } from '../src/errors';
 
 describe('Validifier', function() {
 
@@ -177,6 +185,29 @@ describe('Validifier', function() {
       validPositiveIntegers.map((aValidPositiveInteger) => {
         if(!validPositiveInteger(aValidPositiveInteger)) {
           assert.fail("Invalid positive integer (but shouldn't be): " + aValidPositiveInteger);
+        }
+      });
+    });
+  });
+
+  describe('#validNotJustSpacesString', function() {
+
+    it('should return false for invalid strings', function() {
+      const invalidStrings = [null, undefined, "", " ", "      ", "     " ];
+
+      invalidStrings.map((invalidString) => {
+        if(validNotJustSpacesString(invalidString)) {
+          assert.fail("Valid string (but shouldn't be): " + invalidString);
+        }
+      });
+    });
+
+    it('should return true for valid strings', function() {
+      const validStrings = ["a", "basdfasdf ", "    a    ", "    _" ];
+
+      validStrings.map((validString) => {
+        if(!validNotJustSpacesString(validString)) {
+          assert.fail("Invalid string (but shouldn't be): " + validString);
         }
       });
     });

@@ -180,6 +180,10 @@ mainView model =
             (homeComponent.earningAmount /= "")
                 && (homeComponent.earningEmployerID /= "")
                 && (Util.isNothing homeComponent.earningError)
+
+        validEmployerNameForm =
+            (homeComponent.employerName /= "")
+                && (Util.isNothing homeComponent.employerNameError)
     in
         div []
             [ h1
@@ -214,6 +218,22 @@ mainView model =
                     homeComponent.earningEmployerIDSelectOpen
                     (Maybe.withDefault [] user.employers)
                 , ErrorBox.errorBox homeComponent.earningError
+                ]
+            , div
+                [ class "lower-bar" ]
+                [ button
+                    [ disabled <| not validEmployerNameForm
+                    , onClick AddEmployer
+                    ]
+                    [ text "ADD EMPLOYER"
+                    ]
+                , input
+                    [ placeholder "name"
+                    , onInput OnAddEmployerInput
+                    , value homeComponent.employerName
+                    ]
+                    []
+                , ErrorBox.errorBox homeComponent.employerNameError
                 ]
             , hr
                 []
