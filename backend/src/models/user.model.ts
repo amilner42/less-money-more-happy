@@ -3,6 +3,13 @@
 import { omit } from "ramda";
 
 import { model, user } from '../types';
+import { takeLast } from "ramda";
+import { isNullOrUndefined } from "../util";
+
+/**
+ * This dictates how many expenditures/earnings we will send back to the user.
+ */
+const MAX_ARRAY_RESULTS = 250;
 
 
 /**
@@ -10,8 +17,19 @@ import { model, user } from '../types';
  */
 export const userModel: model<user> = {
   name: "user",
-  stripSensitiveDataForResponse: (user: user) => {
+  // Additional optional param `capResults`, if explicitely set to `false` then
+  // the results will not be capped, otherwise it will cap nested arrays.
+  stripSensitiveDataForResponse: (user: user, capResults = true) => {
+    // We don't send the password.
     user.password = null;
+    // We only send over the last 250 expenditures/earnings.
+    if(!isNullOrUndefined(user.expenditures) && capResults) {
+      user.expenditures = takeLast(MAX_ARRAY_RESULTS, user.expenditures);
+    }
+
+    if(!isNullOrUndefined(user.earnings) && capResults) {
+      user.earnings = takeLast(MAX_ARRAY_RESULTS, user.earnings);
+    }
     return omit(['_id'])(user);
   }
 };
