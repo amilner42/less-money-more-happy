@@ -11,7 +11,8 @@ import {
   validExpenditureArray,
   validExpenditureCategoryWithGoalsArray,
   postExpenditureType,
-  postEarningType } from './models/';
+  postEarningType,
+  postEmployerType } from './models/';
 import {
   appRoutes,
   errorCodes,
@@ -332,6 +333,43 @@ export const routes: appRoutes = {
         .then((error) => {
           res.status(400).json(error);
         });
+      });
+    }
+  },
+
+  '/addEmployer': {
+    /**
+     * Adds an employer.
+     */
+    post: (req, res) => {
+      const user = req.user;
+      const employer = req.body;
+
+      return validModel(employer, postEmployerType)
+      .then(() => {
+        if(isNullOrUndefined(user.employers)) {
+            user.employers = [];
+        }
+
+        const newEmployer = {
+          name: employer.name,
+          id: user.employers.length + 1
+        };
+
+        return collection('users')
+        .then((Users) => {
+          user.employers.push(newEmployer);
+          return Users.save(user);
+        })
+        .then(() => {
+          res.status(200).json(userModel.stripSensitiveDataForResponse(user));
+        });
+      })
+      .catch((error) => {
+        return prepareErrorForFrontend(error)
+        .then((error) => {
+          res.status(400).json(error);
+        })
       });
     }
   },
