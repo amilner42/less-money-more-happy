@@ -20,7 +20,7 @@ import Date
 type alias Earning =
     { id : Int
     , date : Date.Date
-    , amount : Int
+    , amount : Float
     , fromEmployerID : Maybe Int
     }
 
@@ -32,7 +32,7 @@ encoder earning =
     Encode.object
         [ ( "id", Encode.int earning.id )
         , ( "date", DateWrapper.encoder earning.date )
-        , ( "amount", Encode.int earning.amount )
+        , ( "amount", Encode.float earning.amount )
         , ( "fromEmployerID", Util.justValueOrNull Encode.int earning.fromEmployerID )
         ]
 
@@ -44,7 +44,7 @@ decoder =
     decode Earning
         |> required "id" Decode.int
         |> required "date" DateWrapper.decoder
-        |> required "amount" Decode.int
+        |> required "amount" Decode.float
         |> required "fromEmployerID" (nullable Decode.int)
 
 

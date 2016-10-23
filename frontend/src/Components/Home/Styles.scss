@@ -30,5 +30,26 @@
         .lower-bar {
           margin-top: 10px;
         }
+
+        .feed-title {
+            display: block;
+            text-align: center;
+        }
+
+        .feed {
+            margin: auto;
+            display: block;
+            width: 100%;
+            text-align: center;
+
+            .feed-item {
+                display: inline-block;
+                width: 500px;
+                height: 100px;
+                border: 2px solid black;
+                border-radius: 5px;
+                margin-bottom: 50px;
+            }
+        }
     }
 }

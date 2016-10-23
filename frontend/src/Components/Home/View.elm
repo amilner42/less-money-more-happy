@@ -10,6 +10,7 @@ import Components.Model exposing (ReturningUserModel)
 import Components.Home.Messages exposing (Msg(..))
 import Templates.Select as Select
 import Templates.ErrorBox as ErrorBox
+import Date.Format as DateFormat
 
 
 {-| Home Component View.
@@ -134,6 +135,72 @@ mainView model =
                         [ text "select category" ]
             in
                 headerOption :: List.map optionFromCategory categories
+
+        toHtmlFeed maybeExpenditures maybeEarnings =
+            let
+                feedItem { date, isExpenditure, value, displayText } =
+                    div
+                        [ class "feed-item" ]
+                        [ text <| formatDate date
+                        , div
+                            []
+                            [ case isExpenditure of
+                                True ->
+                                    text <| "-" ++ (toString value)
+
+                                False ->
+                                    text <| "+" ++ (toString value)
+                            ]
+                        , div
+                            []
+                            [ text <| displayText ]
+                        ]
+
+                expenditureText expenditure =
+                    List.filter
+                        (\categoryWithGoal -> expenditure.categoryID == categoryWithGoal.id)
+                        user.categoriesWithGoals
+                        |> List.head
+                        |> Maybe.map .name
+                        |> Maybe.withDefault "Unknown Category"
+
+                earningText earning =
+                    List.filter
+                        (\employer -> Just employer.id == earning.fromEmployerID)
+                        (Maybe.withDefault [] user.employers)
+                        |> List.head
+                        |> Maybe.map .name
+                        |> Maybe.withDefault "Unknown Employer"
+
+                expenditureToGeneralData expenditure =
+                    { date = expenditure.date
+                    , isExpenditure = True
+                    , value = expenditure.cost
+                    , displayText = expenditureText expenditure
+                    }
+
+                earningToGeneralData earning =
+                    { date = earning.date
+                    , isExpenditure = False
+                    , value = earning.amount
+                    , displayText = earningText earning
+                    }
+
+                expenditureData =
+                    Maybe.withDefault [] maybeExpenditures
+                        |> List.map expenditureToGeneralData
+
+                earningData =
+                    Maybe.withDefault [] maybeEarnings
+                        |> List.map earningToGeneralData
+
+                formatDate =
+                    DateFormat.format "%I:%M%p"
+            in
+                List.concat [ expenditureData, earningData ]
+                    |> List.sortBy (.date >> toString)
+                    |> List.reverse
+                    |> List.map feedItem
 
         expenditureCategorySelectText =
             case (homeComponent.expenditureCategoryID == "") of
@@ -267,6 +334,15 @@ mainView model =
             , hr
                 []
                 []
+            , div
+                []
+                [ h1
+                    [ class "feed-title" ]
+                    [ text "TODAY" ]
+                , div
+                    [ class "feed" ]
+                    (toHtmlFeed user.expenditures user.earnings)
+                ]
             ]
 
 
