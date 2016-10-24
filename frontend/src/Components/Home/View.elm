@@ -96,7 +96,14 @@ navbar model =
 profileView : ReturningUserModel -> Html Msg
 profileView model =
     div []
-        [ text "The profile view."
+        [ hr
+            []
+            []
+        , text "Your Email: "
+        , text model.user.email
+        , hr
+            []
+            []
         , button
             [ onClick LogOut ]
             [ text "LOG OUT" ]
@@ -404,4 +411,4 @@ statsView : ReturningUserModel -> Html Msg
 statsView model =
     div
         []
-        [ text "The stats view." ]
+        [ text "Stats coming soon!" ]

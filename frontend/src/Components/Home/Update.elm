@@ -53,7 +53,15 @@ update msg model =
                     ( newModel, Cmd.none )
 
             OnLogOutSuccess basicResponse ->
-                ( defaultModel, Router.navigateTo Route.WelcomeComponentLogin )
+                let
+                    newModel =
+                        { defaultModel
+                            | currentDate = model.currentDate
+                            , defaultColours = model.defaultColours
+                            , defaultCategories = model.defaultCategories
+                        }
+                in
+                    ( newModel, Router.navigateTo Route.WelcomeComponentLogin )
 
             OnExpenditureCostInput expenditureCost ->
                 let
