@@ -367,9 +367,35 @@ mainView model =
 -}
 goalsView : ReturningUserModel -> Html Msg
 goalsView model =
-    div
-        []
-        [ text "The goals view." ]
+    let
+        homeComponent =
+            model.homeComponent
+
+        categories =
+            model.user.categoriesWithGoals
+
+        categoriesToHtml =
+            List.map
+                (\category ->
+                    let
+                        goalSpending =
+                            Maybe.withDefault "" category.goalSpending
+                    in
+                        div
+                            [ class "goal-category" ]
+                            [ h3
+                                []
+                                [ text category.name ]
+                            , input
+                                [ value goalSpending ]
+                                []
+                            ]
+                )
+                categories
+    in
+        div
+            [ class "goals" ]
+            categoriesToHtml
 
 
 {-| The Stats view.

@@ -18,4 +18,5 @@ init =
     , employerName = ""
     , employerNameError = Nothing
     , logOutError = Nothing
+    , editCategories = []
     }

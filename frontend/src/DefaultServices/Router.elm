@@ -151,7 +151,7 @@ urlUpdate routeResult model =
                                                 case onNewUserPage of
                                                     False ->
                                                         ( { model | route = route }
-                                                        , LocalStorage.saveModel model
+                                                        , LocalStorage.saveModel { model | route = route }
                                                         )
 
                                                     True ->

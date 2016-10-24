@@ -4,6 +4,8 @@ import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
 import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 import Models.ApiError as ApiError
+import Models.EditCategory as EditCategory
+import DefaultServices.Util as Util
 
 
 {-| Home Component Model. Currently contains no meaningful information, just
@@ -21,6 +23,7 @@ type alias Model =
     , employerName : String
     , employerNameError : Maybe ApiError.ApiError
     , logOutError : Maybe ApiError.ApiError
+    , editCategories : List EditCategory.EditCategory
     }
 
 
@@ -40,6 +43,7 @@ cacheEncoder model =
         , ( "employerName", Encode.string model.employerName )
         , ( "employerNameError", Encode.null )
         , ( "logOutError", Encode.null )
+        , ( "editCategories", Util.encodeList EditCategory.cacheEncoder model.editCategories )
         ]
 
 
@@ -59,3 +63,4 @@ cacheDecoder =
         |> required "employerName" Decode.string
         |> hardcoded Nothing
         |> hardcoded Nothing
+        |> required "editCategories" (Decode.list EditCategory.cacheDecoder)
