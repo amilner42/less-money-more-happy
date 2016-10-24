@@ -11,6 +11,7 @@ import Components.Home.Messages exposing (Msg(..))
 import Templates.Select as Select
 import Templates.ErrorBox as ErrorBox
 import Date.Format as DateFormat
+import Date
 
 
 {-| Home Component View.
@@ -196,8 +197,24 @@ mainView model =
 
                 formatDate =
                     DateFormat.format "%I:%M%p"
+
+                isToday someDate =
+                    case model.currentDate of
+                        {- We re-query for the time every minute (subscription)
+                           and we query for time on initial page load, this
+                           "should" never be Nothing. In case it is, show the
+                           full list.
+                        -}
+                        Nothing ->
+                            True
+
+                        Just theDate ->
+                            (Date.day theDate == (Date.day someDate))
+                                && (Date.year theDate == (Date.year someDate))
+                                && (Date.month theDate == (Date.month someDate))
             in
                 List.concat [ expenditureData, earningData ]
+                    |> List.filter (.date >> isToday)
                     |> List.sortBy (.date >> toString)
                     |> List.reverse
                     |> List.map feedItem
