@@ -11,7 +11,8 @@ import Components.New.Init as NewInit
 -}
 defaultModel : Model.Model
 defaultModel =
-    { user = Nothing
+    { currentDate = Nothing
+    , user = Nothing
     , route = Route.WelcomeComponentLogin
     , homeComponent = HomeInit.init
     , welcomeComponent = WelcomeInit.init

@@ -6,11 +6,15 @@ import DefaultServices.Util as Util
 import DefaultServices.Router as Router
 import Components.Welcome.Init as WelcomeInit
 import Components.Home.Init as HomeInit
+import Components.New.Messages as NewMessages
 import Components.Messages exposing (Msg(..))
 import Components.Model exposing (Model, cacheDecoder)
 import Components.Update exposing (update)
 import Models.Route as Route
 import DefaultModel exposing (defaultModel)
+import Api
+import Time
+import Task
 
 
 {-| Base Component Init.
@@ -38,5 +42,13 @@ init maybeEncodedCachedModel routeResult =
 
                         Err err ->
                             { defaultModel | route = route }
+
+        ( newModel, newCmd ) =
+            update LoadModelFromLocalStorage initialModel
     in
-        update LoadModelFromLocalStorage initialModel
+        newModel
+            ! [ newCmd
+              , Task.perform TickFailure TickMinute Time.now
+              , Api.getDefaultCategories (NewMessage << NewMessages.OnGetDefaultCategoriesFailure) (NewMessage << NewMessages.OnGetDefaultCategoriesSuccess)
+              , Api.getDefaultColours (NewMessage << NewMessages.OnGetDefaultColoursFailure) (NewMessage << NewMessages.OnGetDefaultColoursSuccess)
+              ]

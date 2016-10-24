@@ -11,6 +11,7 @@ import Models.Route as Route
 import DefaultServices.LocalStorage as LocalStorage
 import DefaultServices.Router as Router
 import Api
+import Date
 
 
 {-| Base Component Update.
@@ -31,6 +32,18 @@ updateCacheIf msg model shouldCache =
             case msg of
                 NoOp ->
                     ( model, Cmd.none )
+
+                TickFailure someString ->
+                    ( model, Cmd.none )
+
+                TickMinute time ->
+                    let
+                        newModel =
+                            { model
+                                | currentDate = Just <| Date.fromTime time
+                            }
+                    in
+                        ( newModel, Cmd.none )
 
                 LoadModelFromLocalStorage ->
                     ( model, LocalStorage.loadModel () )

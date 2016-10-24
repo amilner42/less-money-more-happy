@@ -39,7 +39,8 @@ view model =
                     let
                         theNewView =
                             newView
-                                { user = aUser
+                                { currentDate = model.currentDate
+                                , user = aUser
                                 , route = model.route
                                 , homeComponent = model.homeComponent
                                 , welcomeComponent = model.welcomeComponent
@@ -80,7 +81,8 @@ view model =
 
                                                 True ->
                                                     homeView
-                                                        { user = theReturningUser
+                                                        { currentDate = model.currentDate
+                                                        , user = theReturningUser
                                                         , route = model.route
                                                         , homeComponent = model.homeComponent
                                                         , welcomeComponent = model.welcomeComponent

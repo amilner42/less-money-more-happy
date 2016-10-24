@@ -22,12 +22,15 @@ import Models.ExpenditureCategory as ExpenditureCategory
 import DefaultServices.Util exposing (justValueOrNull, encodeList)
 import Models.User as User
 import DefaultServices.Util as Util
+import Models.DateWrapper as DateWrapper
+import Date
 
 
 {-| Base Component Model.
 -}
 type alias Model =
-    { user : Maybe (User.User)
+    { currentDate : Maybe Date.Date
+    , user : Maybe (User.User)
     , route : Route.Route
     , homeComponent : HomeModel.Model
     , welcomeComponent : WelcomeModel.Model
@@ -46,7 +49,8 @@ type alias LoggedOutModel =
 {-| Passed to the `new` component.
 -}
 type alias NewUserModel =
-    { user : User.NewUser
+    { currentDate : Maybe Date.Date
+    , user : User.NewUser
     , route : Route.Route
     , homeComponent : HomeModel.Model
     , welcomeComponent : WelcomeModel.Model
@@ -59,7 +63,8 @@ type alias NewUserModel =
 {-| Passed to the `home` component.
 -}
 type alias ReturningUserModel =
-    { user : User.ReturningUser
+    { currentDate : Maybe Date.Date
+    , user : User.ReturningUser
     , route : Route.Route
     , homeComponent : HomeModel.Model
     , welcomeComponent : WelcomeModel.Model
@@ -74,13 +79,14 @@ type alias ReturningUserModel =
 cacheEncoder : Model -> Encode.Value
 cacheEncoder model =
     Encode.object
-        [ ( "user", justValueOrNull User.cacheEncoder model.user )
+        [ ( "currentDate", justValueOrNull DateWrapper.cacheEncoder model.currentDate )
+        , ( "user", justValueOrNull User.cacheEncoder model.user )
         , ( "route", Route.cacheEncoder model.route )
         , ( "homeComponent", HomeModel.cacheEncoder model.homeComponent )
         , ( "welcomeComponent", WelcomeModel.cacheEncoder model.welcomeComponent )
         , ( "newComponent", NewModel.cacheEncoder model.newComponent )
         , ( "defaultColours", justValueOrNull (encodeList Colour.cacheEncoder) model.defaultColours )
-        , ( "defaultCategories", Util.justValueOrNull (Util.encodeList ExpenditureCategory.cacheEncoder) model.defaultCategories )
+        , ( "defaultCategories", justValueOrNull (Util.encodeList ExpenditureCategory.cacheEncoder) model.defaultCategories )
         ]
 
 
@@ -89,6 +95,7 @@ cacheEncoder model =
 cacheDecoder : Decode.Decoder Model
 cacheDecoder =
     decode Model
+        |> required "currentDate" (nullable DateWrapper.cacheDecoder)
         |> required "user" (nullable User.cacheDecoder)
         |> required "route" Route.cacheDecoder
         |> required "homeComponent" HomeModel.cacheDecoder
