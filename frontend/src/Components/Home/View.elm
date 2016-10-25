@@ -406,12 +406,36 @@ goalsView model =
                                 []
                                 [ text category.name ]
                             , button
-                                [ onClick <| EditGoal editCategory ]
+                                [ hidden <| not editCategory.editingCategory
+                                , onClick <|
+                                    EditGoalSave
+                                        editCategory
+                                        category
+                                ]
+                                [ text "SAVE" ]
+                            , button
+                                [ hidden <| not editCategory.editingCategory
+                                , onClick <|
+                                    EditGoalCancel
+                                        editCategory
+                                        category
+                                ]
+                                [ text "CANCEL" ]
+                            , button
+                                [ hidden <| editCategory.editingCategory
+                                , onClick <| EditGoal editCategory
+                                ]
                                 [ text "EDIT" ]
                             , input
                                 [ disabled <| not editCategory.editingCategory
                                 , onInput <| EditGoalSpending editCategory
                                 , value editCategory.newGoalSpending
+                                ]
+                                []
+                            , input
+                                [ disabled <| not editCategory.editingCategory
+                                , onInput <| EditPerNumberOfDays editCategory
+                                , value editCategory.newPerNumberOfDays
                                 ]
                                 []
                             ]

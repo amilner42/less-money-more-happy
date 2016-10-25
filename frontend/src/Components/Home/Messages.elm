@@ -4,6 +4,7 @@ import Models.ApiError as ApiError
 import Models.User as User
 import Models.BasicResponse as BasicResponse
 import Models.EditCategory as EditCategory
+import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import Templates.Select as Select
 
 
@@ -40,3 +41,6 @@ type Msg
       --
     | EditGoal EditCategory.EditCategory
     | EditGoalSpending EditCategory.EditCategory String
+    | EditPerNumberOfDays EditCategory.EditCategory String
+    | EditGoalCancel EditCategory.EditCategory ExpenditureCategoryWithGoals.ExpenditureCategoryWithGoals
+    | EditGoalSave EditCategory.EditCategory ExpenditureCategoryWithGoals.ExpenditureCategoryWithGoals

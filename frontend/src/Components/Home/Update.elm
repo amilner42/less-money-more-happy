@@ -42,9 +42,6 @@ update msg model =
 
             OnLogOutFailure apiError ->
                 let
-                    homeComponent =
-                        model.homeComponent
-
                     newModel =
                         { model
                             | homeComponent =
@@ -329,3 +326,53 @@ update msg model =
                         }
                 in
                     ( newModel, Cmd.none )
+
+            EditPerNumberOfDays selectedEditCategory newPerNumberOfDays ->
+                let
+                    newEditCategories =
+                        Util.addOrUpdateList
+                            homeComponent.editCategories
+                            { selectedEditCategory
+                                | newPerNumberOfDays = newPerNumberOfDays
+                            }
+                            .categoryID
+
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | editCategories = newEditCategories
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            EditGoalCancel editCategory originalCategory ->
+                let
+                    updatedEditCategory =
+                        { editCategory
+                            | newGoalSpending =
+                                Maybe.withDefault "" originalCategory.goalSpending
+                            , newPerNumberOfDays =
+                                Maybe.withDefault "" originalCategory.perNumberOfDays
+                            , editingCategory = False
+                        }
+
+                    newEditCategories =
+                        Util.addOrUpdateList
+                            homeComponent.editCategories
+                            updatedEditCategory
+                            .categoryID
+
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | editCategories = newEditCategories
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            EditGoalSave editCategory originalCategory ->
+                toDo
