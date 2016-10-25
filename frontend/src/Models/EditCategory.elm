@@ -8,7 +8,7 @@ import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nul
 {-| The goals view needs to let users edit all the categories.
 -}
 type alias EditCategory =
-    { categoryID : String
+    { categoryID : Int
     , newGoalSpending : String
     , newPerNumberOfDays : String
     , editingCategory : Bool
@@ -20,7 +20,7 @@ type alias EditCategory =
 cacheEncoder : EditCategory -> Encode.Value
 cacheEncoder model =
     Encode.object
-        [ ( "categoryID", Encode.string model.categoryID )
+        [ ( "categoryID", Encode.int model.categoryID )
         , ( "newGoalSpending", Encode.string model.newGoalSpending )
         , ( "newPerNumberOfDays", Encode.string model.newPerNumberOfDays )
         , ( "editingCategory", Encode.bool model.editingCategory )
@@ -32,7 +32,7 @@ cacheEncoder model =
 cacheDecoder : Decode.Decoder EditCategory
 cacheDecoder =
     decode EditCategory
-        |> required "categoryID" Decode.string
+        |> required "categoryID" Decode.int
         |> required "newGoalSpending" Decode.string
         |> required "newPerNumberOfDays" Decode.string
         |> required "editingCategory" Decode.bool

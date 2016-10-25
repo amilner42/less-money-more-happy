@@ -133,3 +133,34 @@ upperCaseFirstChars string =
                     String.append (String.fromChar (Char.toUpper head)) tail
     in
         String.join " " <| List.map upperFirstChar <| String.words string
+
+
+{-| Using `identifyThing` as a basis for figuring out equality, updates all
+instances of `thing` in `listOfThing`, if no instances of `thing` were in
+`listOfThing`, adds `thing` to the list.
+
+Convenient when working with an empty list where you are either adding/updating
+elements. Eg.
+    [] --> [ {value: old, id: 1 } ] --> [ { value: new, id: 1}]
+-}
+addOrUpdateList : List a -> a -> (a -> b) -> List a
+addOrUpdateList listOfThing thing identifyThing =
+    let
+        identifiedThing =
+            identifyThing thing
+
+        updatedListOfThing =
+            listOfThing
+                |> List.map
+                    (\aThing ->
+                        if identifyThing aThing == identifiedThing then
+                            thing
+                        else
+                            aThing
+                    )
+    in
+        if updatedListOfThing == listOfThing then
+            -- Didnt update the list, item wasn't in list.
+            thing :: listOfThing
+        else
+            updatedListOfThing

@@ -387,14 +387,32 @@ goalsView model =
                     let
                         goalSpending =
                             Maybe.withDefault "" category.goalSpending
+
+                        editCategory =
+                            homeComponent.editCategories
+                                |> List.filter (\editCategory -> editCategory.categoryID == category.id)
+                                |> List.head
+                                |> (Maybe.withDefault
+                                        { categoryID = category.id
+                                        , newGoalSpending = (Maybe.withDefault "" category.goalSpending)
+                                        , newPerNumberOfDays = (Maybe.withDefault "" category.perNumberOfDays)
+                                        , editingCategory = False
+                                        }
+                                   )
                     in
                         div
                             [ class "goal-category" ]
                             [ h3
                                 []
                                 [ text category.name ]
+                            , button
+                                [ onClick <| EditGoal editCategory ]
+                                [ text "EDIT" ]
                             , input
-                                [ value goalSpending ]
+                                [ disabled <| not editCategory.editingCategory
+                                , onInput <| EditGoalSpending editCategory
+                                , value editCategory.newGoalSpending
+                                ]
                                 []
                             ]
                 )

@@ -2,6 +2,7 @@ module Components.Home.Update exposing (update)
 
 import DefaultServices.Router as Router
 import DefaultServices.LocalStorage as LocalStorage
+import DefaultServices.Util as Util
 import Components.Home.Messages exposing (Msg(..))
 import Components.Home.Init as HomeInit
 import Components.Welcome.Init as WelcomeInit
@@ -284,6 +285,46 @@ update msg model =
                             , homeComponent =
                                 { homeComponent
                                     | employerName = ""
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            EditGoal editCategory ->
+                let
+                    newEditCategories =
+                        Util.addOrUpdateList
+                            homeComponent.editCategories
+                            { editCategory
+                                | editingCategory = not editCategory.editingCategory
+                            }
+                            .categoryID
+
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | editCategories = newEditCategories
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            EditGoalSpending selectedEditCategory newGoalSpending ->
+                let
+                    newEditCategories =
+                        Util.addOrUpdateList
+                            homeComponent.editCategories
+                            { selectedEditCategory
+                                | newGoalSpending = newGoalSpending
+                            }
+                            .categoryID
+
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | editCategories = newEditCategories
                                 }
                         }
                 in

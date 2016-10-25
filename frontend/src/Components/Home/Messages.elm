@@ -3,6 +3,7 @@ module Components.Home.Messages exposing (Msg(..))
 import Models.ApiError as ApiError
 import Models.User as User
 import Models.BasicResponse as BasicResponse
+import Models.EditCategory as EditCategory
 import Templates.Select as Select
 
 
@@ -36,3 +37,6 @@ type Msg
     | AddEmployer
     | OnAddEmployerFailure ApiError.ApiError
     | OnAddEmployerSuccess User.User
+      --
+    | EditGoal EditCategory.EditCategory
+    | EditGoalSpending EditCategory.EditCategory String
