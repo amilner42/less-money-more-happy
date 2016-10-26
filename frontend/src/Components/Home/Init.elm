@@ -17,6 +17,10 @@ init =
     , expenditureError = Nothing
     , employerName = ""
     , employerNameError = Nothing
+    , addCategoryName = ""
+    , addCategoryGoalSpending = ""
+    , addCategoryGoalPerNumberOfDays = ""
+    , addCategoryError = Nothing
     , logOutError = Nothing
     , editCategories = []
     }

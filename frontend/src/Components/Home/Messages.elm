@@ -39,6 +39,13 @@ type Msg
     | OnAddEmployerFailure ApiError
     | OnAddEmployerSuccess User
       --
+    | OnAddCategoryNameInput String
+    | OnAddCategoryGoalSpendingInput String
+    | OnAddCategoryPerNumberOfDaysInput String
+    | AddCategory
+    | OnAddCategoryFailure ApiError
+    | OnAddCategorySuccess User
+      --
     | EditGoal EditCategory
     | OnEditGoalSpendingInput EditCategory String
     | OnEditPerNumberOfDaysInput EditCategory String

@@ -22,6 +22,10 @@ type alias Model =
     , expenditureError : Maybe ApiError.ApiError
     , employerName : String
     , employerNameError : Maybe ApiError.ApiError
+    , addCategoryName : String
+    , addCategoryGoalSpending : String
+    , addCategoryGoalPerNumberOfDays : String
+    , addCategoryError : Maybe ApiError.ApiError
     , logOutError : Maybe ApiError.ApiError
     , editCategories : List EditCategory.EditCategory
     }
@@ -42,6 +46,10 @@ cacheEncoder model =
         , ( "expenditureError", Encode.null )
         , ( "employerName", Encode.string model.employerName )
         , ( "employerNameError", Encode.null )
+        , ( "addCategoryName", Encode.string model.addCategoryName )
+        , ( "addCategoryGoalSpending", Encode.string model.addCategoryGoalSpending )
+        , ( "addCategoryGoalPerNumberOfDays", Encode.string model.addCategoryGoalPerNumberOfDays )
+        , ( "addCategoryError", Encode.null )
         , ( "logOutError", Encode.null )
         , ( "editCategories", Util.encodeList EditCategory.cacheEncoder model.editCategories )
         ]
@@ -61,6 +69,10 @@ cacheDecoder =
         |> required "expenditureCategoryIDSelectOpen" Decode.bool
         |> hardcoded Nothing
         |> required "employerName" Decode.string
+        |> hardcoded Nothing
+        |> required "addCategoryName" Decode.string
+        |> required "addCategoryGoalSpending" Decode.string
+        |> required "addCategoryGoalPerNumberOfDays" Decode.string
         |> hardcoded Nothing
         |> hardcoded Nothing
         |> required "editCategories" (Decode.list EditCategory.cacheDecoder)

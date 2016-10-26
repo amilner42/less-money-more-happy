@@ -275,6 +275,12 @@ mainView model =
         validEmployerNameForm =
             (homeComponent.employerName /= "")
                 && (Util.isNothing homeComponent.employerNameError)
+
+        validAddCategoryForm =
+            (homeComponent.addCategoryName /= "")
+                && (homeComponent.addCategoryGoalSpending /= "")
+                && (homeComponent.addCategoryGoalPerNumberOfDays /= "")
+                && (homeComponent.addCategoryError |> Util.isNothing)
     in
         div []
             [ h1
@@ -353,6 +359,33 @@ mainView model =
                     )
                     homeComponent.expenditureCategoryIDSelectOpen
                     user.categoriesWithGoals
+                , div
+                    [ class "lower-bar" ]
+                    [ button
+                        [ onClick <| AddCategory
+                        , disabled <| not validAddCategoryForm
+                        ]
+                        [ text "ADD CATEGORY" ]
+                    , input
+                        [ onInput <| OnAddCategoryNameInput
+                        , placeholder "Name"
+                        , value homeComponent.addCategoryName
+                        ]
+                        []
+                    , input
+                        [ onInput <| OnAddCategoryGoalSpendingInput
+                        , placeholder "Goal $"
+                        , value homeComponent.addCategoryGoalSpending
+                        ]
+                        []
+                    , input
+                        [ onInput <| OnAddCategoryPerNumberOfDaysInput
+                        , placeholder "Per Days"
+                        , value homeComponent.addCategoryGoalPerNumberOfDays
+                        ]
+                        []
+                    , ErrorBox.errorBox homeComponent.addCategoryError
+                    ]
                 , ErrorBox.errorBox homeComponent.expenditureError
                 ]
             , hr

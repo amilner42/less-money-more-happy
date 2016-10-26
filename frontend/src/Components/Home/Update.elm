@@ -438,3 +438,51 @@ update msg model =
                         }
                 in
                     ( newModel, Cmd.none )
+
+            OnAddCategoryNameInput newName ->
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | addCategoryName = newName
+                                    , addCategoryError = Nothing
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            OnAddCategoryGoalSpendingInput newGoalSpending ->
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | addCategoryGoalSpending = newGoalSpending
+                                    , addCategoryError = Nothing
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            OnAddCategoryPerNumberOfDaysInput newPerNumberOfDays ->
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | addCategoryGoalPerNumberOfDays = newPerNumberOfDays
+                                    , addCategoryError = Nothing
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
+            AddCategory ->
+                toDo
+
+            OnAddCategoryFailure apiError ->
+                toDo
+
+            OnAddCategorySuccess user ->
+                toDo
