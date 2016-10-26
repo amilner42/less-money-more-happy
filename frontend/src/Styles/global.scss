@@ -3,6 +3,8 @@
 
 html, body, #main {
   @include full-screen-absolute();
+  font-family: 'Trirong', serif;
+  background-color: #F2F2F2;
 }
 
 .input-error-highlight {
@@ -30,19 +32,27 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
 }
 
+a {
+  color: $link-color1;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 // Placeholder colors.
 ::-webkit-input-placeholder {
-   color: white;
+  color: $placeholder-color1;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: white;
+  color: $placeholder-color1;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: white;
+  color: $placeholder-color1;
 }
 
 ::-ms-input-placeholder {
-   color: white;
+  color: $placeholder-color1;
 }

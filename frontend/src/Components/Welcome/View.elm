@@ -1,6 +1,6 @@
 module Components.Welcome.View exposing (view)
 
-import Html exposing (Html, div, text, button, h1, input, form, a, img)
+import Html exposing (Html, div, text, button, h1, input, form, a, img, span)
 import Html.Attributes exposing (class, placeholder, type', value, hidden, disabled, src)
 import Html.Events exposing (onClick, onInput)
 import Components.Model exposing (LoggedOutModel)
@@ -21,11 +21,18 @@ view model =
         Nothing
         (div
             []
-            [ img
-                [ class "welcome-title"
-                , src "/images/welcome-title.png"
+            [ div
+                [ class "welcome-title" ]
+                [ span
+                    [ class "green" ]
+                    [ text "LESSMONEY" ]
+                , span
+                    [ class "blue" ]
+                    [ text "MOREHAPPY" ]
                 ]
-                []
+            , div
+                [ class "sub-title" ]
+                [ text "TRACK. SAVE. ENJOY" ]
             , displayViewForRoute model
             ]
         )
@@ -65,9 +72,6 @@ loginView model =
         div
             []
             [ div
-                [ class "sub-title" ]
-                [ text "Login" ]
-            , div
                 [ class "welcome-form" ]
                 [ input
                     [ class <| inputErrorClassIf <| highlightEmail
@@ -133,9 +137,6 @@ registerView model =
         div
             []
             [ div
-                [ class "sub-title" ]
-                [ text "Register" ]
-            , div
                 [ class "welcome-form" ]
                 [ input
                     [ class <| inputErrorClassIf <| highlightEmail

@@ -4,31 +4,45 @@
 
 .welcome-component-wrapper {
   @include full-screen-absolute();
+  background-color: #F2F2F2;
 
   .welcome-component {
     @include absolutely-centered-min-box();
-    background-color: white;
     border-radius: 5px;
 
     text-align: center;
 
     .welcome-title {
-      width: 310px;
-      padding-top: 30px;
+      font-family: 'Roboto Slab', serif;
+      font-weight: bold;
+      font-size: 30px;
+      width: 440px;
+      padding-top: 50px;
+      margin-left: -60px;
+      margin-bottom: 10px;
+
+      .blue {
+        color: $color1;
+      }
+
+      .green {
+        color: $color2;
+      }
     }
 
     .sub-title {
-      color: $color2;
-      margin-bottom: 15px;
+      font-family: 'Roboto Slab', serif;
+      color: $color4;
+      margin-bottom: 20px;
+      font-weight: bold;
     }
 
     .welcome-form {
       $form-width: 270px;
 
       input {
-        border: 1px solid $color3;
-        background-color: $color5;
-        color: white;
+        background-color: white;
+        border: none;
         display: block;
         text-align: center;
         margin: auto;
@@ -45,7 +59,7 @@
         font-size: 16px;
         width: $form-width;
         margin: auto;
-        color: $color2;
+        color: white;
         background-color: $color3;
         border-radius: 3px;
         border: none;
@@ -60,8 +74,26 @@
       display: block;
       position: relative;
       margin-top: 10px;
-      color: $link-color1;
+      font-size: 16px;
       text-decoration: underline;
+    }
+
+    @media screen and (max-width: 440px) {
+      .welcome-title {
+        width: 310px;
+        font-size: 26px;
+        margin-left: 0;
+      }
+    }
+
+    @media screen and (max-width: 370px) {
+      .welcome-title {
+        font-size: 22px;
+      }
+
+      .sub-title {
+        font-size: 14px;
+      }
     }
   }
 }
