@@ -64,8 +64,8 @@ export type expenditureCategoryWithGoals = {
   id: frontendID;
   name: string;
   colorID: mongoID;
-  goalSpending?: number;
-  perNumberOfDays?: number;
+  goalSpending?: string;
+  perNumberOfDays?: string;
 };
 
 

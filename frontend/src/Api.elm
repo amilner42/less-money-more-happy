@@ -8,6 +8,7 @@ module Api
         , postAccountCategories
         , postAccountCategoriesWithGoals
         , postUpdateCategory
+        , postAddCategory
         , postExpenditure
         , postEarning
         , postEmployer
@@ -31,6 +32,7 @@ import Models.ExpenditureCategory as ExpenditureCategory
 import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import Models.Colour as Colour
 import Models.PostUpdateCategory as PostUpdateCategory
+import Models.PostAddCategory as PostAddCategory
 import Components.Messages exposing (Msg)
 import DefaultServices.Util as Util
 
@@ -153,3 +155,13 @@ postUpdateCategory postUpdateCategory =
         (apiBaseUrl ++ "account/updateCategory")
         User.decoder
         (Util.toJsonString PostUpdateCategory.encoder postUpdateCategory)
+
+
+{-| Adds a category for a user.
+-}
+postAddCategory : PostAddCategory.PostAddCategory -> (ApiError.ApiError -> a) -> (User.User -> a) -> Cmd a
+postAddCategory postAddCategory =
+    HttpService.post
+        (apiBaseUrl ++ "account/addCategory")
+        User.decoder
+        (Util.toJsonString PostAddCategory.encoder postAddCategory)

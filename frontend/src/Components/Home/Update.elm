@@ -479,10 +479,38 @@ update msg model =
                     ( newModel, Cmd.none )
 
             AddCategory ->
-                toDo
+                let
+                    postAddCategory =
+                        { newName = homeComponent.addCategoryName
+                        , newGoalSpending = homeComponent.addCategoryGoalSpending
+                        , newPerNumberOfDays = homeComponent.addCategoryGoalPerNumberOfDays
+                        }
+                in
+                    ( model, Api.postAddCategory postAddCategory OnAddCategoryFailure OnAddCategorySuccess )
 
             OnAddCategoryFailure apiError ->
-                toDo
+                let
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | addCategoryError = Just apiError
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
 
             OnAddCategorySuccess user ->
-                toDo
+                let
+                    newModel =
+                        { model
+                            | user = Just user
+                            , homeComponent =
+                                { homeComponent
+                                    | addCategoryName = ""
+                                    , addCategoryGoalSpending = ""
+                                    , addCategoryGoalPerNumberOfDays = ""
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )

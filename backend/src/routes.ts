@@ -277,7 +277,7 @@ export const routes: appRoutes = {
         return Users.save(user);
       })
       .then(() => {
-        res.status(200).json(user);
+        res.status(200).json(userModel.stripSensitiveDataForResponse(user));
       })
       .catch((error) => {
         return prepareErrorForFrontend(error)
@@ -347,8 +347,8 @@ export const routes: appRoutes = {
           const newCategory: expenditureCategoryWithGoals = {
             id: newID,
             name: postAddCategory.newName,
-            goalSpending: parseFloat(postAddCategory.newGoalSpending),
-            perNumberOfDays: parseInt(postAddCategory.newPerNumberOfDays),
+            goalSpending: postAddCategory.newGoalSpending,
+            perNumberOfDays: postAddCategory.newPerNumberOfDays,
             colorID: color._id
           }
 
@@ -360,7 +360,7 @@ export const routes: appRoutes = {
 
             return Users.save(user)
             .then(() => {
-              res.status(200).json(user);
+              res.status(200).json(userModel.stripSensitiveDataForResponse(user));
             });
           });
         });

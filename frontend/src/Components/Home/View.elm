@@ -376,12 +376,14 @@ mainView model =
                         [ onInput <| OnAddCategoryGoalSpendingInput
                         , placeholder "Goal $"
                         , value homeComponent.addCategoryGoalSpending
+                        , type' "number"
                         ]
                         []
                     , input
                         [ onInput <| OnAddCategoryPerNumberOfDaysInput
                         , placeholder "Per Days"
                         , value homeComponent.addCategoryGoalPerNumberOfDays
+                        , type' "number"
                         ]
                         []
                     , ErrorBox.errorBox homeComponent.addCategoryError
