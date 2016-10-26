@@ -5,3 +5,4 @@ export * from './post-expenditure.model';
 export * from './post-earning.model';
 export * from './post-employer.model';
 export * from './post-update-category.model'
+export * from './post-add-category.model';

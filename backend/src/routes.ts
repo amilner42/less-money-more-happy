@@ -13,7 +13,9 @@ import {
   postExpenditureType,
   postEarningType,
   postEmployerType,
-  postUpdateCategory } from './models/';
+  postUpdateCategory,
+  postAddCategory,
+  postAddCategoryType} from './models/';
 import {
   appRoutes,
   errorCodes,
@@ -283,6 +285,93 @@ export const routes: appRoutes = {
           res.status(400).json(error);
         });
       })
+    }
+  },
+
+  '/account/addCategory': {
+    /**
+     * Adds a category for the user, on top of the normal data validation makes
+     * sure that the category name isn't already used and also handles assigning
+     * a new color to the category.
+     */
+    post: (req, res) => {
+      const user: user = req.user;
+      const postAddCategory: postAddCategory = req.body;
+
+      return validModel(postAddCategory, postAddCategoryType)
+      .then(() => {
+        for(let category of user.categoriesWithGoals) {
+          const name = category.name;
+
+          if(name == postAddCategory.newName) {
+            return Promise.reject({
+              message: "Category already exists",
+              errorCode: errorCodes.invalidAddCategory
+            });
+          }
+        }
+
+        return;
+      })
+      .then(() => {
+        return collection('colors')
+        .then((Colors) => {
+          return Colors.find({}).toArray();
+        })
+        .then((allColors: color[]) => {
+          // Checks if the user is already using a color.
+          const userHasColor = (color: color): boolean => {
+            for(let userCategory of user.categoriesWithGoals) {
+              if(userCategory.colorID == color._id) {
+                return true;
+              }
+            }
+
+            return false;
+          }
+
+          // Find a color that the user does't already have.
+          for(let color of allColors) {
+            if(!userHasColor(color)) {
+              return color;
+            }
+          }
+
+          // If for some reason the user has all the colors, simply return the
+          // first color in the list (should never happen).
+          return allColors[0];
+        })
+        .then((color: color) => {
+          const userCategories = user.categoriesWithGoals || [];
+          const newID = userCategories.length + 1;
+          const newCategory: expenditureCategoryWithGoals = {
+            id: newID,
+            name: postAddCategory.newName,
+            goalSpending: parseFloat(postAddCategory.newGoalSpending),
+            perNumberOfDays: parseInt(postAddCategory.newPerNumberOfDays),
+            colorID: color._id
+          }
+
+          // Save the new category.
+          return collection('users')
+          .then((Users) => {
+            userCategories.push(newCategory);
+            user.categoriesWithGoals = userCategories;
+
+            return Users.save(user)
+            .then(() => {
+              res.status(200).json(user);
+            });
+          });
+        });
+      })
+      .catch((error) => {
+        return prepareErrorForFrontend(error)
+        .then((error) => {
+          res.status(400).json(error);
+          return;
+        });
+      });
     }
   },
 
