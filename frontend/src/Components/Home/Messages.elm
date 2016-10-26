@@ -1,11 +1,11 @@
 module Components.Home.Messages exposing (Msg(..))
 
-import Models.ApiError as ApiError
-import Models.User as User
-import Models.BasicResponse as BasicResponse
-import Models.EditCategory as EditCategory
-import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
-import Templates.Select as Select
+import Models.ApiError exposing (ApiError)
+import Models.User exposing (User)
+import Models.BasicResponse exposing (BasicResponse)
+import Models.EditCategory exposing (EditCategory)
+import Models.ExpenditureCategoryWithGoals exposing (ExpenditureCategoryWithGoals)
+import Templates.Select exposing (SelectMessage)
 
 
 {-| Home Component Msg.
@@ -17,30 +17,32 @@ type Msg
     | GoToStatsView
       --
     | LogOut
-    | OnLogOutFailure ApiError.ApiError
-    | OnLogOutSuccess BasicResponse.BasicResponse
+    | OnLogOutFailure ApiError
+    | OnLogOutSuccess BasicResponse
       --
     | OnExpenditureCostInput String
     | OnExpenditureCategoryIDSelect String
-    | OnExpenditureSelectAction Select.SelectMessage
+    | OnExpenditureSelectAction SelectMessage
     | AddExpenditure
-    | OnAddExpenditureSuccess User.User
-    | OnAddExpenditureFailure ApiError.ApiError
+    | OnAddExpenditureSuccess User
+    | OnAddExpenditureFailure ApiError
       --
     | OnEarningAmountInput String
     | OnEarningEmployerIDSelect String
-    | OnEarningSelectAction Select.SelectMessage
+    | OnEarningSelectAction SelectMessage
     | AddEarning
-    | OnAddEarningFailure ApiError.ApiError
-    | OnAddEarningSuccess User.User
+    | OnAddEarningFailure ApiError
+    | OnAddEarningSuccess User
       --
     | OnAddEmployerInput String
     | AddEmployer
-    | OnAddEmployerFailure ApiError.ApiError
-    | OnAddEmployerSuccess User.User
+    | OnAddEmployerFailure ApiError
+    | OnAddEmployerSuccess User
       --
-    | EditGoal EditCategory.EditCategory
-    | EditGoalSpending EditCategory.EditCategory String
-    | EditPerNumberOfDays EditCategory.EditCategory String
-    | EditGoalCancel EditCategory.EditCategory ExpenditureCategoryWithGoals.ExpenditureCategoryWithGoals
-    | EditGoalSave EditCategory.EditCategory ExpenditureCategoryWithGoals.ExpenditureCategoryWithGoals
+    | EditGoal EditCategory
+    | EditGoalSpending EditCategory String
+    | EditPerNumberOfDays EditCategory String
+    | EditGoalCancel EditCategory ExpenditureCategoryWithGoals
+    | EditGoalSave EditCategory
+    | OnEditGoalSaveFailure EditCategory ApiError
+    | OnEditGoalSaveSuccess EditCategory User

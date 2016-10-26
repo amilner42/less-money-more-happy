@@ -29,7 +29,7 @@ export const postUpdateCategory: structures.interfaceStructure = {
     },
     "newGoalSpending": {
       typeCategory: structures.typeCategory.primitive,
-      type: structures.primitiveType.number,
+      type: structures.primitiveType.string,
       restriction: (newGoalSpending) => {
         if(isNullOrUndefined(newGoalSpending)) {
           return Promise.reject({
@@ -48,7 +48,7 @@ export const postUpdateCategory: structures.interfaceStructure = {
     },
     "newPerNumberOfDays": {
       typeCategory: structures.typeCategory.primitive,
-      type: structures.primitiveType.number,
+      type: structures.primitiveType.string,
       restriction: (newPerNumberOfDays) => {
         if(isNullOrUndefined(newPerNumberOfDays)) {
           return Promise.reject({

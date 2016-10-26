@@ -407,10 +407,7 @@ goalsView model =
                                 [ text category.name ]
                             , button
                                 [ hidden <| not editCategory.editingCategory
-                                , onClick <|
-                                    EditGoalSave
-                                        editCategory
-                                        category
+                                , onClick <| EditGoalSave editCategory
                                 ]
                                 [ text "SAVE" ]
                             , button

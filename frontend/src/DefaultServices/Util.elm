@@ -146,21 +146,33 @@ elements. Eg.
 addOrUpdateList : List a -> a -> (a -> b) -> List a
 addOrUpdateList listOfThing thing identifyThing =
     let
-        identifiedThing =
-            identifyThing thing
-
         updatedListOfThing =
-            listOfThing
-                |> List.map
-                    (\aThing ->
-                        if identifyThing aThing == identifiedThing then
-                            thing
-                        else
-                            aThing
-                    )
+            updateList
+                listOfThing
+                thing
+                identifyThing
     in
         if updatedListOfThing == listOfThing then
             -- Didnt update the list, item wasn't in list.
             thing :: listOfThing
         else
             updatedListOfThing
+
+
+{-| Refer to `addOrUpdateList`, this is the same except it doesn't add it to the
+list if it wasn't in the list before, it simply returns the same unchanged list.
+-}
+updateList : List a -> a -> (a -> b) -> List a
+updateList listOfThing thing identifyThing =
+    let
+        identifiedThing =
+            identifyThing thing
+    in
+        List.map
+            (\aThing ->
+                if identifyThing aThing == identifiedThing then
+                    thing
+                else
+                    aThing
+            )
+            listOfThing

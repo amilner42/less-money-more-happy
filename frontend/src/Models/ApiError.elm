@@ -31,10 +31,9 @@ import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nul
      invalidCategoriesWithGoals,
      invalidExpenditure,
      invalidEarning,
-     invalidEmployer
+     invalidEmployer,
+     invalidUpdateCategory
    }
-
-
 -}
 
 
@@ -62,6 +61,7 @@ type ApiError
     | InvalidExpenditure
     | InvalidEarning
     | InvalidEmployer
+    | InvalidUpdateCategory
 
 
 {-| An error from the backend still in Json form.
@@ -144,6 +144,9 @@ humanReadable apiError =
         InvalidEmployer ->
             "Please enter a valid employer name!"
 
+        InvalidUpdateCategory ->
+            "Please enter a valid goal!"
+
 
 {-| Turns an errorCode integer from the backend to it's respective ApiError.
 -}
@@ -203,6 +206,9 @@ fromErrorCode errorCode =
 
         18 ->
             InvalidEmployer
+
+        19 ->
+            InvalidUpdateCategory
 
         _ ->
             InternalError

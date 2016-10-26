@@ -374,5 +374,44 @@ update msg model =
                 in
                     ( newModel, Cmd.none )
 
-            EditGoalSave editCategory originalCategory ->
+            EditGoalSave editCategory ->
+                let
+                    postUpdateCategory =
+                        { categoryID = editCategory.categoryID
+                        , newGoalSpending = editCategory.newGoalSpending
+                        , newPerNumberOfDays = editCategory.newPerNumberOfDays
+                        }
+                in
+                    ( model
+                    , Api.postUpdateCategory
+                        postUpdateCategory
+                        (OnEditGoalSaveFailure editCategory)
+                        (OnEditGoalSaveSuccess editCategory)
+                    )
+
+            OnEditGoalSaveFailure editCategory apiError ->
                 toDo
+
+            OnEditGoalSaveSuccess editCategory user ->
+                let
+                    newEditCategory =
+                        { editCategory
+                            | editingCategory = False
+                        }
+
+                    newEditCategories =
+                        Util.updateList
+                            homeComponent.editCategories
+                            newEditCategory
+                            .categoryID
+
+                    newModel =
+                        { model
+                            | user = Just user
+                            , homeComponent =
+                                { homeComponent
+                                    | editCategories = newEditCategories
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )

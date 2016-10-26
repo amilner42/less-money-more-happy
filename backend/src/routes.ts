@@ -278,7 +278,7 @@ export const routes: appRoutes = {
         res.status(200).json(user);
       })
       .catch((error) => {
-        prepareErrorForFrontend(error)
+        return prepareErrorForFrontend(error)
         .then((error) => {
           res.status(400).json(error);
         });

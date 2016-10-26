@@ -7,6 +7,7 @@ module Api
         , postAccountBalance
         , postAccountCategories
         , postAccountCategoriesWithGoals
+        , postUpdateCategory
         , postExpenditure
         , postEarning
         , postEmployer
@@ -29,6 +30,7 @@ import Models.PostEmployer as PostEmployer
 import Models.ExpenditureCategory as ExpenditureCategory
 import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
 import Models.Colour as Colour
+import Models.PostUpdateCategory as PostUpdateCategory
 import Components.Messages exposing (Msg)
 import DefaultServices.Util as Util
 
@@ -141,3 +143,13 @@ postEmployer employer =
         (apiBaseUrl ++ "account/addEmployer")
         User.decoder
         (Util.toJsonString PostEmployer.encoder employer)
+
+
+{-| Upates the goals for an existing category.
+-}
+postUpdateCategory : PostUpdateCategory.PostUpdateCategory -> (ApiError.ApiError -> a) -> (User.User -> a) -> Cmd a
+postUpdateCategory postUpdateCategory =
+    HttpService.post
+        (apiBaseUrl ++ "account/updateCategory")
+        User.decoder
+        (Util.toJsonString PostUpdateCategory.encoder postUpdateCategory)
