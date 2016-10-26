@@ -4,3 +4,4 @@ export * from './expenditure-category-with-goals.model';
 export * from './post-expenditure.model';
 export * from './post-earning.model';
 export * from './post-employer.model';
+export * from './post-update-category.model'

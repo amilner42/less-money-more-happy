@@ -275,7 +275,8 @@ export enum errorCodes {
   invalidCategoriesWithGoals,
   invalidExpenditure,
   invalidEarning,
-  invalidEmployer
+  invalidEmployer,
+  invalidUpdateCategory
 }
 
 

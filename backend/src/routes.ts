@@ -12,7 +12,8 @@ import {
   validExpenditureCategoryWithGoalsArray,
   postExpenditureType,
   postEarningType,
-  postEmployerType } from './models/';
+  postEmployerType,
+  postUpdateCategory } from './models/';
 import {
   appRoutes,
   errorCodes,
@@ -244,6 +245,44 @@ export const routes: appRoutes = {
           res.status(400).json(error);
         });
       });
+    }
+  },
+
+  '/account/updateCategory': {
+    /**
+     * Updates a single category of the users.
+     */
+    post: (req, res) => {
+      const user: user = req.user;
+      const updatedCategory = req.body;
+
+      return validModel(updatedCategory, postUpdateCategory)
+      .then(() => {
+        for(let category of user.categoriesWithGoals || []) {
+          if(category.id == updatedCategory.categoryID) {
+            category.goalSpending = updatedCategory.newGoalSpending;
+            category.perNumberOfDays = updatedCategory.newPerNumberOfDays;
+            return collection('users');
+          }
+        }
+
+        return Promise.reject({
+          message: "No user category had that ID!",
+          errorCode: errorCodes.invalidUpdateCategory
+        });
+      })
+      .then((Users) => {
+        return Users.save(user);
+      })
+      .then(() => {
+        res.status(200).json(user);
+      })
+      .catch((error) => {
+        prepareErrorForFrontend(error)
+        .then((error) => {
+          res.status(400).json(error);
+        });
+      })
     }
   },
 
