@@ -38,11 +38,12 @@ settingCurrentBalanceView model =
     in
         div
             [ class "new-header" ]
-            [ h2
-                []
+            [ div
+                [ class "new-title" ]
                 [ text "Your Current Balance" ]
             , input
-                [ placeholder "Eg. 839.49 or 20000"
+                [ class <| Util.withErrorClassIf "" <| Util.isNotNothing currentBalanceError
+                , placeholder "Eg. 839.49 or 20000"
                 , onInput OnCurrentBalanceInput
                 , value currentBalance
                 , type' "number"

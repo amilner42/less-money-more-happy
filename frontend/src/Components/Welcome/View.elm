@@ -38,13 +38,6 @@ view model =
         )
 
 
-{-| If hightlight error returns the css class for input errors.
--}
-inputErrorClassIf : Bool -> String
-inputErrorClassIf highlightError =
-    Util.withClassesIf "" "input-error-highlight" highlightError
-
-
 {-| The welcome login view
 -}
 loginView : LoggedOutModel -> Html Msg
@@ -74,14 +67,14 @@ loginView model =
             [ div
                 [ class "welcome-form" ]
                 [ input
-                    [ class <| inputErrorClassIf <| highlightEmail
+                    [ class <| Util.withErrorClassIf "" highlightEmail
                     , placeholder "Email"
                     , onInput OnEmailInput
                     , value model.welcomeComponent.email
                     ]
                     []
                 , input
-                    [ class <| inputErrorClassIf <| hightlightPassword
+                    [ class <| Util.withErrorClassIf "" hightlightPassword
                     , placeholder "Password"
                     , type' "password"
                     , onInput OnPasswordInput
@@ -139,14 +132,14 @@ registerView model =
             [ div
                 [ class "welcome-form" ]
                 [ input
-                    [ class <| inputErrorClassIf <| highlightEmail
+                    [ class <| Util.withErrorClassIf "" highlightEmail
                     , placeholder "Email"
                     , onInput OnEmailInput
                     , value model.welcomeComponent.email
                     ]
                     []
                 , input
-                    [ class <| inputErrorClassIf <| hightlightPassword
+                    [ class <| Util.withErrorClassIf "" hightlightPassword
                     , placeholder "Password"
                     , type' "password"
                     , onInput OnPasswordInput
@@ -154,7 +147,7 @@ registerView model =
                     ]
                     []
                 , input
-                    [ class <| inputErrorClassIf <| hightlightPassword
+                    [ class <| Util.withErrorClassIf "" hightlightPassword
                     , placeholder "Confirm Password"
                     , type' "password"
                     , onInput OnConfirmPasswordInput

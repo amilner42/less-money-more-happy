@@ -176,3 +176,11 @@ updateList listOfThing thing identifyThing =
                     aThing
             )
             listOfThing
+
+
+{-| Tiny wrapper around `withClassIf` designed for applying the global error
+class on inputs.
+-}
+withErrorClassIf : String -> Bool -> String
+withErrorClassIf permanentClasses highlightError =
+    withClassesIf permanentClasses "input-error-highlight" highlightError
