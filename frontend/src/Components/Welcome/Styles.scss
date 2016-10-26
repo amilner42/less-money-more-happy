@@ -4,7 +4,6 @@
 
 .welcome-component-wrapper {
   @include full-screen-absolute();
-  background-color: #F2F2F2;
 
   .welcome-component {
     @include absolutely-centered-min-box();
@@ -17,9 +16,9 @@
       font-weight: bold;
       font-size: 30px;
       width: 440px;
-      padding-top: 50px;
+      padding-top: 55px;
       margin-left: -60px;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
 
       .blue {
         color: $color1;
@@ -49,7 +48,7 @@
         width: $form-width;
         height: 53px;
         border-radius: 5px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         font-size: 20px;
       }
 
