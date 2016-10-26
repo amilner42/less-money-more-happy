@@ -3,6 +3,8 @@ module Models.EditCategory exposing (EditCategory, cacheEncoder, cacheDecoder)
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
 import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
+import Models.ApiError as ApiError
+import DefaultServices.Util as Util
 
 
 {-| The goals view needs to let users edit all the categories.
@@ -12,6 +14,7 @@ type alias EditCategory =
     , newGoalSpending : String
     , newPerNumberOfDays : String
     , editingCategory : Bool
+    , error : Maybe ApiError.ApiError
     }
 
 
@@ -24,6 +27,7 @@ cacheEncoder model =
         , ( "newGoalSpending", Encode.string model.newGoalSpending )
         , ( "newPerNumberOfDays", Encode.string model.newPerNumberOfDays )
         , ( "editingCategory", Encode.bool model.editingCategory )
+        , ( "error", Encode.null )
         ]
 
 
@@ -36,3 +40,4 @@ cacheDecoder =
         |> required "newGoalSpending" Decode.string
         |> required "newPerNumberOfDays" Decode.string
         |> required "editingCategory" Decode.bool
+        |> hardcoded Nothing

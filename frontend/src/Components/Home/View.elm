@@ -397,6 +397,7 @@ goalsView model =
                                         , newGoalSpending = (Maybe.withDefault "" category.goalSpending)
                                         , newPerNumberOfDays = (Maybe.withDefault "" category.perNumberOfDays)
                                         , editingCategory = False
+                                        , error = Nothing
                                         }
                                    )
                     in
@@ -405,8 +406,10 @@ goalsView model =
                             [ h3
                                 []
                                 [ text category.name ]
+                            , ErrorBox.errorBox editCategory.error
                             , button
                                 [ hidden <| not editCategory.editingCategory
+                                , disabled <| Util.isNotNothing editCategory.error
                                 , onClick <| EditGoalSave editCategory
                                 ]
                                 [ text "SAVE" ]
@@ -425,13 +428,13 @@ goalsView model =
                                 [ text "EDIT" ]
                             , input
                                 [ disabled <| not editCategory.editingCategory
-                                , onInput <| EditGoalSpending editCategory
+                                , onInput <| OnEditGoalSpendingInput editCategory
                                 , value editCategory.newGoalSpending
                                 ]
                                 []
                             , input
                                 [ disabled <| not editCategory.editingCategory
-                                , onInput <| EditPerNumberOfDays editCategory
+                                , onInput <| OnEditPerNumberOfDaysInput editCategory
                                 , value editCategory.newPerNumberOfDays
                                 ]
                                 []

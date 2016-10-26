@@ -307,13 +307,14 @@ update msg model =
                 in
                     ( newModel, Cmd.none )
 
-            EditGoalSpending selectedEditCategory newGoalSpending ->
+            OnEditGoalSpendingInput selectedEditCategory newGoalSpending ->
                 let
                     newEditCategories =
                         Util.addOrUpdateList
                             homeComponent.editCategories
                             { selectedEditCategory
                                 | newGoalSpending = newGoalSpending
+                                , error = Nothing
                             }
                             .categoryID
 
@@ -327,13 +328,14 @@ update msg model =
                 in
                     ( newModel, Cmd.none )
 
-            EditPerNumberOfDays selectedEditCategory newPerNumberOfDays ->
+            OnEditPerNumberOfDaysInput selectedEditCategory newPerNumberOfDays ->
                 let
                     newEditCategories =
                         Util.addOrUpdateList
                             homeComponent.editCategories
                             { selectedEditCategory
                                 | newPerNumberOfDays = newPerNumberOfDays
+                                , error = Nothing
                             }
                             .categoryID
 
@@ -349,19 +351,20 @@ update msg model =
 
             EditGoalCancel editCategory originalCategory ->
                 let
-                    updatedEditCategory =
+                    newEditCategory =
                         { editCategory
                             | newGoalSpending =
                                 Maybe.withDefault "" originalCategory.goalSpending
                             , newPerNumberOfDays =
                                 Maybe.withDefault "" originalCategory.perNumberOfDays
                             , editingCategory = False
+                            , error = Nothing
                         }
 
                     newEditCategories =
                         Util.addOrUpdateList
                             homeComponent.editCategories
-                            updatedEditCategory
+                            newEditCategory
                             .categoryID
 
                     newModel =
@@ -390,7 +393,27 @@ update msg model =
                     )
 
             OnEditGoalSaveFailure editCategory apiError ->
-                toDo
+                let
+                    newEditCategory =
+                        { editCategory
+                            | error = Just apiError
+                        }
+
+                    newEditCategories =
+                        Util.updateList
+                            homeComponent.editCategories
+                            newEditCategory
+                            .categoryID
+
+                    newModel =
+                        { model
+                            | homeComponent =
+                                { homeComponent
+                                    | editCategories = newEditCategories
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
 
             OnEditGoalSaveSuccess editCategory user ->
                 let

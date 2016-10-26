@@ -40,8 +40,8 @@ type Msg
     | OnAddEmployerSuccess User
       --
     | EditGoal EditCategory
-    | EditGoalSpending EditCategory String
-    | EditPerNumberOfDays EditCategory String
+    | OnEditGoalSpendingInput EditCategory String
+    | OnEditPerNumberOfDaysInput EditCategory String
     | EditGoalCancel EditCategory ExpenditureCategoryWithGoals
     | EditGoalSave EditCategory
     | OnEditGoalSaveFailure EditCategory ApiError
