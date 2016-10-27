@@ -11,18 +11,7 @@
     text-align: center;
 
     button {
-      display: block;
-      height: 30px;
-      width: 270px;
-      margin: auto;
-      color: white;
-      background-color: $color3;
-      border: none;
-      font-size: 15px;
-
-      &:disabled {
-          cursor: not-allowed;
-      }
+      @include stanard-button();
     }
 
     .selected-categories-title {

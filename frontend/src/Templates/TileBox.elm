@@ -17,19 +17,23 @@ tileBox maybeListOfItems listOfSelectedItems itemToString alphabetical =
                 itemSelected =
                     List.member listItem listOfSelectedItems
 
-                itemHtmlList =
+                itemHtml =
                     if itemSelected then
-                        [ Util.relativeBox <| Util.googleIcon "done" "item-checkmark"
-                        , text <| itemToString listItem
-                        ]
+                        div
+                            [ class "tile tile-selected"
+                            , onClick <| listItem
+                            ]
+                            [ Util.relativeBox <| Util.googleIcon "done" "item-checkmark"
+                            , text <| itemToString listItem
+                            ]
                     else
-                        [ text <| itemToString listItem ]
+                        div
+                            [ class "tile"
+                            , onClick <| listItem
+                            ]
+                            [ text <| itemToString listItem ]
             in
-                div
-                    [ class "tile"
-                    , onClick <| listItem
-                    ]
-                    itemHtmlList
+                itemHtml
     in
         case maybeListOfItems of
             Nothing ->
