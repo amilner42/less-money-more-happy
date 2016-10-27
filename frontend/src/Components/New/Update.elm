@@ -96,6 +96,18 @@ update msg model =
                 in
                     ( newModel, Cmd.none )
 
+            OnNewCategoryInput newNewCategory ->
+                let
+                    newModel =
+                        { model
+                            | newComponent =
+                                { newComponent
+                                    | newCategory = newNewCategory
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
             ToggleCategory category ->
                 let
                     selectedCategories =

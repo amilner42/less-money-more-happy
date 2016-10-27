@@ -9,6 +9,7 @@ init : Model
 init =
     { currentBalance = ""
     , currentBalanceApiError = Nothing
+    , newCategory = ""
     , selectedCategories = []
     , selectedCategoriesApiError = Nothing
     , getDefaultsApiError = Nothing

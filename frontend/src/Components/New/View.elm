@@ -88,6 +88,12 @@ selectingExpenditureCategoriesView model =
                 [ class "new-title" ]
                 [ text "Where Do You Spend" ]
             , ErrorBox.errorBox newComponent.selectedCategoriesApiError
+            , input
+                [ placeholder "Add Custom Category"
+                , value newComponent.newCategory
+                , onInput <| OnNewCategoryInput
+                ]
+                []
             , Util.nestHtml ToggleCategory
                 (TileBox.tileBox
                     allCategories

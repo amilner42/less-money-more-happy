@@ -15,6 +15,7 @@ type Msg
     | OnSetCurrentBalanceSuccess User.User
       --
     | ToggleCategory ExpenditureCategory.ExpenditureCategory
+    | OnNewCategoryInput String
     | SetSelectedCategories
     | OnSetSelectedCategoriesFailure ApiError.ApiError
     | OnSetSelectedCategoriesSuccess User.User
