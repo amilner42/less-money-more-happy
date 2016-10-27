@@ -14,7 +14,6 @@ import DefaultServices.Util as Util
 type alias Model =
     { currentBalance : String
     , currentBalanceApiError : Maybe ApiError.ApiError
-    , currentCategoryInput : String
     , selectedCategories : List ExpenditureCategory.ExpenditureCategory
     , selectedCategoriesApiError : Maybe ApiError.ApiError
     , getDefaultsApiError : Maybe ApiError.ApiError
@@ -30,7 +29,6 @@ cacheEncoder model =
     Encode.object
         [ ( "currentBalance", Encode.string model.currentBalance )
         , ( "currentBalanceApiError", Encode.null )
-        , ( "currentCategoryInput", Encode.string model.currentCategoryInput )
         , ( "selectedCategories", Util.encodeList ExpenditureCategory.cacheEncoder model.selectedCategories )
         , ( "selectedCategoriesApiError", Encode.null )
         , ( "getDefaultsApiError", Encode.null )
@@ -46,7 +44,6 @@ cacheDecoder =
     decode Model
         |> required "currentBalance" Decode.string
         |> hardcoded Nothing
-        |> required "currentCategoryInput" Decode.string
         |> required "selectedCategories" (Decode.list ExpenditureCategory.cacheDecoder)
         |> hardcoded Nothing
         |> hardcoded Nothing

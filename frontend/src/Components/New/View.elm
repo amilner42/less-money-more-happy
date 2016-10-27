@@ -3,12 +3,12 @@ module Components.New.View exposing (view)
 import Components.New.Messages exposing (Msg(..))
 import Components.Model exposing (NewUserModel)
 import Models.ExpenditureCategoryWithGoals as ExpenditureCategoryWithGoals
-import Html exposing (Html, div, text, input, h2, button, span)
+import Html exposing (Html, div, text, input, h2, button, span, i)
 import Html.Attributes exposing (placeholder, value, type', class, disabled, style)
 import Html.Events exposing (onInput, onClick)
 import DefaultServices.Util as Util
 import Templates.ErrorBox as ErrorBox
-import Templates.Dropdown as Dropdown
+import Templates.TileBox as TileBox
 import String
 
 
@@ -39,7 +39,7 @@ settingCurrentBalanceView model =
         div
             [ class "new-header" ]
             [ div
-                [ class "new-title" ]
+                [ class "new-title pad-title" ]
                 [ text "Your Current Balance" ]
             , input
                 [ class <| Util.withErrorClassIf "" <| Util.isNotNothing currentBalanceError
@@ -69,30 +69,6 @@ selectingExpenditureCategoriesView model =
         selectedCategories =
             newComponent.selectedCategories
 
-        selectedCategoriesHtml =
-            let
-                toHtml category =
-                    div
-                        []
-                        [ span
-                            [ class "minus-selected-category"
-                            , onClick <| RemoveCategory category
-                            ]
-                            [ text " - " ]
-                        , span
-                            [ class "selected-category" ]
-                            [ text category.name ]
-                        ]
-            in
-                div [] <|
-                    (div
-                        [ class "selected-categories-title" ]
-                        [ text "SELECTED" ]
-                    )
-                        :: List.map
-                            toHtml
-                            selectedCategories
-
         defaultsLoaded =
             Util.isNotNothing model.defaultCategories
                 && Util.isNotNothing model.defaultColours
@@ -103,60 +79,22 @@ selectingExpenditureCategoriesView model =
                 || Util.isNotNothing newComponent.selectedCategoriesApiError
                 || Util.isNotNothing newComponent.getDefaultsApiError
 
-        placeholderText =
-            case defaultsLoaded of
-                True ->
-                    "Eg. Groceries"
-
-                False ->
-                    "loading..."
-
-        defaultCategoriesLeft =
-            let
-                filterSelectedCategories defaultCategories =
-                    List.filter
-                        (\selectedCategory ->
-                            not <|
-                                List.member
-                                    selectedCategory
-                                    newComponent.selectedCategories
-                        )
-                        defaultCategories
-            in
-                Maybe.map filterSelectedCategories model.defaultCategories
+        allCategories =
+            model.defaultCategories
     in
         div
             [ class "new-header" ]
-            [ h2
-                []
-                [ text "Select Your Categories" ]
-            , div
-                [ class <| Util.withClassesIf "selected-categories-list" "hidden" <| List.isEmpty selectedCategories ]
-                [ selectedCategoriesHtml ]
-            , input
-                [ placeholder placeholderText
-                , disabled <| not defaultsLoaded
-                , onInput OnCategoryInput
-                , value newComponent.currentCategoryInput
-                ]
-                []
-            , div
-                [ class <|
-                    Util.withClassesIf
-                        "add-custom-category-button"
-                        "hidden"
-                        (String.length newComponent.currentCategoryInput < 3)
-                , onClick <| AddCategory <| { name = newComponent.currentCategoryInput }
-                ]
-                [ text "+" ]
-            , Dropdown.dropdown
-                defaultCategoriesLeft
-                .name
-                .name
-                AddCategory
-                5
-                newComponent.currentCategoryInput
+            [ div
+                [ class "new-title" ]
+                [ text "Where Do You Spend" ]
             , ErrorBox.errorBox newComponent.selectedCategoriesApiError
+            , Util.nestHtml ToggleCategory
+                (TileBox.tileBox
+                    allCategories
+                    selectedCategories
+                    .name
+                    True
+                )
             , button
                 [ onClick SetSelectedCategories
                 , disabled invalidForm

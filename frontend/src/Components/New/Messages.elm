@@ -13,17 +13,18 @@ type Msg
     | SetCurrentBalance
     | OnSetCurrentBalanceFailure ApiError.ApiError
     | OnSetCurrentBalanceSuccess User.User
-    | OnCategoryInput String
-    | AddCategory ExpenditureCategory.ExpenditureCategory
-    | RemoveCategory ExpenditureCategory.ExpenditureCategory
+      --
+    | ToggleCategory ExpenditureCategory.ExpenditureCategory
     | SetSelectedCategories
     | OnSetSelectedCategoriesFailure ApiError.ApiError
     | OnSetSelectedCategoriesSuccess User.User
+      --
     | GetDefaultCategoriesAndColours
     | OnGetDefaultCategoriesFailure ApiError.ApiError
     | OnGetDefaultCategoriesSuccess (List ExpenditureCategory.ExpenditureCategory)
     | OnGetDefaultColoursFailure ApiError.ApiError
     | OnGetDefaultColoursSuccess (List Colour.Colour)
+      --
     | OnGoalInput Int String
     | OnDayInput Int String
     | SetSelectedCategoriesWithGoals

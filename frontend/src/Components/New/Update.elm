@@ -58,17 +58,6 @@ update msg model =
                 in
                     ( newModel, newCmd )
 
-            OnCategoryInput newCategoryInput ->
-                let
-                    newModel =
-                        newModelWithNewNewComponent
-                            { newComponent
-                                | selectedCategoriesApiError = Nothing
-                                , currentCategoryInput = newCategoryInput
-                            }
-                in
-                    ( newModel, Cmd.none )
-
             GetDefaultCategoriesAndColours ->
                 ( model
                 , Cmd.batch
@@ -107,33 +96,31 @@ update msg model =
                 in
                     ( newModel, Cmd.none )
 
-            AddCategory category ->
-                let
-                    newModel =
-                        newModelWithNewNewComponent
-                            { newComponent
-                                | selectedCategories = category :: newComponent.selectedCategories
-                                , currentCategoryInput = ""
-                            }
-                in
-                    ( newModel, Cmd.none )
-
-            RemoveCategory removeCategory ->
+            ToggleCategory category ->
                 let
                     selectedCategories =
                         newComponent.selectedCategories
 
-                    newSelectedCategories =
+                    -- Filter out category
+                    maybeFilteredCategories =
                         List.filter
-                            (\category ->
-                                not (category == removeCategory)
+                            (\aCategory ->
+                                aCategory /= category
                             )
                             selectedCategories
+
+                    -- If list is the same, it wasn't in the list to begin with
+                    -- so we need to add it to the list.
+                    newCategories =
+                        if maybeFilteredCategories == selectedCategories then
+                            category :: selectedCategories
+                        else
+                            maybeFilteredCategories
 
                     newModel =
                         newModelWithNewNewComponent
                             { newComponent
-                                | selectedCategories = newSelectedCategories
+                                | selectedCategories = newCategories
                             }
                 in
                     ( newModel, Cmd.none )
@@ -147,7 +134,6 @@ update msg model =
                         newModelWithNewNewComponent
                             { newComponent
                                 | selectedCategoriesApiError = Just apiError
-                                , currentCategoryInput = ""
                             }
                 in
                     ( newModel, Cmd.none )

@@ -8,6 +8,9 @@ import DefaultServices.Util as Util
 
 
 {-| Creates the view for the dropdown.
+
+TODO toMsg shouldn't be in the function, Html.App.map (or `Util.nestHtml`)
+should be used.
 -}
 createDropdown : List a -> (a -> String) -> (a -> msg) -> Int -> Html msg
 createDropdown filteredList toDisplayString toMsg maxLength =
@@ -17,7 +20,8 @@ createDropdown filteredList toDisplayString toMsg maxLength =
                 [ class "dropdown-box"
                 , onClick <| toMsg <| a
                 ]
-                [ text <| toDisplayString a ]
+                [ text <| toDisplayString a
+                ]
     in
         case List.isEmpty filteredList of
             True ->

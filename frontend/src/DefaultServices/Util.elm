@@ -2,8 +2,9 @@ module DefaultServices.Util exposing (..)
 
 import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
-import Html exposing (Html, div)
-import Html.Attributes exposing (class)
+import Html exposing (Html, div, i, text)
+import Html.Attributes exposing (class, style)
+import Html.App
 import String
 import Char
 
@@ -184,3 +185,41 @@ class on inputs.
 withErrorClassIf : String -> Bool -> String
 withErrorClassIf permanentClasses highlightError =
     withClassesIf permanentClasses "input-error-highlight" highlightError
+
+
+{-| Basic wrapper for adding a google icon.
+-}
+googleIcon : String -> String -> Html msg
+googleIcon name extraClasses =
+    i
+        [ class <| "material-icons" ++ " " ++ extraClasses ]
+        [ text name ]
+
+
+{-| Copy of Html.App.map, for readibility.
+-}
+nestHtml : (a -> msg) -> Html a -> Html msg
+nestHtml tagger nestedHtml =
+    Html.App.map tagger nestedHtml
+
+
+{-| Creates an absolute box around some html.
+-}
+absoluteBox : Html msg -> Html msg
+absoluteBox html =
+    div
+        [ style
+            [ ( "position", "absolute" ) ]
+        ]
+        [ html ]
+
+
+{-| Creates a relative box around some html.
+-}
+relativeBox : Html msg -> Html msg
+relativeBox html =
+    div
+        [ style
+            [ ( "position", "relative" ) ]
+        ]
+        [ html ]
