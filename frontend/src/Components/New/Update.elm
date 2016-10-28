@@ -108,6 +108,31 @@ update msg model =
                 in
                     ( newModel, Cmd.none )
 
+            -- Adds a category and selects it.
+            AddNewCategory ->
+                let
+                    newCategory =
+                        { name = newComponent.newCategory
+                        }
+
+                    newSelectedCategories =
+                        newCategory :: model.newComponent.selectedCategories
+
+                    currentCustomCategories =
+                        newComponent.customCategories
+
+                    newModel =
+                        { model
+                            | newComponent =
+                                { newComponent
+                                    | customCategories = newCategory :: currentCustomCategories
+                                    , newCategory = ""
+                                    , selectedCategories = newSelectedCategories
+                                }
+                        }
+                in
+                    ( newModel, Cmd.none )
+
             ToggleCategory category ->
                 let
                     selectedCategories =

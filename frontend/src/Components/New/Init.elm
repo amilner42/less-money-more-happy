@@ -10,6 +10,7 @@ init =
     { currentBalance = ""
     , currentBalanceApiError = Nothing
     , newCategory = ""
+    , customCategories = []
     , selectedCategories = []
     , selectedCategoriesApiError = Nothing
     , getDefaultsApiError = Nothing

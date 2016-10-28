@@ -16,6 +16,7 @@ type Msg
       --
     | ToggleCategory ExpenditureCategory.ExpenditureCategory
     | OnNewCategoryInput String
+    | AddNewCategory
     | SetSelectedCategories
     | OnSetSelectedCategoriesFailure ApiError.ApiError
     | OnSetSelectedCategoriesSuccess User.User

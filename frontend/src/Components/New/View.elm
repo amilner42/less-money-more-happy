@@ -66,12 +66,22 @@ selectingExpenditureCategoriesView model =
         newComponent =
             model.newComponent
 
+        customCategories =
+            newComponent.customCategories
+
         selectedCategories =
             newComponent.selectedCategories
 
         defaultsLoaded =
             Util.isNotNothing model.defaultCategories
                 && Util.isNotNothing model.defaultColours
+
+        -- If it's less than 3 chars we don't show the plus.
+        plusIconDisplay =
+            if String.length newComponent.newCategory < 3 then
+                "none"
+            else
+                "block"
 
         invalidForm =
             not defaultsLoaded
@@ -80,7 +90,7 @@ selectingExpenditureCategoriesView model =
                 || Util.isNotNothing newComponent.getDefaultsApiError
 
         allCategories =
-            model.defaultCategories
+            Maybe.map (List.append customCategories) model.defaultCategories
     in
         div
             [ class "new-header" ]
@@ -92,8 +102,16 @@ selectingExpenditureCategoriesView model =
                 [ placeholder "Add Custom Category"
                 , value newComponent.newCategory
                 , onInput <| OnNewCategoryInput
+                , disabled <| not defaultsLoaded
                 ]
                 []
+            , div
+                [ style
+                    [ ( "position", "relative" )
+                    , ( "display", plusIconDisplay )
+                    ]
+                ]
+                [ Util.actionGoogleIcon "add" "plus-icon" AddNewCategory ]
             , Util.nestHtml ToggleCategory
                 (TileBox.tileBox
                     allCategories

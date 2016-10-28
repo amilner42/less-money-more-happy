@@ -15,6 +15,7 @@ type alias Model =
     { currentBalance : String
     , currentBalanceApiError : Maybe ApiError.ApiError
     , newCategory : String
+    , customCategories : List ExpenditureCategory.ExpenditureCategory
     , selectedCategories : List ExpenditureCategory.ExpenditureCategory
     , selectedCategoriesApiError : Maybe ApiError.ApiError
     , getDefaultsApiError : Maybe ApiError.ApiError
@@ -31,6 +32,7 @@ cacheEncoder model =
         [ ( "currentBalance", Encode.string model.currentBalance )
         , ( "currentBalanceApiError", Encode.null )
         , ( "newCategory", Encode.string model.newCategory )
+        , ( "customCategories", Util.encodeList ExpenditureCategory.cacheEncoder model.customCategories )
         , ( "selectedCategories", Util.encodeList ExpenditureCategory.cacheEncoder model.selectedCategories )
         , ( "selectedCategoriesApiError", Encode.null )
         , ( "getDefaultsApiError", Encode.null )
@@ -47,6 +49,7 @@ cacheDecoder =
         |> required "currentBalance" Decode.string
         |> hardcoded Nothing
         |> required "newCategory" Decode.string
+        |> required "customCategories" (Decode.list ExpenditureCategory.cacheDecoder)
         |> required "selectedCategories" (Decode.list ExpenditureCategory.cacheDecoder)
         |> hardcoded Nothing
         |> hardcoded Nothing

@@ -22,10 +22,18 @@
 
 
     .new-header {
-      margin-top: 40px;
+      margin-top: 35px;
 
       button {
         margin-top: 10px;
+      }
+
+      .plus-icon {
+        position: absolute;
+        right: 27px;
+        top: -53px;
+        font-weight: bold;
+        cursor: pointer;
       }
 
       .new-title {

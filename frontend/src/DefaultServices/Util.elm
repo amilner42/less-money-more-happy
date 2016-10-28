@@ -4,6 +4,7 @@ import Json.Encode as Encode
 import Json.Decode as Decode exposing ((:=))
 import Html exposing (Html, div, i, text)
 import Html.Attributes exposing (class, style)
+import Html.Events exposing (onClick)
 import Html.App
 import String
 import Char
@@ -193,6 +194,17 @@ googleIcon : String -> String -> Html msg
 googleIcon name extraClasses =
     i
         [ class <| "material-icons" ++ " " ++ extraClasses ]
+        [ text name ]
+
+
+{-| Basic wrapper for adding a google icon which emits events onClick.
+-}
+actionGoogleIcon : String -> String -> msg -> Html msg
+actionGoogleIcon name extraClasses actionMsg =
+    i
+        [ class <| "material-icons" ++ " " ++ extraClasses
+        , onClick <| actionMsg
+        ]
         [ text name ]
 
 
