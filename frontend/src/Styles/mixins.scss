@@ -75,3 +75,41 @@
       cursor: not-allowed;
   }
 }
+
+// Some basic mixins for avoiding the boilerplate of media queries using
+// @content blocks.
+
+// Screen smaller than `$size`.
+@mixin ifSmallerThan($size) {
+  @media screen and (max-width: $size - 1px) {
+    @content;
+  }
+}
+
+// Screen smaller or equal to `$size`.
+@mixin ifEqualOrSmallerThan($size) {
+  @media screen and (max-width: $size) {
+    @content;
+  }
+}
+
+// Screen between `$lower` and `$upper` inclusive.
+@mixin ifBetween($lower, $upper) {
+  @media screen and (min-width: $lower) and (max-width: $upper) {
+    @content;
+  }
+}
+
+// Screen equal or bigger than `$size`.
+@mixin ifEqualOrBiggerThan($size) {
+ @media screen and (min-width: $size) {
+   @content;
+ }
+}
+
+// Screen bigger than `$size`.
+@mixin ifBiggerThan($size) {
+ @media screen and (min-width: $size + 1px) {
+   @content;
+ }
+}

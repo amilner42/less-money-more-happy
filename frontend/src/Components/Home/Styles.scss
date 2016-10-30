@@ -1,6 +1,12 @@
 @import '../../Styles/mixins';
 @import '../../Styles/variables';
 
+// Attempting new scss style, declaring break points at the top and then nesting
+// the media queries inside instead of having media queries at the bottom. Also
+// using scss to avoid media query boilerplate.
+$break1: 900px;
+$break2: 800px;
+$break3: 650px;
 
 .home-component-wrapper {
 
@@ -36,33 +42,79 @@
         .sub-bar {
             display: block;
             width: 100%;
-            height: 40px;
+            height: 80px;
             padding-top: 15px;
 
+            @include ifEqualOrSmallerThan($break1) {
+                height: 60px;
+            }
+
+            @include ifEqualOrSmallerThan($break3) {
+                height: 130px;
+            }
+
             .sub-bar-button {
+                text-align: center;
                 color: $placeholder-color1;
                 position: relative;
-                text-align: left;
                 display: inline-block;
-                padding-top: 10px;
-                padding-left: 33px;
-                width: 120px;
-                height: 30px;
+                padding-top: 25px;
+                width: calc(25% - 19px);
+                height: 50px;
                 background-color: white;
                 margin-left: 15px;
                 box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
                 transition: all 0.3s cubic-bezier(.25,.8,.25,1);
                 cursor: pointer;
+                font-size: 22px;
+
+                @include ifEqualOrSmallerThan($break1) {
+                    padding-top: 5px;
+                }
+
+                @include ifEqualOrSmallerThan($break3) {
+                    width: calc(50% - 19px);
+                    margin-bottom: 10px;
+                }
+
+                .sub-bar-button-add-word {
+                    @include ifEqualOrSmallerThan($break1) {
+                        display: none;
+                    }
+                }
+
+                .sub-bar-button-name {
+                    @include ifEqualOrSmallerThan($break1) {
+                        display: inline-block;
+                        vertical-align: top;
+                        padding-top: 11px;
+                    }
+
+                    @include ifEqualOrSmallerThan($break2) {
+                        padding-top: 15px;
+                        font-size: 16px;
+                    }
+                }
 
                 &:hover {
-                    box-shadow: 0 14px 28px rgba(0,0,0,0.20), 0 10px 10px rgba(0,0,0,0.18);
+                    cursor: pointer;
+                    color: $color4;
+                    transition-delay: 0.05s;
                 }
 
                 .plus-icon {
-                    position: absolute;
-                    top: 7px;
-                    left: 5px;
-                    font-size: 26px;
+                    @include ifBiggerThan($break1) {
+                        display: none;
+                    }
+
+                    @include ifEqualOrSmallerThan($break2) {
+                        font-size: 24px;
+                        margin-top: 10px;
+                    }
+
+                    display: inline-block;
+                    margin-top: 5px;
+                    font-size: 32px;
                 }
             }
 
@@ -86,6 +138,9 @@
             display: block;
             text-align: center;
             color: $color4;
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
         .feed {

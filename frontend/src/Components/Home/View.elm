@@ -328,8 +328,15 @@ mainView model =
                 [ class "sub-bar-button"
                 , onClick msg
                 ]
-                [ text name
+                [ span
+                    [ class "sub-bar-button-add-word" ]
+                    [ text "Add"
+                    , text <| " "
+                    ]
                 , Util.googleIcon "add_box" "plus-icon"
+                , span
+                    [ class "sub-bar-button-name" ]
+                    [ text <| name ]
                 ]
     in
         div []
@@ -339,9 +346,9 @@ mainView model =
                 , subBarButton "Earning" AddEarningView
                 , subBarButton "Category" AddCategoryView
                 , subBarButton "Employer" AddEmployerView
-                , span
-                    [ class "current-balance-header" ]
-                    [ text <| "$" ++ toString user.currentBalance ]
+                  -- , span
+                  --     [ class "current-balance-header" ]
+                  --     [ text <| "$" ++ toString user.currentBalance ]
                 ]
               -- , div
               --     []
@@ -449,7 +456,7 @@ mainView model =
               --     []
             , div
                 []
-                [ h1
+                [ div
                     [ class "feed-title" ]
                     [ text "TODAY" ]
                 , div
