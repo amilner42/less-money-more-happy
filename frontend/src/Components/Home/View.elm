@@ -113,22 +113,38 @@ navbar model =
                 [ class <| Util.withClassesIf "nav-btn left" "selected" mainViewSelected
                 , onClick GoToMainView
                 ]
-                [ text "Home" ]
+                [ Util.googleIcon "home" "nav-btn-icon"
+                , span
+                    [ class "nav-btn-text" ]
+                    [ text "Home" ]
+                ]
             , div
                 [ class <| Util.withClassesIf "nav-btn left" "selected" goalsViewSelected
                 , onClick GoToGoalsView
                 ]
-                [ text "Goals" ]
+                [ Util.googleIcon "stars" "nav-btn-icon"
+                , span
+                    [ class "nav-btn-text" ]
+                    [ text "Goals" ]
+                ]
             , div
                 [ class <| Util.withClassesIf "nav-btn left" "selected" statsViewSelected
                 , onClick GoToStatsView
                 ]
-                [ text "Stats" ]
+                [ Util.googleIcon "insert_chart" "nav-btn-icon"
+                , span
+                    [ class "nav-btn-text" ]
+                    [ text "Stats" ]
+                ]
             , div
                 [ class <| Util.withClassesIf "nav-btn right" "selected" profileViewSelected
                 , onClick GoToProfileView
                 ]
-                [ text "Profile" ]
+                [ Util.googleIcon "face" "nav-btn-icon"
+                , span
+                    [ class "nav-btn-text" ]
+                    [ text "Profile" ]
+                ]
             ]
 
 

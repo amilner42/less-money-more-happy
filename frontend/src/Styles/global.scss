@@ -4,7 +4,7 @@
 html, body, #main {
   @include full-screen-absolute();
   font-family: 'Arvo', serif;
-  background-color: #F2F2F2;
+  background-color: $background-color1;
 }
 
 .input-error-highlight {
