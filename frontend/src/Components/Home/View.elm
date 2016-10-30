@@ -2,7 +2,20 @@ module Components.Home.View exposing (..)
 
 import Json.Decode as Decode exposing ((:=))
 import Models.Route as Route
-import Html exposing (Html, div, text, button, input, h1, h3, select, option, hr)
+import Html
+    exposing
+        ( Html
+        , div
+        , text
+        , button
+        , input
+        , h1
+        , h3
+        , select
+        , option
+        , hr
+        , span
+        )
 import Html.Attributes
     exposing
         ( class
@@ -309,118 +322,129 @@ mainView model =
                 && (homeComponent.addCategoryGoalSpending /= "")
                 && (homeComponent.addCategoryGoalPerNumberOfDays /= "")
                 && (homeComponent.addCategoryError |> Util.isNothing)
+
+        subBarButton name msg =
+            span
+                [ class "sub-bar-button" ]
+                [ text name
+                , Util.googleIcon "add_box" "plus-icon"
+                ]
     in
         div []
-            [ h1
-                [ class "current-balance-header" ]
-                [ text <| "Current Balance: " ++ toString user.currentBalance ]
-            , hr
-                []
-                []
-            , div
-                []
-                [ button
-                    [ onClick AddEarning
-                    , disabled <| not validEarningForm
-                    ]
-                    [ text "ADD EARNING" ]
-                , input
-                    [ placeholder "amount"
-                    , value homeComponent.earningAmount
-                    , onInput OnEarningAmountInput
-                    , type' "number"
-                    ]
-                    []
-                , Select.select
-                    OnEarningSelectAction
-                    earningEmployerSelectText
-                    "Cancel"
-                    .name
-                    (\employer ->
-                        toString employer.id
-                            |> OnEarningEmployerIDSelect
-                    )
-                    homeComponent.earningEmployerIDSelectOpen
-                    (Maybe.withDefault [] user.employers)
-                , ErrorBox.errorBox homeComponent.earningError
+            [ div
+                [ class "sub-bar" ]
+                [ subBarButton "Expenditure" AddExpenditure
+                , subBarButton "Earning" AddExpenditure
+                , subBarButton "Category" AddExpenditure
+                , subBarButton "Employer" AddExpenditure
+                , span
+                    [ class "current-balance-header" ]
+                    [ text <| "$" ++ toString user.currentBalance ]
                 ]
-            , div
-                [ class "lower-bar" ]
-                [ button
-                    [ disabled <| not validEmployerNameForm
-                    , onClick AddEmployer
-                    ]
-                    [ text "ADD EMPLOYER"
-                    ]
-                , input
-                    [ placeholder "name"
-                    , onInput OnAddEmployerInput
-                    , value homeComponent.employerName
-                    ]
-                    []
-                , ErrorBox.errorBox homeComponent.employerNameError
-                ]
-            , hr
-                []
-                []
-            , div
-                []
-                [ button
-                    [ onClick AddExpenditure
-                    , disabled <| not validExpenditureForm
-                    ]
-                    [ text "ADD EXPENDITURE" ]
-                , input
-                    [ placeholder "cost"
-                    , value homeComponent.expenditureCost
-                    , onInput OnExpenditureCostInput
-                    , type' "number"
-                    ]
-                    []
-                , Select.select
-                    OnExpenditureSelectAction
-                    expenditureCategorySelectText
-                    "Cancel"
-                    .name
-                    (\category ->
-                        OnExpenditureCategoryIDSelect <| toString category.id
-                    )
-                    homeComponent.expenditureCategoryIDSelectOpen
-                    user.categoriesWithGoals
-                , div
-                    [ class "lower-bar" ]
-                    [ button
-                        [ onClick <| AddCategory
-                        , disabled <| not validAddCategoryForm
-                        ]
-                        [ text "ADD CATEGORY" ]
-                    , input
-                        [ onInput <| OnAddCategoryNameInput
-                        , placeholder "Name"
-                        , value homeComponent.addCategoryName
-                        ]
-                        []
-                    , input
-                        [ onInput <| OnAddCategoryGoalSpendingInput
-                        , placeholder "Goal $"
-                        , value homeComponent.addCategoryGoalSpending
-                        , type' "number"
-                        ]
-                        []
-                    , input
-                        [ onInput <| OnAddCategoryPerNumberOfDaysInput
-                        , placeholder "Per Days"
-                        , value homeComponent.addCategoryGoalPerNumberOfDays
-                        , type' "number"
-                        ]
-                        []
-                    , ErrorBox.errorBox homeComponent.addCategoryError
-                    ]
-                , ErrorBox.errorBox homeComponent.expenditureError
-                ]
-            , hr
-                []
-                []
+              -- , div
+              --     []
+              --     [ button
+              --         [ onClick AddEarning
+              --         , disabled <| not validEarningForm
+              --         ]
+              --         [ text "ADD EARNING" ]
+              --     , input
+              --         [ placeholder "amount"
+              --         , value homeComponent.earningAmount
+              --         , onInput OnEarningAmountInput
+              --         , type' "number"
+              --         ]
+              --         []
+              --     , Select.select
+              --         OnEarningSelectAction
+              --         earningEmployerSelectText
+              --         "Cancel"
+              --         .name
+              --         (\employer ->
+              --             toString employer.id
+              --                 |> OnEarningEmployerIDSelect
+              --         )
+              --         homeComponent.earningEmployerIDSelectOpen
+              --         (Maybe.withDefault [] user.employers)
+              --     , ErrorBox.errorBox homeComponent.earningError
+              --     ]
+              -- , div
+              --     [ class "lower-bar" ]
+              --     [ button
+              --         [ disabled <| not validEmployerNameForm
+              --         , onClick AddEmployer
+              --         ]
+              --         [ text "ADD EMPLOYER"
+              --         ]
+              --     , input
+              --         [ placeholder "name"
+              --         , onInput OnAddEmployerInput
+              --         , value homeComponent.employerName
+              --         ]
+              --         []
+              --     , ErrorBox.errorBox homeComponent.employerNameError
+              --     ]
+              -- , hr
+              --     []
+              --     []
+              -- , div
+              --     []
+              --     [ button
+              --         [ onClick AddExpenditure
+              --         , disabled <| not validExpenditureForm
+              --         ]
+              --         [ text "ADD EXPENDITURE" ]
+              --     , input
+              --         [ placeholder "cost"
+              --         , value homeComponent.expenditureCost
+              --         , onInput OnExpenditureCostInput
+              --         , type' "number"
+              --         ]
+              --         []
+              --     , Select.select
+              --         OnExpenditureSelectAction
+              --         expenditureCategorySelectText
+              --         "Cancel"
+              --         .name
+              --         (\category ->
+              --             OnExpenditureCategoryIDSelect <| toString category.id
+              --         )
+              --         homeComponent.expenditureCategoryIDSelectOpen
+              --         user.categoriesWithGoals
+              --     , div
+              --         [ class "lower-bar" ]
+              --         [ button
+              --             [ onClick <| AddCategory
+              --             , disabled <| not validAddCategoryForm
+              --             ]
+              --             [ text "ADD CATEGORY" ]
+              --         , input
+              --             [ onInput <| OnAddCategoryNameInput
+              --             , placeholder "Name"
+              --             , value homeComponent.addCategoryName
+              --             ]
+              --             []
+              --         , input
+              --             [ onInput <| OnAddCategoryGoalSpendingInput
+              --             , placeholder "Goal $"
+              --             , value homeComponent.addCategoryGoalSpending
+              --             , type' "number"
+              --             ]
+              --             []
+              --         , input
+              --             [ onInput <| OnAddCategoryPerNumberOfDaysInput
+              --             , placeholder "Per Days"
+              --             , value homeComponent.addCategoryGoalPerNumberOfDays
+              --             , type' "number"
+              --             ]
+              --             []
+              --         , ErrorBox.errorBox homeComponent.addCategoryError
+              --         ]
+              --     , ErrorBox.errorBox homeComponent.expenditureError
+              --     ]
+              -- , hr
+              --     []
+              --     []
             , div
                 []
                 [ h1
