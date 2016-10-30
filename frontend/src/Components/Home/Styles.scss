@@ -7,6 +7,9 @@
 $break1: 900px;
 $break2: 800px;
 $break3: 650px;
+$break4: 600px;
+$break5: 500px;
+$break6: 400px;
 
 .home-component-wrapper {
 
@@ -15,6 +18,7 @@ $break3: 650px;
     .home-component {
         background-color: transparent;
         height: 100%;
+        min-width: 320px;
 
         .nav {
             width: 100%;
@@ -29,6 +33,13 @@ $break3: 650px;
                 margin: 10px 13px 0 13px;
                 font-size: 26px;
 
+                @include ifEqualOrSmallerThan($break6) {
+                    width: 25%;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                    text-align: center;
+                }
+
                 .nav-btn-text {
                     position: relative;
                     display: inline-block;
@@ -36,11 +47,25 @@ $break3: 650px;
                     padding-top: 2px;
                     padding-left: 3px;
                     color: white;
+
+                    @include ifEqualOrSmallerThan($break4) {
+                        font-size: 18px;
+                        padding-top: 7px;
+                    }
                 }
 
                 .nav-btn-icon {
                     font-size: 32px;
                     color: white;
+
+                    @include ifEqualOrSmallerThan($break4) {
+                        padding-top: 3px;
+                        font-size: 26px;
+                    }
+
+                    @include ifEqualOrSmallerThan($break5) {
+                        display: none;
+                    }
                 }
 
                 &.selected {
