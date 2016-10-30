@@ -3,7 +3,17 @@ module Components.Home.View exposing (..)
 import Json.Decode as Decode exposing ((:=))
 import Models.Route as Route
 import Html exposing (Html, div, text, button, input, h1, h3, select, option, hr)
-import Html.Attributes exposing (class, placeholder, value, hidden, disabled, selected, type')
+import Html.Attributes
+    exposing
+        ( class
+        , placeholder
+        , value
+        , hidden
+        , disabled
+        , selected
+        , type'
+        , style
+        )
 import Html.Events exposing (onClick, onInput, on, targetValue)
 import DefaultServices.Util as Util
 import Components.Model exposing (ReturningUserModel)
@@ -66,8 +76,26 @@ navbar model =
 
         profileViewSelected =
             model.route == Route.HomeComponentProfile
+
+        navColor =
+            case model.route of
+                Route.HomeComponentGoals ->
+                    "#4285F4"
+
+                Route.HomeComponentStats ->
+                    "#EF6C00"
+
+                Route.HomeComponentProfile ->
+                    "#898984"
+
+                _ ->
+                    "#0F9D58"
     in
-        div [ class "nav" ]
+        div
+            [ class "nav"
+            , style
+                [ ( "background-color", navColor ) ]
+            ]
             [ div
                 [ class <| Util.withClassesIf "nav-btn left" "selected" mainViewSelected
                 , onClick GoToMainView
@@ -284,7 +312,7 @@ mainView model =
     in
         div []
             [ h1
-                []
+                [ class "current-balance-header" ]
                 [ text <| "Current Balance: " ++ toString user.currentBalance ]
             , hr
                 []
