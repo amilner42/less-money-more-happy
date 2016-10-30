@@ -325,7 +325,9 @@ mainView model =
 
         subBarButton name msg =
             span
-                [ class "sub-bar-button" ]
+                [ class "sub-bar-button"
+                , onClick msg
+                ]
                 [ text name
                 , Util.googleIcon "add_box" "plus-icon"
                 ]
@@ -333,10 +335,10 @@ mainView model =
         div []
             [ div
                 [ class "sub-bar" ]
-                [ subBarButton "Expenditure" AddExpenditure
-                , subBarButton "Earning" AddExpenditure
-                , subBarButton "Category" AddExpenditure
-                , subBarButton "Employer" AddExpenditure
+                [ subBarButton "Expenditure" AddExpenditureView
+                , subBarButton "Earning" AddEarningView
+                , subBarButton "Category" AddCategoryView
+                , subBarButton "Employer" AddEmployerView
                 , span
                     [ class "current-balance-header" ]
                     [ text <| "$" ++ toString user.currentBalance ]

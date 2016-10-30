@@ -514,3 +514,15 @@ update msg model =
                         }
                 in
                     ( newModel, Cmd.none )
+
+            AddCategoryView ->
+                toDo
+
+            AddEarningView ->
+                toDo
+
+            AddExpenditureView ->
+                toDo
+
+            AddEmployerView ->
+                toDo

@@ -53,3 +53,8 @@ type Msg
     | EditGoalSave EditCategory
     | OnEditGoalSaveFailure EditCategory ApiError
     | OnEditGoalSaveSuccess EditCategory User
+      --
+    | AddExpenditureView
+    | AddEarningView
+    | AddCategoryView
+    | AddEmployerView
