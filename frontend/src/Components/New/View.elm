@@ -144,6 +144,9 @@ selectingGoalsView model =
                 Just someCategoriesWithGoals ->
                     someCategoriesWithGoals
 
+        sortedSelectedCategories =
+            List.sortBy .name selectedCategories
+
         colours =
             case model.defaultColours of
                 -- Should never happen...
@@ -175,20 +178,20 @@ selectingGoalsView model =
             in
                 div
                     [ class "new-category"
-                    , style
-                        [ ( "border", "2px solid " ++ (colourOfCategory) )
-                        , ( "color", colourOfCategory )
-                        ]
                     ]
                     [ div
-                        [ class "new-category-name" ]
+                        [ class "new-category-name"
+                        , style
+                            [ ( "color", colourOfCategory )
+                            ]
+                        ]
                         [ text <| Util.upperCaseFirstChars <| category.name ]
                     , div
                         [ class "new-category-entry-area"
                         ]
-                        [ input
+                        [ Util.googleIcon "attach_money" "money-icon"
+                        , input
                             [ class "new-category-goal-input"
-                            , placeholder "X"
                             , type' "number"
                             , onInput <| OnGoalInput category.id
                             , value <| Maybe.withDefault "" category.goalSpending
@@ -196,14 +199,12 @@ selectingGoalsView model =
                             []
                         , span
                             []
-                            [ text " dollars for " ]
+                            [ text " "
+                            , text "/"
+                            ]
                         , input
                             [ class "new-category-goal-input"
-                            , placeholder "Y"
                             , type' "number"
-                            , style
-                                [ ( "width", "22px" )
-                                ]
                             , onInput <| OnDayInput category.id
                             , value <| Maybe.withDefault "" category.perNumberOfDays
                             ]
@@ -224,25 +225,25 @@ selectingGoalsView model =
     in
         div
             []
-            (List.append
-                ((h2
-                    []
-                    [ text "Set Goals" ]
-                 )
-                    :: (List.map
-                            toHtml
-                            selectedCategories
-                       )
-                )
-                [ ErrorBox.errorBox newComponent.selectedCategoriesWithGoalsApiError
-                , (button
-                    [ disabled (not categoriesFilledOut)
-                    , onClick <| SetSelectedCategoriesWithGoals
-                    ]
-                    [ text "NEXT" ]
-                  )
+            [ h2
+                [ class "new-title set-goal-title" ]
+                [ text "Set Goals" ]
+            , div
+                [ class "new-category-list" ]
+                [ div
+                    [ class "new-category-list-hide-scroll" ]
+                    (List.map
+                        toHtml
+                        sortedSelectedCategories
+                    )
                 ]
-            )
+            , ErrorBox.errorBox newComponent.selectedCategoriesWithGoalsApiError
+            , button
+                [ disabled (not categoriesFilledOut)
+                , onClick <| SetSelectedCategoriesWithGoals
+                ]
+                [ text "NEXT" ]
+            ]
 
 
 {-| New Component View.

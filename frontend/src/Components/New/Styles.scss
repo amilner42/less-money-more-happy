@@ -20,6 +20,18 @@
       font-size: 12px;
     }
 
+    .new-title {
+      color: $color4;
+      font-family: 'Roboto Slab', serif;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .set-goal-title {
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
 
     .new-header {
       margin-top: 35px;
@@ -34,14 +46,6 @@
         top: -53px;
         font-weight: bold;
         cursor: pointer;
-      }
-
-      .new-title {
-        color: $color4;
-        font-family: 'Roboto Slab', serif;
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 20px;
       }
 
       .pad-title {
@@ -71,25 +75,67 @@
       }
     }
 
+    button {
+      margin-top: 15px;
+    }
+
+    $category-list-max-height: 376px;
+
+    .new-category-list {
+      max-height: $category-list-max-height;
+      width: 320px;
+      overflow: hidden;
+
+      .new-category-list-hide-scroll {
+        width: 320px;
+        overflow-y: auto;
+        padding-right: 50px;
+        max-height: $category-list-max-height;
+      }
+    }
+
     .new-category {
       position: relative;
       width: 270px;
-      height: 53px;
-      margin: 10px auto;
-      border-radius: 5px;
+      height: 80px;
+      margin: 12px auto;
+      background-color: white;
+      color: $placeholder-color1;
+      // check out this codepen: https://codepen.io/sdthornton/pen/wBZdXq
+      box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+
+      textarea:focus, input:focus{
+          outline: none;
+          border-bottom: 2px solid $color4;
+      }
+
+      input {
+        border-top: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-bottom: 1px solid $placeholder-color1;
+      }
+
+      .money-icon {
+        position: absolute;
+        font-size: 18px;
+        left: 75px;
+        top: 5px;
+      }
 
       .new-category-name {
         position: absolute;
         top: 5px;
         left: 10px;
         font-size: 20px;
+        font-style: italic;
       }
 
       .new-category-entry-area {
         position: absolute;
-        width: 190px;
-        top: 29px;
-        right:  5px;
+        width: 220px;
+        top: 49px;
+        right:  15px;
         text-align: right;
 
         .new-category-dollar-sign {
