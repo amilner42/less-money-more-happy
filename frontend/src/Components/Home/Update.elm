@@ -8,6 +8,7 @@ import Components.Home.Init as HomeInit
 import Components.Welcome.Init as WelcomeInit
 import Components.Model exposing (Model)
 import Models.Route as Route
+import Models.HomeAddView as HomeAddView
 import Api
 import DefaultModel exposing (defaultModel)
 import Templates.Select as Select
@@ -23,6 +24,18 @@ update msg model =
 
         toDo =
             ( model, Cmd.none )
+
+        setHomeAddView newView =
+            let
+                newModel =
+                    { model
+                        | homeComponent =
+                            { homeComponent
+                                | homeAddView = newView
+                            }
+                    }
+            in
+                ( newModel, Cmd.none )
     in
         case msg of
             GoToMainView ->
@@ -516,13 +529,13 @@ update msg model =
                     ( newModel, Cmd.none )
 
             AddCategoryView ->
-                toDo
+                setHomeAddView HomeAddView.AddCategoryView
 
             AddEarningView ->
-                toDo
+                setHomeAddView HomeAddView.AddEarningView
 
             AddExpenditureView ->
-                toDo
+                setHomeAddView HomeAddView.AddExpenditureView
 
             AddEmployerView ->
-                toDo
+                setHomeAddView HomeAddView.AddEmployerView

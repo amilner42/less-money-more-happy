@@ -1,13 +1,15 @@
 module Components.Home.Init exposing (init)
 
 import Components.Home.Model exposing (Model)
+import Models.HomeAddView as HomeAddView
 
 
 {-| Home Component Init.
 -}
 init : Model
 init =
-    { earningAmount = ""
+    { homeAddView = HomeAddView.None
+    , earningAmount = ""
     , earningEmployerID = ""
     , earningEmployerIDSelectOpen = False
     , earningError = Nothing

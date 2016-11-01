@@ -1,7 +1,6 @@
 module Components.Home.View exposing (..)
 
 import Json.Decode as Decode exposing ((:=))
-import Models.Route as Route
 import Html
     exposing
         ( Html
@@ -33,6 +32,8 @@ import Components.Model exposing (ReturningUserModel)
 import Components.Home.Messages exposing (Msg(..))
 import Templates.Select as Select
 import Templates.ErrorBox as ErrorBox
+import Models.Route as Route
+import Models.HomeAddView as HomeAddView
 import Date.Format as DateFormat
 import Date
 
@@ -339,9 +340,9 @@ mainView model =
                 && (homeComponent.addCategoryGoalPerNumberOfDays /= "")
                 && (homeComponent.addCategoryError |> Util.isNothing)
 
-        subBarButton name msg =
+        subBarButton name msg highlightIf =
             span
-                [ class "sub-bar-button"
+                [ class <| Util.withClassesIf "sub-bar-button" "sub-bar-button-selected" highlightIf
                 , onClick msg
                 ]
                 [ span
@@ -354,14 +355,53 @@ mainView model =
                     [ class "sub-bar-button-name" ]
                     [ text <| name ]
                 ]
+
+        homeInputCard =
+            case homeComponent.homeAddView of
+                HomeAddView.None ->
+                    div
+                        [ class "hidden" ]
+                        []
+
+                HomeAddView.AddCategoryView ->
+                    div
+                        [ class "home-card-input" ]
+                        []
+
+                HomeAddView.AddEarningView ->
+                    div
+                        [ class "home-card-input" ]
+                        []
+
+                HomeAddView.AddEmployerView ->
+                    div
+                        [ class "home-card-input" ]
+                        []
+
+                HomeAddView.AddExpenditureView ->
+                    div
+                        [ class "home-card-input" ]
+                        []
     in
         div []
             [ div
                 [ class "sub-bar" ]
-                [ subBarButton "Expenditure" AddExpenditureView
-                , subBarButton "Earning" AddEarningView
-                , subBarButton "Category" AddCategoryView
-                , subBarButton "Employer" AddEmployerView
+                [ subBarButton
+                    "Expenditure"
+                    AddExpenditureView
+                    (homeComponent.homeAddView == HomeAddView.AddExpenditureView)
+                , subBarButton
+                    "Earning"
+                    AddEarningView
+                    (homeComponent.homeAddView == HomeAddView.AddEarningView)
+                , subBarButton
+                    "Category"
+                    AddCategoryView
+                    (homeComponent.homeAddView == HomeAddView.AddCategoryView)
+                , subBarButton
+                    "Employer"
+                    AddEmployerView
+                    (homeComponent.homeAddView == HomeAddView.AddEmployerView)
                   -- , span
                   --     [ class "current-balance-header" ]
                   --     [ text <| "$" ++ toString user.currentBalance ]
@@ -470,6 +510,7 @@ mainView model =
               -- , hr
               --     []
               --     []
+            , homeInputCard
             , div
                 []
                 [ div

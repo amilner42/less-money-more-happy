@@ -5,6 +5,7 @@ import Json.Decode as Decode exposing ((:=))
 import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
 import Models.ApiError as ApiError
 import Models.EditCategory as EditCategory
+import Models.HomeAddView as HomeAddView
 import DefaultServices.Util as Util
 
 
@@ -12,7 +13,8 @@ import DefaultServices.Util as Util
 random data (strings) to display the cacheing.
 -}
 type alias Model =
-    { earningAmount : String
+    { homeAddView : HomeAddView.HomeAddView
+    , earningAmount : String
     , earningEmployerID : String
     , earningEmployerIDSelectOpen : Bool
     , earningError : Maybe ApiError.ApiError
@@ -36,7 +38,8 @@ type alias Model =
 cacheEncoder : Model -> Encode.Value
 cacheEncoder model =
     Encode.object
-        [ ( "earningAmount", Encode.string model.earningAmount )
+        [ ( "homeAddView", HomeAddView.cacheEncoder model.homeAddView )
+        , ( "earningAmount", Encode.string model.earningAmount )
         , ( "earningEmployerID", Encode.string model.earningEmployerID )
         , ( "earningEmployerIDSelectOpen", Encode.bool model.earningEmployerIDSelectOpen )
         , ( "earningError", Encode.null )
@@ -60,6 +63,7 @@ cacheEncoder model =
 cacheDecoder : Decode.Decoder Model
 cacheDecoder =
     decode Model
+        |> required "homeAddView" HomeAddView.cacheDecoder
         |> required "earningAmount" Decode.string
         |> required "earningEmployerID" Decode.string
         |> required "earningEmployerIDSelectOpen" Decode.bool
