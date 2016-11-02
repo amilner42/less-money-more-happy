@@ -380,6 +380,48 @@ mainView model =
                             [ class "home-card-input" ]
                             [ xIcon
                             , detailsTitle
+                            , div
+                                []
+                                [ button
+                                    [ class "add-x-button"
+                                    , onClick <| AddCategory
+                                    , disabled <| not validAddCategoryForm
+                                    ]
+                                    [ text "ADD CATEGORY" ]
+                                , span
+                                    [ class "add-category-name-input-title" ]
+                                    [ text "Name:" ]
+                                , input
+                                    [ class "add-category-name-input"
+                                    , onInput <| OnAddCategoryNameInput
+                                    , placeholder ""
+                                    , value homeComponent.addCategoryName
+                                    ]
+                                    []
+                                , span
+                                    [ class "add-category-goal-title" ]
+                                    [ text "Goal:" ]
+                                , input
+                                    [ class "add-category-goal-amount-input"
+                                    , onInput <| OnAddCategoryGoalSpendingInput
+                                    , placeholder "amount"
+                                    , value homeComponent.addCategoryGoalSpending
+                                    , type' "number"
+                                    ]
+                                    []
+                                , span
+                                    [ class "add-category-goal-input-seperator" ]
+                                    [ text "/" ]
+                                , input
+                                    [ class "add-category-goal-day-input"
+                                    , onInput <| OnAddCategoryPerNumberOfDaysInput
+                                    , placeholder "days"
+                                    , value homeComponent.addCategoryGoalPerNumberOfDays
+                                    , type' "number"
+                                    ]
+                                    []
+                                , ErrorBox.errorBox homeComponent.addCategoryError
+                                ]
                             ]
 
                     HomeAddView.AddEarningView ->
@@ -509,35 +551,6 @@ mainView model =
               --         )
               --         homeComponent.expenditureCategoryIDSelectOpen
               --         user.categoriesWithGoals
-              --     , div
-              --         [ class "lower-bar" ]
-              --         [ button
-              --             [ onClick <| AddCategory
-              --             , disabled <| not validAddCategoryForm
-              --             ]
-              --             [ text "ADD CATEGORY" ]
-              --         , input
-              --             [ onInput <| OnAddCategoryNameInput
-              --             , placeholder "Name"
-              --             , value homeComponent.addCategoryName
-              --             ]
-              --             []
-              --         , input
-              --             [ onInput <| OnAddCategoryGoalSpendingInput
-              --             , placeholder "Goal $"
-              --             , value homeComponent.addCategoryGoalSpending
-              --             , type' "number"
-              --             ]
-              --             []
-              --         , input
-              --             [ onInput <| OnAddCategoryPerNumberOfDaysInput
-              --             , placeholder "Per Days"
-              --             , value homeComponent.addCategoryGoalPerNumberOfDays
-              --             , type' "number"
-              --             ]
-              --             []
-              --         , ErrorBox.errorBox homeComponent.addCategoryError
-              --         ]
               --     , ErrorBox.errorBox homeComponent.expenditureError
               --     ]
               -- , hr

@@ -191,6 +191,16 @@ $break6: 400px;
         left: 3px;
       }
 
+      .error-box {
+        position: absolute;
+        font-size: 12px;
+        right: 10px;
+        top: 35px;
+        width: 120px;
+        height: 50px;
+        text-align: right;
+      }
+
       .close-icon {
         position: absolute;
         right: 0;
@@ -299,10 +309,55 @@ $break6: 400px;
         color: $color4;
         font-size: 14px;
       }
-    }
 
-    .lower-bar {
-      margin-top: 10px;
+      .add-category-name-input-title {
+        position: absolute;
+        left: 10px;
+        top: 55px;
+        color: $color4;
+        font-size: 14px;
+      }
+
+      .add-category-name-input {
+        @include standard-input();
+        position: absolute;
+        left: 60px;
+        top: 50px;
+        color: $color4;
+        font-size: 14px;
+        width: 80px;
+      }
+
+      .add-category-goal-title {
+        position: absolute;
+        left: 10px;
+        top: 76px;
+        color: $color4;
+        font-size: 14px;
+      }
+
+      .add-category-goal-amount-input {
+        @include standard-input();
+        position: absolute;
+        top: 75px;
+        left: 50px;
+        width: 50px;
+      }
+
+      .add-category-goal-day-input {
+        @include standard-input();
+        position: absolute;
+        top: 75px;
+        left: 112px;
+        width: 30px;
+      }
+
+      .add-category-goal-input-seperator {
+        position: absolute;
+        color: $placeholder-color1;
+        top: 75px;
+        left: 105px;
+      }
     }
 
     .feed-title {
