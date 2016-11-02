@@ -247,7 +247,7 @@ $break6: 400px;
         top: 75px;
       }
 
-      .add-earning-amount-input-title {
+      .add-earning-amount-input-title, .add-expenditure-amount-input-title {
         position: absolute;
         left: 10px;
         top: 48px;
@@ -255,7 +255,7 @@ $break6: 400px;
         font-size: 14px;
       }
 
-      .add-earning-amount-input {
+      .add-earning-amount-input, .add-expenditure-amount-input {
         position: absolute;
         left: 75px;
         top: 46px;
@@ -264,7 +264,7 @@ $break6: 400px;
         @include standard-input();
       }
 
-      .add-earning-employer-select-title {
+      .add-earning-employer-select-title, .add-expenditure-category-select-title {
         position: absolute;
         left: 10px;
         top: 75px;
@@ -283,7 +283,8 @@ $break6: 400px;
 
         .select-title {
           position: absolute;
-          left: -20px;
+          width: 80px;
+          left: 0;
         }
 
         &:hover, &:focus {

@@ -387,7 +387,7 @@ mainView model =
                                     , onClick <| AddCategory
                                     , disabled <| not validAddCategoryForm
                                     ]
-                                    [ text "ADD CATEGORY" ]
+                                    [ text "ADD" ]
                                 , span
                                     [ class "add-category-name-input-title" ]
                                     [ text "Name:" ]
@@ -436,7 +436,7 @@ mainView model =
                                     , onClick AddEarning
                                     , disabled <| not validEarningForm
                                     ]
-                                    [ text "ADD EARNING" ]
+                                    [ text "ADD" ]
                                 , span
                                     [ class "add-earning-amount-input-title" ]
                                     [ text "Amount: " ]
@@ -478,7 +478,7 @@ mainView model =
                                     , disabled <| not validEmployerNameForm
                                     , onClick AddEmployer
                                     ]
-                                    [ text "ADD EMPLOYER"
+                                    [ text "ADD"
                                     ]
                                 , span
                                     [ class "add-employer-input-title" ]
@@ -499,6 +499,40 @@ mainView model =
                             [ class "home-card-input" ]
                             [ xIcon
                             , detailsTitle
+                            , div
+                                []
+                                [ button
+                                    [ class "add-x-button"
+                                    , onClick AddExpenditure
+                                    , disabled <| not validExpenditureForm
+                                    ]
+                                    [ text "ADD" ]
+                                , span
+                                    [ class "add-expenditure-amount-input-title" ]
+                                    [ text "Amount:" ]
+                                , input
+                                    [ class "add-expenditure-amount-input"
+                                    , placeholder ""
+                                    , value homeComponent.expenditureCost
+                                    , onInput OnExpenditureCostInput
+                                    , type' "number"
+                                    ]
+                                    []
+                                , span
+                                    [ class "add-expenditure-category-select-title" ]
+                                    [ text "Category:" ]
+                                , Select.select
+                                    OnExpenditureSelectAction
+                                    expenditureCategorySelectText
+                                    "cancel"
+                                    .name
+                                    (\category ->
+                                        OnExpenditureCategoryIDSelect <| toString category.id
+                                    )
+                                    homeComponent.expenditureCategoryIDSelectOpen
+                                    user.categoriesWithGoals
+                                , ErrorBox.errorBox homeComponent.expenditureError
+                                ]
                             ]
     in
         div []
@@ -524,38 +558,6 @@ mainView model =
                   --     [ class "current-balance-header" ]
                   --     [ text <| "$" ++ toString user.currentBalance ]
                 ]
-              -- , hr
-              --     []
-              --     []
-              -- , div
-              --     []
-              --     [ button
-              --         [ onClick AddExpenditure
-              --         , disabled <| not validExpenditureForm
-              --         ]
-              --         [ text "ADD EXPENDITURE" ]
-              --     , input
-              --         [ placeholder "cost"
-              --         , value homeComponent.expenditureCost
-              --         , onInput OnExpenditureCostInput
-              --         , type' "number"
-              --         ]
-              --         []
-              --     , Select.select
-              --         OnExpenditureSelectAction
-              --         expenditureCategorySelectText
-              --         "Cancel"
-              --         .name
-              --         (\category ->
-              --             OnExpenditureCategoryIDSelect <| toString category.id
-              --         )
-              --         homeComponent.expenditureCategoryIDSelectOpen
-              --         user.categoriesWithGoals
-              --     , ErrorBox.errorBox homeComponent.expenditureError
-              --     ]
-              -- , hr
-              --     []
-              --     []
             , homeInputCard
             , div
                 []
