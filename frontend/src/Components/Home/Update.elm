@@ -539,3 +539,6 @@ update msg model =
 
             AddEmployerView ->
                 setHomeAddView HomeAddView.AddEmployerView
+
+            CloseAddView ->
+                setHomeAddView HomeAddView.None

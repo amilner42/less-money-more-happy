@@ -357,31 +357,36 @@ mainView model =
                 ]
 
         homeInputCard =
-            case homeComponent.homeAddView of
-                HomeAddView.None ->
-                    div
-                        [ class "hidden" ]
-                        []
+            let
+                -- The x icon in the top right of the box.
+                xIcon =
+                    Util.actionGoogleIcon "clear" "close-icon" CloseAddView
+            in
+                case homeComponent.homeAddView of
+                    HomeAddView.None ->
+                        div
+                            [ class "hidden" ]
+                            [ xIcon ]
 
-                HomeAddView.AddCategoryView ->
-                    div
-                        [ class "home-card-input" ]
-                        []
+                    HomeAddView.AddCategoryView ->
+                        div
+                            [ class "home-card-input" ]
+                            [ xIcon ]
 
-                HomeAddView.AddEarningView ->
-                    div
-                        [ class "home-card-input" ]
-                        []
+                    HomeAddView.AddEarningView ->
+                        div
+                            [ class "home-card-input" ]
+                            [ xIcon ]
 
-                HomeAddView.AddEmployerView ->
-                    div
-                        [ class "home-card-input" ]
-                        []
+                    HomeAddView.AddEmployerView ->
+                        div
+                            [ class "home-card-input" ]
+                            [ xIcon ]
 
-                HomeAddView.AddExpenditureView ->
-                    div
-                        [ class "home-card-input" ]
-                        []
+                    HomeAddView.AddExpenditureView ->
+                        div
+                            [ class "home-card-input" ]
+                            [ xIcon ]
     in
         div []
             [ div

@@ -58,3 +58,4 @@ type Msg
     | AddEarningView
     | AddCategoryView
     | AddEmployerView
+    | CloseAddView

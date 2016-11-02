@@ -192,6 +192,17 @@ $break6: 400px;
                 margin-top: 0;
                 left: 3px;
             }
+
+            .close-icon {
+                position: absolute;
+                right: 0;
+                color: $color4;
+                cursor: pointer;
+
+                &:hover {
+                    color: black;
+                }
+            }
         }
 
         .lower-bar {
