@@ -8,6 +8,7 @@ export const APP_CONFIG = {
     "baseUrl": "http://lessmoneymorehappy.com",
     "secondsBeforeReloginNeeded": 1000 * 60 * 60 * 24 * 365 * 10,
     "expressSessionSecretKey": "some123456789secret123456789key",
+    "expressSessionCookieName": "lmmhSession",
     "isHttps": false,
     "port": 3000,
     "apiSuffix": "/api"
