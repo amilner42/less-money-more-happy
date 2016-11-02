@@ -231,7 +231,7 @@ $break6: 400px;
         }
       }
 
-      .add-earning-button {
+      .add-x-button {
         position: absolute;
         right: 5px;
         top: 75px;
@@ -280,6 +280,24 @@ $break6: 400px;
           border-color: $color4;
           color: $color4;
         }
+      }
+
+      .add-employer-input {
+        position: absolute;
+        left: 60px;
+        width: 80px;
+        top: 70px;
+        color: $color4;
+        font-size: 14px;
+        @include standard-input();
+      }
+
+      .add-employer-input-title {
+        position: absolute;
+        left: 10px;
+        top: 75px;
+        color: $color4;
+        font-size: 14px;
       }
     }
 

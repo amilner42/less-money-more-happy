@@ -390,7 +390,7 @@ mainView model =
                             , div
                                 []
                                 [ button
-                                    [ class "add-earning-button"
+                                    [ class "add-x-button"
                                     , onClick AddEarning
                                     , disabled <| not validEarningForm
                                     ]
@@ -429,6 +429,27 @@ mainView model =
                             [ class "home-card-input" ]
                             [ xIcon
                             , detailsTitle
+                            , div
+                                []
+                                [ button
+                                    [ class "add-x-button"
+                                    , disabled <| not validEmployerNameForm
+                                    , onClick AddEmployer
+                                    ]
+                                    [ text "ADD EMPLOYER"
+                                    ]
+                                , span
+                                    [ class "add-employer-input-title" ]
+                                    [ text "Name: " ]
+                                , input
+                                    [ class "add-employer-input"
+                                    , placeholder ""
+                                    , onInput OnAddEmployerInput
+                                    , value homeComponent.employerName
+                                    ]
+                                    []
+                                , ErrorBox.errorBox homeComponent.employerNameError
+                                ]
                             ]
 
                     HomeAddView.AddExpenditureView ->
@@ -461,22 +482,6 @@ mainView model =
                   --     [ class "current-balance-header" ]
                   --     [ text <| "$" ++ toString user.currentBalance ]
                 ]
-              -- , div
-              --     [ class "lower-bar" ]
-              --     [ button
-              --         [ disabled <| not validEmployerNameForm
-              --         , onClick AddEmployer
-              --         ]
-              --         [ text "ADD EMPLOYER"
-              --         ]
-              --     , input
-              --         [ placeholder "name"
-              --         , onInput OnAddEmployerInput
-              --         , value homeComponent.employerName
-              --         ]
-              --         []
-              --     , ErrorBox.errorBox homeComponent.employerNameError
-              --     ]
               -- , hr
               --     []
               --     []
