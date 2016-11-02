@@ -2,6 +2,9 @@
 @import '../../Styles/variables';
 
 
+$break1: 440px;
+$break2: 370px;
+
 .welcome-component-wrapper {
   @include full-screen-absolute();
 
@@ -27,6 +30,16 @@
       .green {
         color: $color2;
       }
+
+      @include ifEqualOrSmallerThan($break1) {
+        width: 310px;
+        font-size: 26px;
+        margin-left: 0;
+      }
+
+      @include ifEqualOrSmallerThan($break2) {
+        font-size: 22px;
+      }
     }
 
     .sub-title {
@@ -34,6 +47,10 @@
       color: $color4;
       margin-bottom: 20px;
       font-weight: bold;
+
+      @include ifEqualOrSmallerThan($break2) {
+        font-size: 14px;
+      }
     }
 
     .welcome-form {
@@ -63,24 +80,6 @@
       margin-top: 10px;
       font-size: 16px;
       text-decoration: underline;
-    }
-
-    @media screen and (max-width: 440px) {
-      .welcome-title {
-        width: 310px;
-        font-size: 26px;
-        margin-left: 0;
-      }
-    }
-
-    @media screen and (max-width: 370px) {
-      .welcome-title {
-        font-size: 22px;
-      }
-
-      .sub-title {
-        font-size: 14px;
-      }
     }
   }
 }
