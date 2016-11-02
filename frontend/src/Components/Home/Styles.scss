@@ -205,10 +205,11 @@ $break6: 400px;
       .details-title {
         position: absolute;
         text-align: right;
-        left: 5px;
-        top: 5px;
+        left: 10px;
+        top: 10px;
         font-size: 18px;
         color: $color4;
+        border-bottom: 2px solid $color4;
 
         @include ifEqualOrBiggerThan($break6) {
           font-size: 22px;
@@ -220,13 +221,64 @@ $break6: 400px;
         }
 
         @include ifEqualOrBiggerThan($break3) {
-          left: 5px;
+          left: 10px;
           transform: none;
         }
 
         @include ifEqualOrBiggerThan($break1) {
           left: 50%;
           transform: translateX(-50%);
+        }
+      }
+
+      .add-earning-button {
+        position: absolute;
+        right: 5px;
+        top: 75px;
+      }
+
+      .add-earning-amount-input-title {
+        position: absolute;
+        left: 10px;
+        top: 48px;
+        color: $color4;
+        font-size: 14px;
+      }
+
+      .add-earning-amount-input {
+        position: absolute;
+        left: 75px;
+        top: 46px;
+        width: 50px;
+
+        @include standard-input();
+      }
+
+      .add-earning-employer-select-title {
+        position: absolute;
+        left: 10px;
+        top: 75px;
+        color: $color4;
+        font-size: 14px;
+      }
+
+      .select {
+        position: absolute;
+        left: 85px;
+        top: 70px;
+        border: 2px dotted $placeholder-color1;
+        color: $placeholder-color1;
+        width: 80px;
+        height: 20px;
+
+        .select-title {
+          position: absolute;
+          left: -20px;
+        }
+
+        &:hover, &:focus {
+          border-color: $color4;
+          color: $color4;
         }
       }
     }

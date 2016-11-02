@@ -315,10 +315,10 @@ mainView model =
                             )
                         |> List.head
                         |> Maybe.map .name
-                        |> Maybe.withDefault "Select Employer"
+                        |> Maybe.withDefault "select"
 
                 True ->
-                    "Select Employer"
+                    "select"
 
         validExpenditureForm =
             (homeComponent.expenditureCost /= "")
@@ -387,6 +387,41 @@ mainView model =
                             [ class "home-card-input" ]
                             [ xIcon
                             , detailsTitle
+                            , div
+                                []
+                                [ button
+                                    [ class "add-earning-button"
+                                    , onClick AddEarning
+                                    , disabled <| not validEarningForm
+                                    ]
+                                    [ text "ADD EARNING" ]
+                                , span
+                                    [ class "add-earning-amount-input-title" ]
+                                    [ text "Amount: " ]
+                                , input
+                                    [ class "add-earning-amount-input"
+                                    , placeholder ""
+                                    , value homeComponent.earningAmount
+                                    , onInput OnEarningAmountInput
+                                    , type' "number"
+                                    ]
+                                    []
+                                , span
+                                    [ class "add-earning-employer-select-title" ]
+                                    [ text "Employer: " ]
+                                , Select.select
+                                    OnEarningSelectAction
+                                    earningEmployerSelectText
+                                    "cancel"
+                                    .name
+                                    (\employer ->
+                                        toString employer.id
+                                            |> OnEarningEmployerIDSelect
+                                    )
+                                    homeComponent.earningEmployerIDSelectOpen
+                                    (Maybe.withDefault [] user.employers)
+                                , ErrorBox.errorBox homeComponent.earningError
+                                ]
                             ]
 
                     HomeAddView.AddEmployerView ->
@@ -426,33 +461,6 @@ mainView model =
                   --     [ class "current-balance-header" ]
                   --     [ text <| "$" ++ toString user.currentBalance ]
                 ]
-              -- , div
-              --     []
-              --     [ button
-              --         [ onClick AddEarning
-              --         , disabled <| not validEarningForm
-              --         ]
-              --         [ text "ADD EARNING" ]
-              --     , input
-              --         [ placeholder "amount"
-              --         , value homeComponent.earningAmount
-              --         , onInput OnEarningAmountInput
-              --         , type' "number"
-              --         ]
-              --         []
-              --     , Select.select
-              --         OnEarningSelectAction
-              --         earningEmployerSelectText
-              --         "Cancel"
-              --         .name
-              --         (\employer ->
-              --             toString employer.id
-              --                 |> OnEarningEmployerIDSelect
-              --         )
-              --         homeComponent.earningEmployerIDSelectOpen
-              --         (Maybe.withDefault [] user.employers)
-              --     , ErrorBox.errorBox homeComponent.earningError
-              --     ]
               -- , div
               --     [ class "lower-bar" ]
               --     [ button

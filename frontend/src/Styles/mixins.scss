@@ -1,6 +1,20 @@
 @import "variables";
 
 
+// A basic input style.
+@mixin standard-input() {
+  border: none;
+  background: white;
+  border-bottom: 1px solid $placeholder-color1;
+  outline: none;
+  text-align: center;
+
+  &:hover, &:focus {
+    border-bottom: 2px solid $color4;
+  }
+}
+
+
 //Absolutely centering sometimes needs to be shifted a bit vertically.
 @mixin absolutely-centered-pick-y($top-distance) {
 
