@@ -361,32 +361,47 @@ mainView model =
                 -- The x icon in the top right of the box.
                 xIcon =
                     Util.actionGoogleIcon "clear" "close-icon" CloseAddView
+
+                detailsTitle =
+                    div
+                        [ class "details-title" ]
+                        [ text "Details" ]
             in
                 case homeComponent.homeAddView of
                     HomeAddView.None ->
                         div
                             [ class "hidden" ]
-                            [ xIcon ]
+                            [ xIcon
+                            , detailsTitle
+                            ]
 
                     HomeAddView.AddCategoryView ->
                         div
                             [ class "home-card-input" ]
-                            [ xIcon ]
+                            [ xIcon
+                            , detailsTitle
+                            ]
 
                     HomeAddView.AddEarningView ->
                         div
                             [ class "home-card-input" ]
-                            [ xIcon ]
+                            [ xIcon
+                            , detailsTitle
+                            ]
 
                     HomeAddView.AddEmployerView ->
                         div
                             [ class "home-card-input" ]
-                            [ xIcon ]
+                            [ xIcon
+                            , detailsTitle
+                            ]
 
                     HomeAddView.AddExpenditureView ->
                         div
                             [ class "home-card-input" ]
-                            [ xIcon ]
+                            [ xIcon
+                            , detailsTitle
+                            ]
     in
         div []
             [ div
