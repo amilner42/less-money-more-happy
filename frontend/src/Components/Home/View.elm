@@ -556,9 +556,6 @@ mainView model =
                     "Employer"
                     AddEmployerView
                     (homeComponent.homeAddView == HomeAddView.AddEmployerView)
-                  -- , span
-                  --     [ class "current-balance-header" ]
-                  --     [ text <| "$" ++ toString user.currentBalance ]
                 ]
             , homeInputCard
             , div
@@ -566,6 +563,13 @@ mainView model =
                 [ div
                     [ class "feed-title" ]
                     [ text "TODAY" ]
+                , div
+                    [ class "feed-sub-title" ]
+                    [ text <| "Current Balance: "
+                    , span
+                        [ class "money" ]
+                        [ text <| "$" ++ toString user.currentBalance ]
+                    ]
                 , div
                     [ class "feed" ]
                     (toHtmlFeed user.expenditures user.earnings)
