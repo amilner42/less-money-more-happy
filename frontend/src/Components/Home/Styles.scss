@@ -288,8 +288,42 @@ $break6: 400px;
         }
 
         &:hover, &:focus {
+          transition: 0.3s;
           border-color: $color4;
           color: $color4;
+        }
+
+        .select-item {
+          left: -2px;
+          top: -2px;
+          color: $placeholder-color1;
+          border: 2px dotted $placeholder-color1;
+          border-top: none;
+          border-left-style: solid;
+          border-right-style: solid;
+
+          &:hover {
+            color: $color4;
+          }
+        }
+
+        .first-item {
+          border: 2px solid $placeholder-color1;
+        }
+
+        .last-item {
+          border-bottom: 2px solid $placeholder-color1;
+        }
+
+        .no-options-item {
+          white-space: normal;
+          height: 40px;
+          color: $error-color1;
+
+          &:hover {
+            color: $error-color1;
+            cursor: not-allowed;
+          }
         }
       }
 

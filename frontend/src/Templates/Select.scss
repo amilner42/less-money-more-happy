@@ -10,6 +10,9 @@
     width: 120px;
     cursor: pointer;
     display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .select-item {
@@ -19,5 +22,8 @@
     cursor: pointer;
     border-top: 2px solid black;
     background-color: white;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }

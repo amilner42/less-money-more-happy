@@ -297,13 +297,13 @@ mainView model =
                         case maybeCategory of
                             -- Strange case, we have an ID that's not in the users list.
                             Nothing ->
-                                "Select Category"
+                                "select"
 
                             Just category ->
                                 category.name
 
                 True ->
-                    "Select Category"
+                    "select"
 
         earningEmployerSelectText =
             case (homeComponent.earningEmployerID == "") of
@@ -455,6 +455,7 @@ mainView model =
                                     OnEarningSelectAction
                                     earningEmployerSelectText
                                     "cancel"
+                                    "You have no employers!"
                                     .name
                                     (\employer ->
                                         toString employer.id
@@ -525,6 +526,7 @@ mainView model =
                                     OnExpenditureSelectAction
                                     expenditureCategorySelectText
                                     "cancel"
+                                    "You have no categories!"
                                     .name
                                     (\category ->
                                         OnExpenditureCategoryIDSelect <| toString category.id

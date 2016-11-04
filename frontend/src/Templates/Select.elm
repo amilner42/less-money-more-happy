@@ -35,9 +35,12 @@ Params:
 
     listOfA: The list of things in the dropdown.
 -}
-select : (SelectMessage -> msg) -> String -> String -> (a -> String) -> (a -> msg) -> Bool -> List a -> Html msg
-select tagger selectText unselectText aToDisplayString aToMsg open listOfA =
+select : (SelectMessage -> msg) -> String -> String -> String -> (a -> String) -> (a -> msg) -> Bool -> List a -> Html msg
+select tagger selectText unselectText emptyListText aToDisplayString aToMsg open listOfA =
     let
+        zeroBasedListLength =
+            List.length listOfA - 1
+
         htmlForDisplay =
             case open of
                 False ->
@@ -50,24 +53,38 @@ select tagger selectText unselectText aToDisplayString aToMsg open listOfA =
 
                 True ->
                     let
-                        itemToHtml item =
-                            div
-                                [ class "select-item"
-                                , onClick <| aToMsg item
-                                ]
-                                [ text <| aToDisplayString item ]
+                        itemToHtml index item =
+                            let
+                                itemClasses =
+                                    if index == zeroBasedListLength then
+                                        "select-item last-item"
+                                    else
+                                        "select-item"
+                            in
+                                div
+                                    [ class itemClasses
+                                    , onClick <| aToMsg item
+                                    ]
+                                    [ text <| aToDisplayString item ]
 
                         dropdownOptions =
-                            List.map itemToHtml listOfA
+                            List.indexedMap itemToHtml listOfA
 
                         topDiv =
                             span
-                                [ class "select-title"
+                                [ class "select-item first-item"
                                 , onClick <| tagger CloseSelect
                                 ]
                                 [ text unselectText ]
                     in
-                        topDiv :: dropdownOptions
+                        if zeroBasedListLength == -1 then
+                            topDiv
+                                :: [ div
+                                        [ class "select-item last-item no-options-item" ]
+                                        [ text emptyListText ]
+                                   ]
+                        else
+                            topDiv :: dropdownOptions
     in
         span
             [ class "select" ]
