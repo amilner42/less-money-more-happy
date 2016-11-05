@@ -15,6 +15,19 @@
 }
 
 
+// The standard box shadow used all over the place.
+// Check out this codepen: https://codepen.io/sdthornton/pen/wBZdXq
+@mixin standard-box-shadow() {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+// A lighter box shadow used for less effect.
+// Check out this codepen: https://codepen.io/sdthornton/pen/wBZdXq
+@mixin light-box-shadow() {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.04);
+}
+
+
 //Absolutely centering sometimes needs to be shifted a bit vertically.
 @mixin absolutely-centered-pick-y($top-distance) {
 

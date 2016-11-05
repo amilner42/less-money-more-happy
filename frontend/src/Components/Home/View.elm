@@ -207,9 +207,14 @@ mainView model =
                 feedItem { date, isExpenditure, value, displayText } =
                     div
                         [ class "feed-item" ]
-                        [ text <| formatDate date
+                        [ div
+                            [ class "feed-item-time" ]
+                            [ text <| formatDate date ]
                         , div
-                            []
+                            [ class "feed-item-display-text" ]
+                            [ text <| displayText ]
+                        , div
+                            [ class <| Util.withClassesIf "feed-item-amount" "negative" isExpenditure ]
                             [ case isExpenditure of
                                 True ->
                                     text <| "-" ++ (toString value)
@@ -217,9 +222,6 @@ mainView model =
                                 False ->
                                     text <| "+" ++ (toString value)
                             ]
-                        , div
-                            []
-                            [ text <| displayText ]
                         ]
 
                 expenditureText expenditure =
