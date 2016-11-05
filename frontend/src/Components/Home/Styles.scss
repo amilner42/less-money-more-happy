@@ -460,5 +460,42 @@ $break6: 400px;
         margin-top: 20px;
       }
     }
+
+    .profile-view {
+
+      .account-card {
+        @include standard-box-shadow();
+
+        position: relative;
+        background-color: white;
+        margin: 15px;
+        height: 100px;
+
+        .account-card-title {
+          position: absolute;
+          text-align: right;
+          left: 10px;
+          top: 10px;
+          font-size: 18px;
+          color: black;
+          border-bottom: 2px solid black;
+        }
+
+        .account-card-email {
+          position: absolute;
+          text-align: right;
+          left: 10px;
+          top: 40px;
+          font-size: 14px;
+          color: $color4;
+        }
+
+        .log-out-button {
+          position: absolute;
+          bottom: 10px;
+          right: 10px;
+        }
+      }
+    }
   }
 }

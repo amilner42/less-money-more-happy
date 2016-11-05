@@ -153,18 +153,23 @@ navbar model =
 -}
 profileView : ReturningUserModel -> Html Msg
 profileView model =
-    div []
-        [ hr
-            []
-            []
-        , text "Your Email: "
-        , text model.user.email
-        , hr
-            []
-            []
-        , button
-            [ onClick LogOut ]
-            [ text "LOG OUT" ]
+    div
+        [ class "profile-view"
+        ]
+        [ div
+            [ class "account-card" ]
+            [ div
+                [ class "account-card-title" ]
+                [ text "Account" ]
+            , div
+                [ class "account-card-email-title" ]
+                [ text <| "Email: " ++ model.user.email ]
+            , button
+                [ class "log-out-button"
+                , onClick LogOut
+                ]
+                [ text "LOG OUT" ]
+            ]
         ]
 
 
