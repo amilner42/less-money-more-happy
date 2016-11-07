@@ -10,12 +10,12 @@ import {
   expenditureCategoryModel,
   validExpenditureArray,
   validExpenditureCategoryWithGoalsArray,
-  postExpenditureType,
-  postEarningType,
-  postEmployerType,
-  postUpdateCategory,
-  postAddCategory,
-  postAddCategoryType} from './models/';
+  validPostUpdateCategory,
+  validPostAddCategory,
+  validPostExpenditure,
+  validPostEarning,
+  validPostEmployer,
+  postAddCategory } from './models/';
 import {
   appRoutes,
   errorCodes,
@@ -23,7 +23,6 @@ import {
   color,
   user,
   expenditureCategoryWithGoals,
-  structures,
   expenditure,
   earning } from './types';
 import { collection } from './db';
@@ -31,7 +30,7 @@ import {
   prepareErrorForFrontend,
   renameMongoIDField,
   isNullOrUndefined } from './util';
-import { validMoney, validModel } from './validifier';
+import { validMoney } from './validifier';
 
 
 /**
@@ -258,7 +257,7 @@ export const routes: appRoutes = {
       const user: user = req.user;
       const updatedCategory = req.body;
 
-      return validModel(updatedCategory, postUpdateCategory)
+      return validPostUpdateCategory(updatedCategory)
       .then(() => {
         for(let category of user.categoriesWithGoals || []) {
           if(category.id == updatedCategory.categoryID) {
@@ -298,7 +297,7 @@ export const routes: appRoutes = {
       const user: user = req.user;
       const postAddCategory: postAddCategory = req.body;
 
-      return validModel(postAddCategory, postAddCategoryType)
+      return validPostAddCategory(postAddCategory)
       .then(() => {
         for(let category of user.categoriesWithGoals) {
           const name = category.name;
@@ -384,7 +383,7 @@ export const routes: appRoutes = {
       const user: user = req.user;
       const expenditure = req.body;
 
-      return validModel(expenditure, postExpenditureType)
+      return validPostExpenditure(expenditure)
       .then(() => {
         if(isNullOrUndefined(user.expenditures)) {
           user.expenditures = [];
@@ -430,7 +429,7 @@ export const routes: appRoutes = {
       const user = req.user;
       const earning = req.body;
 
-      return validModel(earning, postEarningType)
+      return validPostEarning(earning)
       .then(() => {
         if(isNullOrUndefined(user.earnings)) {
           user.earnings = [];
@@ -473,7 +472,7 @@ export const routes: appRoutes = {
       const user = req.user;
       const employer = req.body;
 
-      return validModel(employer, postEmployerType)
+      return validPostEmployer(employer)
       .then(() => {
         if(isNullOrUndefined(user.employers)) {
             user.employers = [];

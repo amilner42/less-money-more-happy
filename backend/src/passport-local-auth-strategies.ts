@@ -5,10 +5,11 @@ import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
 import { Strategy } from 'passport-local';
 
 import { collection } from './db';
-import { validEmail, validPassword, validModel } from './validifier';
-import { errorCodes, user, structures } from './types';
+import { validEmail, validPassword } from './validifier';
+import { errorCodes, user } from './types';
 import { isNullOrUndefined } from './util';
 import { InvalidModelError } from './errors';
+import * as kleen from "kleen";
 
 
 /**
@@ -46,6 +47,7 @@ const correctPassword = (user, password) => {
   return compareSync(password, user.password);
 };
 
+
 /**
  * Register a new user.
  *
@@ -67,6 +69,7 @@ const register = (email, password): Promise<user> => {
   .then(() => user);
 };
 
+
 /**
  * Standard login strategy, rejects with approprite error code if needed.
  */
@@ -77,12 +80,12 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
   /**
    * The user login structure.
    */
-  const userLoginStructure: structures.interfaceStructure = {
-    typeCategory: structures.typeCategory.interface,
+  const userLoginStructure: kleen.objectStructure = {
+    kindOfType: kleen.kindOfType.object,
     properties: {
       email: {
-        typeCategory: structures.typeCategory.primitive,
-        type: structures.primitiveType.string,
+        kindOfType: kleen.kindOfType.primitive,
+        kindOfPrimitive: kleen.kindOfPrimitive.string,
         restriction: (email: string) => {
           if(isNullOrUndefined(email)) {
             return Promise.reject(new InvalidModelError(
@@ -93,8 +96,8 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
         }
       },
       password: {
-        typeCategory: structures.typeCategory.primitive,
-        type: structures.primitiveType.string,
+        kindOfType: kleen.kindOfType.primitive,
+        kindOfPrimitive: kleen.kindOfPrimitive.string,
         restriction: (password: string) => {
           if(isNullOrUndefined(password)) {
             return Promise.reject(new InvalidModelError(
@@ -114,7 +117,7 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
         ));
       }
 
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
 
         user.email = user.email.toLowerCase();
 
@@ -146,7 +149,7 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
     }
   };
 
-  validModel({email, password}, userLoginStructure)
+  kleen.validModel(userLoginStructure)({email, password})
   .then(() => {
     return next(null, retrievedUser);
   })
@@ -160,6 +163,7 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
   });
 });
 
+
 /**
  * Standard sign-up strategy, rejects with approprite error code if needed.
  */
@@ -168,14 +172,14 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
   /**
    * The user signup structure.
    */
-  const userSignUpStructure: structures.interfaceStructure = {
-    typeCategory: structures.typeCategory.interface,
+  const userSignUpStructure: kleen.objectStructure = {
+    kindOfType: kleen.kindOfType.object,
     properties: {
       email: {
-        typeCategory: structures.typeCategory.primitive,
-        type: structures.primitiveType.string,
+        kindOfType: kleen.kindOfType.primitive,
+        kindOfPrimitive: kleen.kindOfPrimitive.string,
         restriction: (email: string) => {
-          return new Promise((resolve, reject) => {
+          return new Promise<void>((resolve, reject) => {
             // All emails are stored in lower case.
             if(!isNullOrUndefined(email)) {
               email = email.toLowerCase();
@@ -209,8 +213,8 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
         }
       },
       password: {
-        typeCategory: structures.typeCategory.primitive,
-        type: structures.primitiveType.string,
+        kindOfType: kleen.kindOfType.primitive,
+        kindOfPrimitive: kleen.kindOfPrimitive.string,
         restriction: (password: string) => {
           if(!validPassword(password)) {
             return Promise.reject(new InvalidModelError(
@@ -232,7 +236,7 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
     }
   };
 
-  return validModel({ email, password }, userSignUpStructure)
+  return kleen.validModel(userSignUpStructure)({ email, password })
   .then(() => {
     return register(email, password);
   })

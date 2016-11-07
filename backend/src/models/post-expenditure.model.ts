@@ -1,26 +1,27 @@
 /// Module for `PostExpenditure`s, which are expenditures being sent from the
 /// frontend.
 
-import { structures, errorCodes } from '../types';
-import { isNullOrUndefined } from '../util';
+import { errorCodes } from '../types';
 import { validPositiveInteger, validMoney} from '../validifier';
+import * as kleen from "kleen";
 
 
 // A valid PostExpenditure from the frontend.
-export const postExpenditureType: structures.interfaceStructure = {
-  typeCategory: structures.typeCategory.interface,
+export const postExpenditureType: kleen.objectStructure = {
+  kindOfType: kleen.kindOfType.object,
+  customErrorOnTypeFailure: {
+    message: "Expenditure must be an exact expenditure",
+    errorCode: errorCodes.invalidExpenditure
+  },
   properties: {
     "cost": {
-      typeCategory: structures.typeCategory.primitive,
-      type: structures.primitiveType.string,
+      kindOfType: kleen.kindOfType.primitive,
+      kindOfPrimitive: kleen.kindOfPrimitive.string,
+      customErrorOnTypeFailure: {
+        message: "The cost field must be a string",
+        errorCode: errorCodes.invalidExpenditure
+      },
       restriction: (cost: string) => {
-        if(isNullOrUndefined(cost)) {
-          return Promise.reject({
-            message: "Cost cannot be null/undefined.",
-            errorCode: errorCodes.invalidExpenditure
-          });
-        }
-
         if(!validMoney(cost)) {
           return Promise.reject({
             message: "Cost must be a valid money",
@@ -37,16 +38,13 @@ export const postExpenditureType: structures.interfaceStructure = {
       }
     },
     "categoryID": {
-      typeCategory: structures.typeCategory.primitive,
-      type: structures.primitiveType.string,
+      kindOfType: kleen.kindOfType.primitive,
+      kindOfPrimitive: kleen.kindOfPrimitive.string,
+      customErrorOnTypeFailure: {
+        message: "The categoryID must be a string",
+        errorCode: errorCodes.invalidExpenditure
+      },
       restriction: (categoryID: string) => {
-        if(isNullOrUndefined(categoryID)) {
-          return Promise.reject({
-            message: "CategoryID cannot be null/undefined",
-            errorCode: errorCodes.invalidExpenditure
-          });
-        }
-
         if(!validPositiveInteger(categoryID)) {
           return Promise.reject({
             message: "CategoryID must be a valid positive integer",
@@ -55,13 +53,11 @@ export const postExpenditureType: structures.interfaceStructure = {
         }
       }
     }
-  },
-  restriction: (postExpenditure) => {
-    if(isNullOrUndefined(postExpenditure)) {
-      return Promise.reject({
-        message: "Expenditure cannot be null/undefined",
-        errorCode: errorCodes.invalidExpenditure
-      });
-    }
   }
 }
+
+
+/**
+ * Validifies a `postExpenditureType`.
+ */
+export const validPostExpenditure = kleen.validModel(postExpenditureType);

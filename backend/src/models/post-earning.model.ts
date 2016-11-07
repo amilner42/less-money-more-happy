@@ -1,29 +1,30 @@
 /// Module for `PostEarning`s, which are earnings being sent from the
 /// frontend.
 
-import { structures, errorCodes } from '../types';
-import { isNullOrUndefined } from '../util';
+import { errorCodes } from '../types';
 import { validPositiveInteger, validMoney} from '../validifier';
+import * as kleen from "kleen";
 
 
 /**
  * The `type` of a `PostEarning`, a partial earning from a frontend "POST"
  * request. It must have an `amount` and `fromEmployerID`.
  */
-export const postEarningType: structures.interfaceStructure = {
-  typeCategory: structures.typeCategory.interface,
+export const postEarningType: kleen.objectStructure = {
+  kindOfType: kleen.kindOfType.object,
+  customErrorOnTypeFailure: {
+    message: "Earning must be an exact earning",
+    errorCode: errorCodes.invalidEarning
+  },
   properties: {
     "amount": {
-      typeCategory: structures.typeCategory.primitive,
-      type: structures.primitiveType.string,
+      kindOfType: kleen.kindOfType.primitive,
+      kindOfPrimitive: kleen.kindOfPrimitive.string,
+      customErrorOnTypeFailure: {
+        message: "The amount field must be a string",
+        errorCode: errorCodes.invalidEarning
+      },
       restriction: (amount: string) => {
-        if(isNullOrUndefined(amount)) {
-          return Promise.reject({
-            message: "amount cannot be null/undefined",
-            errorCode: errorCodes.invalidEarning
-          });
-        }
-
         if(!validMoney(amount)) {
           return Promise.reject({
             message: "amount must be a valid money",
@@ -41,24 +42,18 @@ export const postEarningType: structures.interfaceStructure = {
       }
     },
     "fromEmployerID": {
-      typeCategory: structures.typeCategory.primitive,
-      type: structures.primitiveType.string,
-      restriction: (employerID: string) => {
-        if(isNullOrUndefined(employerID)) {
-          return Promise.reject({
-            message: "fromEmployerID cannot be null/undefined",
-            errorCode: errorCodes.invalidEarning
-          });
-        }
-      }
-    }
-  },
-  restriction: (postEarning) => {
-    if(isNullOrUndefined(postEarning)) {
-      return Promise.reject({
-        message: "Earning cannot be undefined/null",
+      kindOfType: kleen.kindOfType.primitive,
+      kindOfPrimitive: kleen.kindOfPrimitive.string,
+      customErrorOnTypeFailure: {
+        message: "The fromEmployerID field must be a string",
         errorCode: errorCodes.invalidEarning
-      });
+      }
     }
   }
 }
+
+
+/**
+ * Validifies a `postEarningType`.
+ */
+export const validPostEarning = kleen.validModel(postEarningType);

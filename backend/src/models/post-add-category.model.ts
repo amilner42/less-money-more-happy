@@ -1,13 +1,13 @@
 /// Module for `PostAddCategory`s, which are categories being sent from the
 /// frontend, we add these categories and their goals to the users list.
 
-import { structures, errorCodes } from '../types';
-import { isNullOrUndefined } from '../util';
+import { errorCodes } from '../types';
 import {
   validPositiveInteger,
   validMoney,
   validNotJustSpacesString } from '../validifier';
 import { collection } from '../db';
+import * as kleen from "kleen";
 
 
 /**
@@ -23,73 +23,66 @@ export type postAddCategory = {
 /**
  * `PostAddCategory` type. is the format for adding category.
  */
-export const postAddCategoryType: structures.interfaceStructure = {
-  typeCategory: structures.typeCategory.interface,
+export const postAddCategoryType: kleen.objectStructure = {
+  kindOfType: kleen.kindOfType.object,
+  customErrorOnTypeFailure: {
+    message: "Category must be an exact category!",
+    errorCode: errorCodes.invalidAddCategory
+  },
   properties: {
     "newName": {
-      typeCategory: structures.typeCategory.primitive,
-      type: structures.primitiveType.string,
+      kindOfType: kleen.kindOfType.primitive,
+      kindOfPrimitive: kleen.kindOfPrimitive.string,
+      customErrorOnTypeFailure: {
+        message: "The newName field must be a string",
+        errorCode: errorCodes.invalidAddCategory
+      },
       restriction: (newName: string) => {
-        if(isNullOrUndefined(newName)) {
-          return Promise.reject({
-            message: "category.newName cannot be null/undefined",
-            errorCode: errorCodes.invalidAddCategory
-          });
-        }
-
         if(!validNotJustSpacesString(newName)) {
           return Promise.reject({
-            message: "category.newName cannot be just spaces",
+            message: "The newName field cannot be just spaces",
             errorCode: errorCodes.invalidAddCategory
           });
         }
       }
     },
     "newPerNumberOfDays": {
-      typeCategory: structures.typeCategory.primitive,
-      type: structures.primitiveType.string,
+      kindOfType: kleen.kindOfType.primitive,
+      kindOfPrimitive: kleen.kindOfPrimitive.string,
+      customErrorOnTypeFailure: {
+        message: "The newPerNumberOfDays field must be a string",
+        errorCode: errorCodes.invalidAddCategory
+      },
       restriction: (newPerNumberOfDays: string) => {
-        if(isNullOrUndefined(newPerNumberOfDays)) {
-          return Promise.reject({
-            message: "category.newPerNumberOfDays cannot be null/undefined",
-            errorCode: errorCodes.invalidAddCategory
-          });
-        }
-
         if(!validPositiveInteger(newPerNumberOfDays)) {
           return Promise.reject({
-            message: "category.newPerNumberOfDays must be a positive integer",
+            message: "The newPerNumberOfDays field must represent a positive integer",
             errorCode: errorCodes.invalidAddCategory
           });
         }
       }
     },
     "newGoalSpending": {
-      typeCategory: structures.typeCategory.primitive,
-      type: structures.primitiveType.string,
+      kindOfType: kleen.kindOfType.primitive,
+      kindOfPrimitive: kleen.kindOfPrimitive.string,
+      customErrorOnTypeFailure: {
+        message: "The newGoalSpending field must be a string",
+        errorCode: errorCodes.invalidAddCategory
+      },
       restriction: (newGoalSpending: string) => {
-        if(isNullOrUndefined(newGoalSpending)) {
-          return Promise.reject({
-            message: "category.newGoalSpending cannot be null/undefined",
-            errorCode: errorCodes.invalidAddCategory
-          });
-        }
-
         if(!validMoney(newGoalSpending) || newGoalSpending.charAt(0) == "-") {
           return Promise.reject({
-            message: "category.newGoalSpending must be valid positive money, eg. 2 or 2.32",
+            message: "The newGoalSpending field must represent positive money, eg. 2 or 2.32",
             errorCode: errorCodes.invalidAddCategory
           });
         }
       }
     }
-  },
-  restriction: (postAddCategory: postAddCategory) => {
-    if(isNullOrUndefined(postAddCategory)) {
-      return Promise.reject({
-        message: "Category cannot be null/undefined",
-        errorCode: errorCodes.invalidAddCategory
-      });
-    }
   }
 }
+
+
+/**
+ * Validifies a `postAddCategoryType`.
+ */
+export const validPostAddCategory = kleen.validModel(postAddCategoryType);

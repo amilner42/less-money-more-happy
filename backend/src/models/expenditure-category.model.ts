@@ -2,9 +2,8 @@
 
 import { omit } from "ramda";
 
-import { model, expenditureCategory, structures, errorCodes } from '../types';
-import { validModel } from '../validifier';
-import { isNullOrUndefined } from '../util';
+import { model, expenditureCategory, errorCodes } from '../types';
+import * as kleen from "kleen";
 
 
 /**
@@ -12,19 +11,15 @@ import { isNullOrUndefined } from '../util';
  * for the POST request from the user when their is nothing but `name`s on the
  * categories.
  */
-const expenditureType: structures.interfaceStructure = {
-  typeCategory: structures.typeCategory.interface,
+const expenditureType: kleen.objectStructure = {
+  kindOfType: kleen.kindOfType.object,
   properties: {
     "name": {
-      typeCategory: structures.typeCategory.primitive,
-      type: structures.primitiveType.string,
-      restriction: (name) => {
-        if(isNullOrUndefined(name)) {
-          return Promise.reject({
-            errorCode: errorCodes.invalidCategories,
-            message: "The `name` propertry on a category cannot be null or undefined"
-          });
-        }
+      kindOfType: kleen.kindOfType.primitive,
+      kindOfPrimitive: kleen.kindOfPrimitive.string,
+      customErrorOnTypeFailure: {
+        errorCode: errorCodes.invalidCategories,
+        message: "The `name` field must be a string."
       }
     }
   }
@@ -32,22 +27,19 @@ const expenditureType: structures.interfaceStructure = {
 
 
 /**
- * Just a helper for getting the array type
+ * Just a helper for getting the array type.
  *
  * ADDITIONALLY: Checks the length is greater than 0, this is what we require
                  for the post requests.
  */
-const arrayOfExpenditureType: structures.arrayStructure = {
-  typeCategory: structures.typeCategory.array,
-  type: expenditureType,
+const arrayOfExpenditureType: kleen.arrayStructure = {
+  kindOfType: kleen.kindOfType.array,
+  elementType: expenditureType,
+  customErrorOnTypeFailure: {
+    errorCode: errorCodes.invalidCategories,
+    message: "You must pass an array of categories"
+  },
   restriction: (arrayOfExpenditureCategories) => {
-    if(isNullOrUndefined(arrayOfExpenditureCategories)) {
-      return Promise.reject({
-        errorCode: errorCodes.invalidCategories,
-        message: "You must pass an array of categories, not null/undefined"
-      });
-    }
-
     if(arrayOfExpenditureCategories.length == 0) {
       return Promise.reject({
         errorCode: errorCodes.invalidCategories,
@@ -70,8 +62,6 @@ export const expenditureCategoryModel: model<expenditureCategory> = {
 
 
 /**
- * Checks that an aray of expenditure categories are valid.
+ * Validifies a `arrayOfExpenditureType`.
  */
-export const validExpenditureArray = (expenditureArray): Promise<void> => {
-  return validModel(expenditureArray, arrayOfExpenditureType);
-}
+export const validExpenditureArray = kleen.validModel(arrayOfExpenditureType);

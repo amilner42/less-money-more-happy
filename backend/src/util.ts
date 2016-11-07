@@ -1,7 +1,7 @@
 /// Module for implementing useful utilities.
 
 import { frontendError, errorCodes } from "./types";
-import { validError } from './models/frontend-error.model';
+import { validFrontendError } from './models/frontend-error.model';
 
 
 /**
@@ -19,7 +19,7 @@ export const isNullOrUndefined: isNullOrUndefined = (thing: any) => {
  * This swallows all errors so it should never need a `.catch` branch.
  */
 export const prepareErrorForFrontend = (error: frontendError): Promise<frontendError> => {
-  return validError(error)
+  return validFrontendError(error)
   .then(() => {
     return Promise.resolve(error);
   })
