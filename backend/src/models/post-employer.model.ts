@@ -4,6 +4,15 @@
 import { errorCodes } from '../types';
 import { validNotJustSpacesString } from '../validifier';
 import * as kleen from "kleen";
+import { nameSchema } from './shared-schemas';
+
+
+/**
+ * A `postAddEmployer` is the format in which an employer is added.
+ */
+export interface postAddEmployer {
+  name: string;
+}
 
 
 /**
@@ -11,22 +20,15 @@ import * as kleen from "kleen";
  * the `name` of the employer.
  */
 export const postEmployerType: kleen.objectSchema = {
+  objectProperties: {
+    "name": nameSchema({
+      message: "The name field must a be valid string (not just spaces).",
+      errorCode: errorCodes.invalidEmployer
+    })
+  },
   typeFailureError: {
     message: "Employer must be an exact employer",
     errorCode: errorCodes.invalidEmployer
-  },
-  objectProperties: {
-    "name": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      restriction: (name: string) => {
-        if(!validNotJustSpacesString(name)) {
-          return Promise.reject({
-            message: "The name field cannot be just spaces",
-            errorCode: errorCodes.invalidEmployer
-          });
-        }
-      }
-    }
   }
 }
 

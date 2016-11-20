@@ -1,8 +1,8 @@
 /// Module for implementing useful utilities.
 
-import { frontendError, errorCodes } from "./types";
+import { errorCodes } from "./types";
 import { validFrontendError } from './models/frontend-error.model';
-
+import { frontendError } from './models/';
 
 /**
  * Returns true if `thing` is null or undefined.

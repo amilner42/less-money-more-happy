@@ -8,6 +8,10 @@ import {
   validNotJustSpacesString } from '../validifier';
 import { collection } from '../db';
 import * as kleen from "kleen";
+import {
+  nameSchema,
+  stringPositiveIntegerSchema,
+  stringPositiveMoneySchema } from './shared-schemas';
 
 
 /**
@@ -24,56 +28,23 @@ export type postAddCategory = {
  * `PostAddCategory` type. is the format for adding category.
  */
 export const postAddCategoryType: kleen.objectSchema = {
+  objectProperties: {
+    "newName": nameSchema({
+      message: "The newName field must be a string (and not just spaces).",
+      errorCode: errorCodes.invalidAddCategory
+    }),
+    "newPerNumberOfDays": stringPositiveIntegerSchema({
+      message: "The newPerNumberOfDays field must represent a positive integer",
+      errorCode: errorCodes.invalidAddCategory
+    }),
+    "newGoalSpending": stringPositiveMoneySchema({
+      message: "The newGoalSpending field must represent positive money, eg. 2 or 2.32",
+      errorCode: errorCodes.invalidAddCategory
+    })
+  },
   typeFailureError: {
     message: "Category must be an exact category!",
     errorCode: errorCodes.invalidAddCategory
-  },
-  objectProperties: {
-    "newName": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        message: "The newName field must be a string",
-        errorCode: errorCodes.invalidAddCategory
-      },
-      restriction: (newName: string) => {
-        if(!validNotJustSpacesString(newName)) {
-          return Promise.reject({
-            message: "The newName field cannot be just spaces",
-            errorCode: errorCodes.invalidAddCategory
-          });
-        }
-      }
-    },
-    "newPerNumberOfDays": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        message: "The newPerNumberOfDays field must be a string",
-        errorCode: errorCodes.invalidAddCategory
-      },
-      restriction: (newPerNumberOfDays: string) => {
-        if(!validPositiveInteger(newPerNumberOfDays)) {
-          return Promise.reject({
-            message: "The newPerNumberOfDays field must represent a positive integer",
-            errorCode: errorCodes.invalidAddCategory
-          });
-        }
-      }
-    },
-    "newGoalSpending": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        message: "The newGoalSpending field must be a string",
-        errorCode: errorCodes.invalidAddCategory
-      },
-      restriction: (newGoalSpending: string) => {
-        if(!validMoney(newGoalSpending) || newGoalSpending.charAt(0) == "-") {
-          return Promise.reject({
-            message: "The newGoalSpending field must represent positive money, eg. 2 or 2.32",
-            errorCode: errorCodes.invalidAddCategory
-          });
-        }
-      }
-    }
   }
 }
 

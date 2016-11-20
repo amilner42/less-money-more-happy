@@ -19,11 +19,7 @@ import {
 import {
   appRoutes,
   errorCodes,
-  expenditureCategory,
   color,
-  user,
-  expenditureCategoryWithGoals,
-  expenditure,
   earning } from './types';
 import { collection } from './db';
 import {
@@ -31,6 +27,11 @@ import {
   renameMongoIDField,
   isNullOrUndefined } from './util';
 import { validMoney } from './validifier';
+import {
+  expenditureCategory,
+  user,
+  expenditureCategoryWithGoals,
+  expenditure } from './models/';
 
 
 /**

@@ -2,8 +2,18 @@
 
 import { omit } from "ramda";
 
-import { model, expenditureCategory, errorCodes } from '../types';
+import { model, mongoID, errorCodes } from '../types';
 import * as kleen from "kleen";
+import { optionaMongoIDSchema, nameSchema } from "./shared-schemas";
+
+
+/**
+ * An expenditure category.
+ */
+export interface expenditureCategory {
+  _id?: mongoID;
+  name: string;
+}
 
 
 /**
@@ -13,15 +23,16 @@ import * as kleen from "kleen";
  */
 const expenditureType: kleen.objectSchema = {
   objectProperties: {
-    "name": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        errorCode: errorCodes.invalidCategories,
-        message: "The `name` field must be a string."
-      }
-    }
+    "_id": optionaMongoIDSchema({
+      errorCode: errorCodes.invalidCategories,
+      message: "The `_id` field must be a valid mongo ID"
+    }),
+    "name": nameSchema({
+      errorCode: errorCodes.invalidCategories,
+      message: "The `name` field must be a string."
+    })
   }
-}
+};
 
 
 /**
@@ -34,7 +45,7 @@ const arrayOfExpenditureType: kleen.arraySchema = {
   arrayElementType: expenditureType,
   typeFailureError: {
     errorCode: errorCodes.invalidCategories,
-    message: "You must pass an array of categories"
+    message: "You must pass an array of categories!"
   },
   restriction: (arrayOfExpenditureCategories) => {
     if(arrayOfExpenditureCategories.length == 0) {
@@ -44,7 +55,7 @@ const arrayOfExpenditureType: kleen.arraySchema = {
       });
     };
   }
-}
+};
 
 
 /**
@@ -55,10 +66,11 @@ export const expenditureCategoryModel: model<expenditureCategory> = {
   stripSensitiveDataForResponse: (expenditureCategory: expenditureCategory) => {
     return omit(['_id'])(expenditureCategory);
   }
-}
+};
 
 
 /**
  * Validifies a `arrayOfExpenditureType`.
  */
-export const validExpenditureArray = kleen.validModel(arrayOfExpenditureType);
+export const validExpenditureArray =
+  kleen.validModel(arrayOfExpenditureType);

@@ -6,14 +6,14 @@ import { Handler } from "express";
 /**
  * A mongo unique id.
  */
-type mongoID = string;
+export type mongoID = string;
 
 
 /**
  * IDs created on the frontend, I'm going to try out just using the index in
  * the list as the ID with basic incrementing.
  */
-type frontendID = number;
+ export type frontendID = number;
 
 
 /**
@@ -37,70 +37,21 @@ export interface color {
   dark: boolean;
 }
 
-/**
- * An expenditure made by the user.
- */
-export interface expenditure {
-  id: frontendID;
-  date: Date;
-  categoryID: frontendID;
-  cost: number;
-}
-
 
 /**
- * An expenditure category.
- */
-export interface expenditureCategory {
-  _id?: mongoID;
-  name: string;
-}
-
-
-/**
- * A category and it's respective goal.
- */
-export type expenditureCategoryWithGoals = {
-  id: frontendID;
-  name: string;
-  colorID: mongoID;
-  goalSpending?: string;
-  perNumberOfDays?: string;
-};
-
-
-/**
- * An employer that pays a user.
- */
-export interface employer {
-  id: number;
-  name: string;
-}
-
-
-/**
- * The user will input when they recieve money, this seems easiest.
+ * A user earning.
  */
 export interface earning {
-  id: number;
+  id: frontendID;
   date: Date;
   amount: number;
-  fromEmployerID: number;
+  fromEmployerID: frontendID;
 }
 
 
-/**
- * A `user`.
- */
-export interface user {
-  _id?: mongoID;
-  email: string;
-  password?: string;
-  currentBalance?: number;
-  categoriesWithGoals?: expenditureCategoryWithGoals[];
-  expenditures?: expenditure[];
-  earnings?: earning[];
-  employers?: employer[];
+export interface employer {
+  id: frontendID;
+  name: string;
 }
 
 
@@ -158,13 +109,4 @@ export enum errorCodes {
   invalidEmployer,
   invalidUpdateCategory,
   invalidAddCategory
-}
-
-
-/**
- * The error we always send to the frontend.
- */
-export interface frontendError {
-  message: String;
-  errorCode: errorCodes;
 }

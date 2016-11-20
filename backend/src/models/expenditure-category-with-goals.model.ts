@@ -2,8 +2,26 @@
 
 
 import { validMoney, validPositiveInteger, validMongoID } from '../validifier';
-import { errorCodes } from '../types';
+import { errorCodes, frontendID, mongoID } from '../types';
 import * as kleen from "kleen";
+import {
+  frontendIDSchema,
+  mongoIDSchema,
+  nameSchema,
+  stringPositiveMoneySchema,
+  stringPositiveIntegerSchema } from "./shared-schemas";
+
+
+/**
+ * A category and it's respective goal.
+ */
+export type expenditureCategoryWithGoals = {
+  id: frontendID;
+  colorID: mongoID;
+  name: string;
+  goalSpending?: string;
+  perNumberOfDays?: string;
+};
 
 
 /**
@@ -13,71 +31,32 @@ import * as kleen from "kleen";
  */
 const expenditureCategoryWithGoalType: kleen.objectSchema = {
   objectProperties: {
-    "id": {
-      primitiveType: kleen.kindOfPrimitive.number,
-      typeFailureError: {
-        message: "The id field must be number!",
-        errorCode: errorCodes.invalidCategoriesWithGoals
-      }
-    },
-    "name": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        message: "The name field must be a string",
-        errorCode: errorCodes.invalidCategoriesWithGoals
-      }
-    },
-    "goalSpending": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        message: "Goal spending ",
-        errorCode: errorCodes.invalidCategoriesWithGoals
-      },
-      restriction: (goalSpending: string) => {
-        if(!validMoney(goalSpending) || goalSpending.charAt(0) == "-") {
-          return Promise.reject({
-            message: "Goal Spending must be valid positive money, eg. 2 or 2.32",
-            errorCode: errorCodes.invalidCategoriesWithGoals
-          })
-        }
-      }
-    },
-    "perNumberOfDays": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        message: "The perNumberOfDays field must be a string",
-        errorCode: errorCodes.invalidCategoriesWithGoals
-      },
-      restriction: (perNumberOfDays: string) => {
-        if(!validPositiveInteger(perNumberOfDays)) {
-          return Promise.reject({
-            message: "perNumberOfDays must be a positive integer.",
-            errorCode: errorCodes.invalidCategoriesWithGoals
-          })
-        }
-      }
-    },
-    "colorID": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        message: "The colorID field must be a string",
-        errorCode: errorCodes.invalidCategoriesWithGoals
-      },
-      restriction: (colorID: string) => {
-        if(!validMongoID(colorID)) {
-          return Promise.reject({
-            message: "colorID must be a valid mongo ID",
-            errorCode: errorCodes.invalidCategoriesWithGoals
-          })
-        }
-      }
-    }
+    "id": frontendIDSchema({
+      message: "The id field must be a number!",
+      errorCode: errorCodes.invalidCategoriesWithGoals
+    }),
+    "colorID": mongoIDSchema({
+      message: "The colorID field must be a string",
+      errorCode: errorCodes.invalidCategoriesWithGoals
+    }),
+    "name": nameSchema({
+      message: "The name field must be a string",
+      errorCode: errorCodes.invalidCategoriesWithGoals
+    }),
+    "goalSpending": stringPositiveMoneySchema({
+      message: "Goal Spending must be valid positive money, eg. 2 or 2.32",
+      errorCode: errorCodes.invalidCategoriesWithGoals
+    }),
+    "perNumberOfDays": stringPositiveIntegerSchema({
+      message: "perNumberOfDays must be a positive integer.",
+      errorCode: errorCodes.invalidCategoriesWithGoals
+    })
   },
   typeFailureError: {
     errorCode: errorCodes.invalidCategoriesWithGoals,
-    message: "Category cannot be null/undefined"
+    message: "Category type incorrect."
   }
-}
+};
 
 
 /**
@@ -86,10 +65,10 @@ const expenditureCategoryWithGoalType: kleen.objectSchema = {
 const arrayOfExpenditureCategoryWithGoalType: kleen.arraySchema = {
   arrayElementType: expenditureCategoryWithGoalType,
   typeFailureError: {
-    message: "Array of categories cannot be null/undefined",
+    message: "Array of categories type incorrect.",
     errorCode: errorCodes.invalidCategoriesWithGoals
   }
-}
+};
 
 
 /**

@@ -6,9 +6,10 @@ import { Strategy } from 'passport-local';
 
 import { collection } from './db';
 import { validEmail, validPassword } from './validifier';
-import { errorCodes, user } from './types';
+import { errorCodes } from './types';
 import { isNullOrUndefined } from './util';
 import * as kleen from "kleen";
+import { user } from './models/';
 
 
 /**

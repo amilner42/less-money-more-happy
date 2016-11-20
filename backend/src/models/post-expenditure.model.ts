@@ -1,9 +1,20 @@
 /// Module for `PostExpenditure`s, which are expenditures being sent from the
 /// frontend.
 
-import { errorCodes } from '../types';
+import { errorCodes, frontendID } from '../types';
 import { validPositiveInteger, validMoney} from '../validifier';
 import * as kleen from "kleen";
+
+
+/**
+ * An expenditure made by the user.
+ */
+export interface expenditure {
+  id: frontendID;
+  date: Date;
+  categoryID: frontendID;
+  cost: number;
+}
 
 
 // A valid PostExpenditure from the frontend.

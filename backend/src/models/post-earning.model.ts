@@ -4,6 +4,18 @@
 import { errorCodes } from '../types';
 import { validPositiveInteger, validMoney} from '../validifier';
 import * as kleen from "kleen";
+import {
+  stringPositiveMoneySchema,
+  stringPositiveIntegerSchema } from './shared-schemas';
+
+
+/**
+ * A `postAddEarning` is the format for adding a new earning.
+ */
+export interface postAddEarning {
+  amount: string,
+  fromEmployerID: string
+};
 
 
 /**
@@ -11,43 +23,21 @@ import * as kleen from "kleen";
  * request. It must have an `amount` and `fromEmployerID`.
  */
 export const postEarningType: kleen.objectSchema = {
+  objectProperties: {
+    "amount": stringPositiveMoneySchema({
+      message: "The `amount` field must represent positive money",
+      errorCode: errorCodes.invalidEarning
+    }),
+    "fromEmployerID": stringPositiveIntegerSchema({
+      message: "The `fromEmployerID` field must be a string representing a positive int.",
+      errorCode: errorCodes.invalidEarning
+    })
+  },
   typeFailureError: {
     message: "Earning must be an exact earning",
     errorCode: errorCodes.invalidEarning
-  },
-  objectProperties: {
-    "amount": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        message: "The amount field must be a string",
-        errorCode: errorCodes.invalidEarning
-      },
-      restriction: (amount: string) => {
-        if(!validMoney(amount)) {
-          return Promise.reject({
-            message: "amount must be a valid money",
-            errorCode: errorCodes.invalidEarning
-          });
-        }
-
-        const amountAsFloat = parseFloat(amount);
-        if(amountAsFloat <= 0) {
-          return Promise.reject({
-            message: "amount must be positive",
-            errorCode: errorCodes.invalidEarning
-          });
-        }
-      }
-    },
-    "fromEmployerID": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        message: "The fromEmployerID field must be a string",
-        errorCode: errorCodes.invalidEarning
-      }
-    }
   }
-}
+};
 
 
 /**
