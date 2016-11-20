@@ -1,7 +1,6 @@
 /// <reference path="../typings_manual/index.d.ts" />
 
 import assert from 'assert';
-import Bluebird from 'bluebird';
 import R from "ramda";
 
 import {
@@ -12,13 +11,7 @@ import {
   validMoney,
   validPositiveInteger,
   validNotJustSpacesString } from '../src/validifier';
-import {
-  assertPromiseDoesntError,
-  assertPromiseDoesError,
-  assertPromiseErrorsWithCode } from './util';
-import { isNullOrUndefined } from '../src/util';
-import { errorCodes } from '../src/types';
-import { InvalidModelError } from '../src/errors';
+
 
 describe('Validifier', function() {
 

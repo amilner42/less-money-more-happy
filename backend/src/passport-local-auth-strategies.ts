@@ -8,7 +8,6 @@ import { collection } from './db';
 import { validEmail, validPassword } from './validifier';
 import { errorCodes, user } from './types';
 import { isNullOrUndefined } from './util';
-import { InvalidModelError } from './errors';
 import * as kleen from "kleen";
 
 
@@ -86,10 +85,10 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
         primitiveType: kleen.kindOfPrimitive.string,
         restriction: (email: string) => {
           if(isNullOrUndefined(email)) {
-            return Promise.reject(new InvalidModelError(
-              "Email cannot be null or undefined",
-              errorCodes.noAccountExistsForEmail
-            ));
+            return Promise.reject({
+              message: "Email cannot be null or undefined",
+              errorCode: errorCodes.noAccountExistsForEmail
+            });
           }
         }
       },
@@ -97,10 +96,10 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
         primitiveType: kleen.kindOfPrimitive.string,
         restriction: (password: string) => {
           if(isNullOrUndefined(password)) {
-            return Promise.reject(new InvalidModelError(
-              "Password cannot be null or undefined",
-              errorCodes.incorrectPasswordForEmail
-            ));
+            return Promise.reject({
+              message: "Password cannot be null or undefined",
+              errorCode: errorCodes.incorrectPasswordForEmail
+            });
           }
         }
       }
@@ -108,10 +107,10 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
     restriction: (user: {email: string, password: string}) => {
 
       if(isNullOrUndefined(user)) {
-        return Promise.reject(new InvalidModelError(
-          "Attempting to login with an undefined object",
-          errorCodes.internalError
-        ));
+        return Promise.reject({
+          message: "Attempting to login with an undefined object",
+          errorCode: errorCodes.internalError
+        });
       }
 
       return new Promise<void>((resolve, reject) => {
@@ -120,24 +119,24 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
 
         return collection('users')
         .then((Users) => {
-          return Users.findOne({ email: user.email });
+          return (Users.findOne({ email: user.email }) as Promise<user>);
         })
         .then((userInDB) => {
           if(!userInDB) {
-            reject(new InvalidModelError(
-              "No account exists for that email address",
-              errorCodes.noAccountExistsForEmail
-            ));
+            reject({
+              message: "No account exists for that email address",
+              errorCode: errorCodes.noAccountExistsForEmail
+            });
           }
 
           return userInDB;
         })
         .then((userInDB) => {
           if(!correctPassword(userInDB, user.password)) {
-            reject(new InvalidModelError(
-              "Incorrect password for that email address",
-              errorCodes.incorrectPasswordForEmail
-            ));
+            reject({
+              message: "Incorrect password for that email address",
+              errorCode: errorCodes.incorrectPasswordForEmail
+            });
           }
           retrievedUser = userInDB; // save the user to outer block scope
           resolve();
@@ -181,10 +180,10 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
             }
 
             if(!validEmail(email)) {
-              reject(new InvalidModelError(
-                "Invalid email",
-                errorCodes.invalidEmail
-              ));
+              reject({
+                message: "Invalid email",
+                errorCode: errorCodes.invalidEmail
+              });
               return;
             }
 
@@ -194,10 +193,10 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
             })
             .then((user) => {
               if(user) {
-                reject(new InvalidModelError(
-                  "Email address already registered",
-                  errorCodes.emailAddressAlreadyRegistered
-                ));
+                reject({
+                  message: "Email address already registered",
+                  errorCode: errorCodes.emailAddressAlreadyRegistered
+                });
                 return;
               }
 
@@ -211,10 +210,10 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
         primitiveType: kleen.kindOfPrimitive.string,
         restriction: (password: string) => {
           if(!validPassword(password)) {
-            return Promise.reject(new InvalidModelError(
-              'Password not strong enough',
-              errorCodes.invalidPassword
-            ));
+            return Promise.reject({
+              message: 'Password not strong enough',
+              errorCode: errorCodes.invalidPassword
+            });
           }
         }
       }
@@ -222,10 +221,10 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
     restriction: (user) => {
 
       if(isNullOrUndefined(user)) {
-        return Promise.reject(new InvalidModelError(
-          "Attempting to sign up with an undefined object",
-          errorCodes.internalError
-        ));
+        return Promise.reject({
+          message: "Attempting to sign up with an undefined object",
+          errorCode: errorCodes.internalError
+        });
       }
     }
   };
