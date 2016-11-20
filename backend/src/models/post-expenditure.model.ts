@@ -7,17 +7,15 @@ import * as kleen from "kleen";
 
 
 // A valid PostExpenditure from the frontend.
-export const postExpenditureType: kleen.objectStructure = {
-  kindOfType: kleen.kindOfType.object,
-  customErrorOnTypeFailure: {
+export const postExpenditureType: kleen.objectSchema = {
+  typeFailureError: {
     message: "Expenditure must be an exact expenditure",
     errorCode: errorCodes.invalidExpenditure
   },
-  properties: {
+  objectProperties: {
     "cost": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The cost field must be a string",
         errorCode: errorCodes.invalidExpenditure
       },
@@ -38,9 +36,8 @@ export const postExpenditureType: kleen.objectStructure = {
       }
     },
     "categoryID": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The categoryID must be a string",
         errorCode: errorCodes.invalidExpenditure
       },

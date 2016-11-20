@@ -10,17 +10,15 @@ import * as kleen from "kleen";
  * The `type` of a `PostEarning`, a partial earning from a frontend "POST"
  * request. It must have an `amount` and `fromEmployerID`.
  */
-export const postEarningType: kleen.objectStructure = {
-  kindOfType: kleen.kindOfType.object,
-  customErrorOnTypeFailure: {
+export const postEarningType: kleen.objectSchema = {
+  typeFailureError: {
     message: "Earning must be an exact earning",
     errorCode: errorCodes.invalidEarning
   },
-  properties: {
+  objectProperties: {
     "amount": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The amount field must be a string",
         errorCode: errorCodes.invalidEarning
       },
@@ -42,9 +40,8 @@ export const postEarningType: kleen.objectStructure = {
       }
     },
     "fromEmployerID": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The fromEmployerID field must be a string",
         errorCode: errorCodes.invalidEarning
       }

@@ -23,17 +23,15 @@ export type postAddCategory = {
 /**
  * `PostAddCategory` type. is the format for adding category.
  */
-export const postAddCategoryType: kleen.objectStructure = {
-  kindOfType: kleen.kindOfType.object,
-  customErrorOnTypeFailure: {
+export const postAddCategoryType: kleen.objectSchema = {
+  typeFailureError: {
     message: "Category must be an exact category!",
     errorCode: errorCodes.invalidAddCategory
   },
-  properties: {
+  objectProperties: {
     "newName": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The newName field must be a string",
         errorCode: errorCodes.invalidAddCategory
       },
@@ -47,9 +45,8 @@ export const postAddCategoryType: kleen.objectStructure = {
       }
     },
     "newPerNumberOfDays": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The newPerNumberOfDays field must be a string",
         errorCode: errorCodes.invalidAddCategory
       },
@@ -63,9 +60,8 @@ export const postAddCategoryType: kleen.objectStructure = {
       }
     },
     "newGoalSpending": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The newGoalSpending field must be a string",
         errorCode: errorCodes.invalidAddCategory
       },

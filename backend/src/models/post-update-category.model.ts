@@ -12,25 +12,22 @@ import * as kleen from 'kleen';
  *  - `newGoalSpending`
  *  - `newPerNumberOfDays`
  */
-export const postUpdateCategoryType: kleen.objectStructure = {
-  kindOfType: kleen.kindOfType.object,
-  customErrorOnTypeFailure: {
+export const postUpdateCategoryType: kleen.objectSchema = {
+  typeFailureError: {
     message: "PostUpdateCategory must be an exact postUpdateCategory",
     errorCode: errorCodes.invalidUpdateCategory
   },
-  properties: {
+  objectProperties: {
     "categoryID": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.number,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.number,
+      typeFailureError: {
         message: "The categoryID field must be a number",
         errorCode: errorCodes.invalidUpdateCategory
       }
     },
     "newGoalSpending": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The newGoalSpending field must be a string",
         errorCode: errorCodes.invalidUpdateCategory
       },
@@ -44,9 +41,8 @@ export const postUpdateCategoryType: kleen.objectStructure = {
       }
     },
     "newPerNumberOfDays": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The newPerNumberOfDays field must be a string",
         errorCode: errorCodes.invalidUpdateCategory
       },

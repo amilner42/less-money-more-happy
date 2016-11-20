@@ -80,12 +80,10 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
   /**
    * The user login structure.
    */
-  const userLoginStructure: kleen.objectStructure = {
-    kindOfType: kleen.kindOfType.object,
-    properties: {
+  const userLoginStructure: kleen.objectSchema = {
+    objectProperties: {
       email: {
-        kindOfType: kleen.kindOfType.primitive,
-        kindOfPrimitive: kleen.kindOfPrimitive.string,
+        primitiveType: kleen.kindOfPrimitive.string,
         restriction: (email: string) => {
           if(isNullOrUndefined(email)) {
             return Promise.reject(new InvalidModelError(
@@ -96,8 +94,7 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
         }
       },
       password: {
-        kindOfType: kleen.kindOfType.primitive,
-        kindOfPrimitive: kleen.kindOfPrimitive.string,
+        primitiveType: kleen.kindOfPrimitive.string,
         restriction: (password: string) => {
           if(isNullOrUndefined(password)) {
             return Promise.reject(new InvalidModelError(
@@ -172,12 +169,10 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
   /**
    * The user signup structure.
    */
-  const userSignUpStructure: kleen.objectStructure = {
-    kindOfType: kleen.kindOfType.object,
-    properties: {
+  const userSignUpStructure: kleen.objectSchema = {
+    objectProperties: {
       email: {
-        kindOfType: kleen.kindOfType.primitive,
-        kindOfPrimitive: kleen.kindOfPrimitive.string,
+        primitiveType: kleen.kindOfPrimitive.string,
         restriction: (email: string) => {
           return new Promise<void>((resolve, reject) => {
             // All emails are stored in lower case.
@@ -213,8 +208,7 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
         }
       },
       password: {
-        kindOfType: kleen.kindOfType.primitive,
-        kindOfPrimitive: kleen.kindOfPrimitive.string,
+        primitiveType: kleen.kindOfPrimitive.string,
         restriction: (password: string) => {
           if(!validPassword(password)) {
             return Promise.reject(new InvalidModelError(

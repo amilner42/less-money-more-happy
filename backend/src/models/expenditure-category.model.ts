@@ -11,13 +11,11 @@ import * as kleen from "kleen";
  * for the POST request from the user when their is nothing but `name`s on the
  * categories.
  */
-const expenditureType: kleen.objectStructure = {
-  kindOfType: kleen.kindOfType.object,
-  properties: {
+const expenditureType: kleen.objectSchema = {
+  objectProperties: {
     "name": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         errorCode: errorCodes.invalidCategories,
         message: "The `name` field must be a string."
       }
@@ -32,10 +30,9 @@ const expenditureType: kleen.objectStructure = {
  * ADDITIONALLY: Checks the length is greater than 0, this is what we require
                  for the post requests.
  */
-const arrayOfExpenditureType: kleen.arrayStructure = {
-  kindOfType: kleen.kindOfType.array,
-  elementType: expenditureType,
-  customErrorOnTypeFailure: {
+const arrayOfExpenditureType: kleen.arraySchema = {
+  arrayElementType: expenditureType,
+  typeFailureError: {
     errorCode: errorCodes.invalidCategories,
     message: "You must pass an array of categories"
   },

@@ -10,16 +10,14 @@ import * as kleen from "kleen";
  * The type of a `PostEmployer` from the frontend, must contain a single field,
  * the `name` of the employer.
  */
-export const postEmployerType: kleen.objectStructure = {
-  kindOfType: kleen.kindOfType.object,
-  customErrorOnTypeFailure: {
+export const postEmployerType: kleen.objectSchema = {
+  typeFailureError: {
     message: "Employer must be an exact employer",
     errorCode: errorCodes.invalidEmployer
   },
-  properties: {
+  objectProperties: {
     "name": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
+      primitiveType: kleen.kindOfPrimitive.string,
       restriction: (name: string) => {
         if(!validNotJustSpacesString(name)) {
           return Promise.reject({

@@ -7,32 +7,29 @@ import * as kleen from 'kleen';
 /**
  * The frontend error type for `validModel`.
  */
-const frontendErrorType: kleen.objectStructure = {
-  kindOfType: kleen.kindOfType.object,
-  customErrorOnTypeFailure: {
-    message: "Error code did not have the exact correct type",
-    errorCode: errorCodes.internalError
-  },
-  properties:
+const frontendErrorType: kleen.objectSchema = {
+  objectProperties:
     {
       "message":
         {
-          kindOfType: kleen.kindOfType.primitive,
-          kindOfPrimitive: kleen.kindOfPrimitive.string,
-          customErrorOnTypeFailure: {
+          primitiveType: kleen.kindOfPrimitive.string,
+          typeFailureError: {
             message: "The message field must be a string",
             errorCode: errorCodes.internalError
           }
         },
       "errorCode":
         {
-          kindOfType: kleen.kindOfType.primitive,
-          kindOfPrimitive: kleen.kindOfPrimitive.string,
-          customErrorOnTypeFailure: {
+          primitiveType: kleen.kindOfPrimitive.string,
+          typeFailureError: {
             message: "An error errorCode cannot be null or undefined",
             errorCode: errorCodes.internalError
           }
         }
+    },
+    typeFailureError: {
+      message: "Error code did not have the exact correct type",
+      errorCode: errorCodes.internalError
     }
 }
 

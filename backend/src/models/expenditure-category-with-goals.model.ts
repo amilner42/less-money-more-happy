@@ -11,29 +11,25 @@ import * as kleen from "kleen";
  * the names of the categories but now needs to pick goalSpending and
  * perNumberOfDays.
  */
-const expenditureCategoryWithGoalType: kleen.objectStructure = {
-  kindOfType: kleen.kindOfType.object,
-  properties: {
+const expenditureCategoryWithGoalType: kleen.objectSchema = {
+  objectProperties: {
     "id": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.number,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.number,
+      typeFailureError: {
         message: "The id field must be number!",
         errorCode: errorCodes.invalidCategoriesWithGoals
       }
     },
     "name": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The name field must be a string",
         errorCode: errorCodes.invalidCategoriesWithGoals
       }
     },
     "goalSpending": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "Goal spending ",
         errorCode: errorCodes.invalidCategoriesWithGoals
       },
@@ -47,9 +43,8 @@ const expenditureCategoryWithGoalType: kleen.objectStructure = {
       }
     },
     "perNumberOfDays": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The perNumberOfDays field must be a string",
         errorCode: errorCodes.invalidCategoriesWithGoals
       },
@@ -63,9 +58,8 @@ const expenditureCategoryWithGoalType: kleen.objectStructure = {
       }
     },
     "colorID": {
-      kindOfType: kleen.kindOfType.primitive,
-      kindOfPrimitive: kleen.kindOfPrimitive.string,
-      customErrorOnTypeFailure: {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
         message: "The colorID field must be a string",
         errorCode: errorCodes.invalidCategoriesWithGoals
       },
@@ -79,7 +73,7 @@ const expenditureCategoryWithGoalType: kleen.objectStructure = {
       }
     }
   },
-  customErrorOnTypeFailure: {
+  typeFailureError: {
     errorCode: errorCodes.invalidCategoriesWithGoals,
     message: "Category cannot be null/undefined"
   }
@@ -89,10 +83,9 @@ const expenditureCategoryWithGoalType: kleen.objectStructure = {
 /**
  * The array helper type.
  */
-const arrayOfExpenditureCategoryWithGoalType: kleen.arrayStructure = {
-  kindOfType: kleen.kindOfType.array,
-  elementType: expenditureCategoryWithGoalType,
-  customErrorOnTypeFailure: {
+const arrayOfExpenditureCategoryWithGoalType: kleen.arraySchema = {
+  arrayElementType: expenditureCategoryWithGoalType,
+  typeFailureError: {
     message: "Array of categories cannot be null/undefined",
     errorCode: errorCodes.invalidCategoriesWithGoals
   }
