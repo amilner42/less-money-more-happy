@@ -7,7 +7,6 @@ import { Strategy } from 'passport-local';
 import { collection } from './db';
 import { validEmail, validPassword } from './validifier';
 import { errorCodes } from './types';
-import { isNullOrUndefined } from './util';
 import * as kleen from "kleen";
 import { user } from './models/';
 
@@ -84,35 +83,20 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
     objectProperties: {
       email: {
         primitiveType: kleen.kindOfPrimitive.string,
-        restriction: (email: string) => {
-          if(isNullOrUndefined(email)) {
-            return Promise.reject({
-              message: "Email cannot be null or undefined",
-              errorCode: errorCodes.noAccountExistsForEmail
-            });
-          }
+        typeFailureError: {
+          message: "Email must be a string!",
+          errorCode: errorCodes.internalError
         }
       },
       password: {
         primitiveType: kleen.kindOfPrimitive.string,
-        restriction: (password: string) => {
-          if(isNullOrUndefined(password)) {
-            return Promise.reject({
-              message: "Password cannot be null or undefined",
-              errorCode: errorCodes.incorrectPasswordForEmail
-            });
-          }
+        typeFailureError: {
+          message: "Password must be a string",
+          errorCode: errorCodes.internalError
         }
       }
     },
     restriction: (user: {email: string, password: string}) => {
-
-      if(isNullOrUndefined(user)) {
-        return Promise.reject({
-          message: "Attempting to login with an undefined object",
-          errorCode: errorCodes.internalError
-        });
-      }
 
       return new Promise<void>((resolve, reject) => {
 
@@ -143,6 +127,10 @@ export const loginStrategy: Strategy = new Strategy({ usernameField }, (email, p
           resolve();
         });
       });
+    },
+    typeFailureError: {
+      message: "User object must have a email and password.",
+      errorCode: errorCodes.internalError
     }
   };
 
@@ -173,12 +161,15 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
     objectProperties: {
       email: {
         primitiveType: kleen.kindOfPrimitive.string,
+        typeFailureError: {
+          message: "Email must be a string",
+          errorCode: errorCodes.invalidEmail
+        },
         restriction: (email: string) => {
+
           return new Promise<void>((resolve, reject) => {
-            // All emails are stored in lower case.
-            if(!isNullOrUndefined(email)) {
-              email = email.toLowerCase();
-            }
+
+            email = email.toLowerCase();
 
             if(!validEmail(email)) {
               reject({
@@ -209,6 +200,10 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
       },
       password: {
         primitiveType: kleen.kindOfPrimitive.string,
+        typeFailureError: {
+          message: "Password must be a string",
+          errorCode: errorCodes.invalidPassword
+        },
         restriction: (password: string) => {
           if(!validPassword(password)) {
             return Promise.reject({
@@ -219,14 +214,9 @@ export const signUpStrategy: Strategy = new Strategy({ usernameField }, (email, 
         }
       }
     },
-    restriction: (user) => {
-
-      if(isNullOrUndefined(user)) {
-        return Promise.reject({
-          message: "Attempting to sign up with an undefined object",
-          errorCode: errorCodes.internalError
-        });
-      }
+    typeFailureError: {
+      message: "User object must have an email and password",
+      errorCode: errorCodes.internalError
     }
   };
 
