@@ -7,14 +7,12 @@ import * as kleen from "kleen";
 
 
 /**
- * An expenditure made by the user.
+ * A `postAddExpenditure` is the format for adding an expenditure.
  */
-export interface expenditure {
-  id: frontendID;
-  date: Date;
-  categoryID: frontendID;
-  cost: number;
-}
+export interface postAddExpenditure {
+  cost: string,
+  categoryID: string
+};
 
 
 /**

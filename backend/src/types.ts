@@ -49,9 +49,23 @@ export interface earning {
 }
 
 
+/**
+ * A user employer.
+ */
 export interface employer {
   id: frontendID;
   name: string;
+}
+
+
+/**
+ * An expenditure made by the user.
+ */
+export interface expenditure {
+  id: frontendID;
+  date: Date;
+  categoryID: frontendID;
+  cost: number;
 }
 
 

@@ -20,7 +20,8 @@ import {
   appRoutes,
   errorCodes,
   color,
-  earning } from './types';
+  earning,
+  expenditure } from './types';
 import { collection } from './db';
 import {
   prepareErrorForFrontend,
@@ -30,8 +31,7 @@ import { validMoney } from './validifier';
 import {
   expenditureCategory,
   user,
-  expenditureCategoryWithGoals,
-  expenditure } from './models/';
+  expenditureCategoryWithGoals } from './models/';
 
 
 /**

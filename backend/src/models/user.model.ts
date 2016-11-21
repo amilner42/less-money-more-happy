@@ -2,10 +2,10 @@
 
 import { omit } from "ramda";
 
-import { model, mongoID, earning, employer } from '../types';
+import { model, mongoID, earning, employer, expenditure } from '../types';
 import { takeLast } from "ramda";
 import { isNullOrUndefined } from "../util";
-import { expenditureCategoryWithGoals, expenditure } from './';
+import { expenditureCategoryWithGoals } from './';
 
 
 /**
