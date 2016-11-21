@@ -17,8 +17,10 @@ export interface expenditure {
 }
 
 
-// A valid PostExpenditure from the frontend.
-export const postExpenditureType: kleen.objectSchema = {
+/**
+ * The schema for adding an `expenditure`.
+ */
+const postAddExpenditureSchema: kleen.objectSchema = {
   typeFailureError: {
     message: "Expenditure must be an exact expenditure",
     errorCode: errorCodes.invalidExpenditure
@@ -66,6 +68,7 @@ export const postExpenditureType: kleen.objectSchema = {
 
 
 /**
- * Validifies a `postExpenditureType`.
+ * Validifies a `postAddExpenditureSchema`.
  */
-export const validPostExpenditure = kleen.validModel(postExpenditureType);
+export const validPostAddExpenditure =
+  kleen.validModel(postAddExpenditureSchema);

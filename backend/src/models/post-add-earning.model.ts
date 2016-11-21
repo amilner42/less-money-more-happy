@@ -19,10 +19,9 @@ export interface postAddEarning {
 
 
 /**
- * The `type` of a `PostEarning`, a partial earning from a frontend "POST"
- * request. It must have an `amount` and `fromEmployerID`.
+ * The schema for a `postAddEarning`.
  */
-export const postEarningType: kleen.objectSchema = {
+const postAddEarningSchema: kleen.objectSchema = {
   objectProperties: {
     "amount": stringPositiveMoneySchema({
       message: "The `amount` field must represent positive money",
@@ -41,6 +40,6 @@ export const postEarningType: kleen.objectSchema = {
 
 
 /**
- * Validifies a `postEarningType`.
+ * Validifies a `postAddEarningSchema`.
  */
-export const validPostEarning = kleen.validModel(postEarningType);
+export const validPostAddEarning = kleen.validModel(postAddEarningSchema);

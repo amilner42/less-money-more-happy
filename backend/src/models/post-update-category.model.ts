@@ -11,7 +11,7 @@ import {
 
 
 /**
- * A `PostAddCategory` is the format for adding a new category.
+ * A `postUpdateCategory` is the format for updating a category.
  */
 export type postUpdateCategory = {
   categoryID: number,
@@ -21,12 +21,9 @@ export type postUpdateCategory = {
 
 
 /**
- * A `PostUpdateCategory` must have:
- *  - `categoryID` of category we are updating
- *  - `newGoalSpending`
- *  - `newPerNumberOfDays`
+ * The schema for a `postUpdateCategory`.
  */
-export const postUpdateCategoryType: kleen.objectSchema = {
+const postUpdateCategorySchema: kleen.objectSchema = {
   objectProperties: {
     "categoryID": frontendIDSchema({
       message: "The `categoryID` field must be a number.",
@@ -49,6 +46,7 @@ export const postUpdateCategoryType: kleen.objectSchema = {
 
 
 /**
- * Validifies a `postUpdateCategory`.
+ * Validifies a `postUpdateCategorySchema`.
  */
-export const validPostUpdateCategory = kleen.validModel(postUpdateCategoryType);
+export const validPostUpdateCategory =
+  kleen.validModel(postUpdateCategorySchema);

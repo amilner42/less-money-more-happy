@@ -17,11 +17,9 @@ export interface expenditureCategory {
 
 
 /**
- * The expenditure `type` for `validifier` validation. This is used specifically
- * for the POST request from the user when their is nothing but `name`s on the
- * categories.
+ * The schema for an `expenditureCategory`.
  */
-const expenditureType: kleen.objectSchema = {
+const expenditureCategorySchema: kleen.objectSchema = {
   objectProperties: {
     "_id": optionaMongoIDSchema({
       errorCode: errorCodes.invalidCategories,
@@ -36,13 +34,13 @@ const expenditureType: kleen.objectSchema = {
 
 
 /**
- * Just a helper for getting the array type.
+ * The schema for an array of `expenditureCategorySchema`.
  *
  * ADDITIONALLY: Checks the length is greater than 0, this is what we require
                  for the post requests.
  */
-const arrayOfExpenditureType: kleen.arraySchema = {
-  arrayElementType: expenditureType,
+const arrayOfExpenditureSchema: kleen.arraySchema = {
+  arrayElementType: expenditureCategorySchema,
   typeFailureError: {
     errorCode: errorCodes.invalidCategories,
     message: "You must pass an array of categories!"
@@ -70,7 +68,7 @@ export const expenditureCategoryModel: model<expenditureCategory> = {
 
 
 /**
- * Validifies a `arrayOfExpenditureType`.
+ * Validifies a `arrayOfExpenditureSchema`.
  */
 export const validExpenditureArray =
-  kleen.validModel(arrayOfExpenditureType);
+  kleen.validModel(arrayOfExpenditureSchema);

@@ -15,9 +15,9 @@ export interface frontendError {
 
 
 /**
- * The frontend error type for `validModel`.
+ * The schema for `frontendError`.
  */
-const frontendErrorType: kleen.objectSchema = {
+const frontendErrorSchema: kleen.objectSchema = {
   objectProperties: {
     "message": {
       primitiveType: kleen.kindOfPrimitive.string,
@@ -39,6 +39,6 @@ const frontendErrorType: kleen.objectSchema = {
 
 
 /**
- * Validifies a `frontendErrorType`.
+ * Validifies a `frontendErrorSchema`.
  */
-export const validFrontendError = kleen.validModel(frontendErrorType);
+export const validFrontendError = kleen.validModel(frontendErrorSchema);

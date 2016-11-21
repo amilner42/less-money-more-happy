@@ -12,9 +12,9 @@ import {
   validExpenditureCategoryWithGoalsArray,
   validPostUpdateCategory,
   validPostAddCategory,
-  validPostExpenditure,
-  validPostEarning,
-  validPostEmployer,
+  validPostAddExpenditure,
+  validPostAddEarning,
+  validPostAddEmployer,
   postAddCategory } from './models/';
 import {
   appRoutes,
@@ -384,7 +384,7 @@ export const routes: appRoutes = {
       const user: user = req.user;
       const expenditure = req.body;
 
-      return validPostExpenditure(expenditure)
+      return validPostAddExpenditure(expenditure)
       .then(() => {
         if(isNullOrUndefined(user.expenditures)) {
           user.expenditures = [];
@@ -430,7 +430,7 @@ export const routes: appRoutes = {
       const user = req.user;
       const earning = req.body;
 
-      return validPostEarning(earning)
+      return validPostAddEarning(earning)
       .then(() => {
         if(isNullOrUndefined(user.earnings)) {
           user.earnings = [];
@@ -473,7 +473,7 @@ export const routes: appRoutes = {
       const user = req.user;
       const employer = req.body;
 
-      return validPostEmployer(employer)
+      return validPostAddEmployer(employer)
       .then(() => {
         if(isNullOrUndefined(user.employers)) {
             user.employers = [];

@@ -1,6 +1,5 @@
 /// Module for the expenditureCategoryWithGoals model.
 
-
 import { validMoney, validPositiveInteger, validMongoID } from '../validifier';
 import { errorCodes, frontendID, mongoID } from '../types';
 import * as kleen from "kleen";
@@ -25,11 +24,9 @@ export type expenditureCategoryWithGoals = {
 
 
 /**
- * Specifically designed for the POST request when the user has already picked
- * the names of the categories but now needs to pick goalSpending and
- * perNumberOfDays.
+ * The schema for `expenditureCategoryWithGoals`.
  */
-const expenditureCategoryWithGoalType: kleen.objectSchema = {
+const expenditureCategoryWithGoalSchema: kleen.objectSchema = {
   objectProperties: {
     "id": frontendIDSchema({
       message: "The id field must be a number!",
@@ -60,10 +57,10 @@ const expenditureCategoryWithGoalType: kleen.objectSchema = {
 
 
 /**
- * The array helper type.
+ * The schema for an array of `expenditureCategoryWithGoalSchema`.
  */
-const arrayOfExpenditureCategoryWithGoalType: kleen.arraySchema = {
-  arrayElementType: expenditureCategoryWithGoalType,
+const arrayOfExpenditureCategoryWithGoalSchema: kleen.arraySchema = {
+  arrayElementType: expenditureCategoryWithGoalSchema,
   typeFailureError: {
     message: "Array of categories type incorrect.",
     errorCode: errorCodes.invalidCategoriesWithGoals
@@ -72,7 +69,7 @@ const arrayOfExpenditureCategoryWithGoalType: kleen.arraySchema = {
 
 
 /**
- * Validifies a `arrayOfExpenditureCategoryWithGoalType`.
+ * Validifies a `arrayOfExpenditureCategoryWithGoalSchema`.
  */
 export const validExpenditureCategoryWithGoalsArray =
-  kleen.validModel(arrayOfExpenditureCategoryWithGoalType);
+  kleen.validModel(arrayOfExpenditureCategoryWithGoalSchema);

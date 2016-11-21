@@ -16,10 +16,9 @@ export interface postAddEmployer {
 
 
 /**
- * The type of a `PostEmployer` from the frontend, must contain a single field,
- * the `name` of the employer.
+ * The schema for a `postAddEmployer`.
  */
-export const postEmployerType: kleen.objectSchema = {
+const postAddEmployerSchema: kleen.objectSchema = {
   objectProperties: {
     "name": nameSchema({
       message: "The name field must a be valid string (not just spaces).",
@@ -34,6 +33,6 @@ export const postEmployerType: kleen.objectSchema = {
 
 
 /**
- * Validifies a `postEmployerType`.
+ * Validifies a `postAddEmployerSchema`.
  */
-export const validPostEmployer = kleen.validModel(postEmployerType);
+export const validPostAddEmployer = kleen.validModel(postAddEmployerSchema);

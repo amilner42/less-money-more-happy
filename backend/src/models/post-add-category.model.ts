@@ -25,9 +25,9 @@ export type postAddCategory = {
 
 
 /**
- * `PostAddCategory` type. is the format for adding category.
+ * The schema for a `postAddCategory`.
  */
-export const postAddCategoryType: kleen.objectSchema = {
+const postAddCategorySchema: kleen.objectSchema = {
   objectProperties: {
     "newName": nameSchema({
       message: "The newName field must be a string (and not just spaces).",
@@ -50,6 +50,6 @@ export const postAddCategoryType: kleen.objectSchema = {
 
 
 /**
- * Validifies a `postAddCategoryType`.
+ * Validifies a `postAddCategorySchema`.
  */
-export const validPostAddCategory = kleen.validModel(postAddCategoryType);
+export const validPostAddCategory = kleen.validModel(postAddCategorySchema);
