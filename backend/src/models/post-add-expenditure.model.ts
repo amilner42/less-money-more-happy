@@ -4,6 +4,9 @@
 import { errorCodes, frontendID } from '../types';
 import { validPositiveInteger, validMoney} from '../validifier';
 import * as kleen from "kleen";
+import {
+  stringPositiveMoneySchema,
+  stringPositiveIntegerSchema } from './shared-schemas';
 
 
 /**
@@ -19,50 +22,21 @@ export interface postAddExpenditure {
  * The schema for adding an `expenditure`.
  */
 const postAddExpenditureSchema: kleen.objectSchema = {
+  objectProperties: {
+    "cost": stringPositiveMoneySchema({
+      message: "The cost field must be a string representing a positive moeny, eg, 2 or 2.32",
+      errorCode: errorCodes.invalidExpenditure
+    }),
+    "categoryID": stringPositiveIntegerSchema({
+      message: "CategoryID must be a string representing a positive integer",
+      errorCode: errorCodes.invalidExpenditure
+    })
+  },
   typeFailureError: {
     message: "Expenditure must be an exact expenditure",
     errorCode: errorCodes.invalidExpenditure
-  },
-  objectProperties: {
-    "cost": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        message: "The cost field must be a string",
-        errorCode: errorCodes.invalidExpenditure
-      },
-      restriction: (cost: string) => {
-        if(!validMoney(cost)) {
-          return Promise.reject({
-            message: "Cost must be a valid money",
-            errorCode: errorCodes.invalidExpenditure
-          });
-        }
-
-        if(parseFloat(cost) <= 0) {
-          return Promise.reject({
-            message: "Cost must be positive!",
-            errorCode: errorCodes.invalidExpenditure
-          });
-        }
-      }
-    },
-    "categoryID": {
-      primitiveType: kleen.kindOfPrimitive.string,
-      typeFailureError: {
-        message: "The categoryID must be a string",
-        errorCode: errorCodes.invalidExpenditure
-      },
-      restriction: (categoryID: string) => {
-        if(!validPositiveInteger(categoryID)) {
-          return Promise.reject({
-            message: "CategoryID must be a valid positive integer",
-            errorCode: errorCodes.invalidExpenditure
-          });
-        }
-      }
-    }
   }
-}
+};
 
 
 /**
