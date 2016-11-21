@@ -2,52 +2,50 @@
 
 import { omit } from "ramda";
 
-import { model, expenditureCategory, structures, errorCodes } from '../types';
-import { validModel } from '../validifier';
-import { isNullOrUndefined } from '../util';
+import { model, mongoID, errorCodes } from '../types';
+import * as kleen from "kleen";
+import { optionaMongoIDSchema, nameSchema } from "./shared-schemas";
 
 
 /**
- * The expenditure `type` for `validifier` validation. This is used specifically
- * for the POST request from the user when their is nothing but `name`s on the
- * categories.
+ * An expenditure category.
  */
-const expenditureType: structures.interfaceStructure = {
-  typeCategory: structures.typeCategory.interface,
-  properties: {
-    "name": {
-      typeCategory: structures.typeCategory.primitive,
-      type: structures.primitiveType.string,
-      restriction: (name) => {
-        if(isNullOrUndefined(name)) {
-          return Promise.reject({
-            errorCode: errorCodes.invalidCategories,
-            message: "The `name` propertry on a category cannot be null or undefined"
-          });
-        }
-      }
-    }
-  }
+export interface expenditureCategory {
+  _id?: mongoID;
+  name: string;
 }
 
 
 /**
- * Just a helper for getting the array type
+ * The schema for an `expenditureCategory`.
+ */
+const expenditureCategorySchema: kleen.objectSchema = {
+  objectProperties: {
+    "_id": optionaMongoIDSchema({
+      errorCode: errorCodes.invalidCategories,
+      message: "The `_id` field must be a valid mongo ID"
+    }),
+    "name": nameSchema({
+      errorCode: errorCodes.invalidCategories,
+      message: "The `name` field must be a string."
+    })
+  }
+};
+
+
+/**
+ * The schema for an array of `expenditureCategorySchema`.
  *
  * ADDITIONALLY: Checks the length is greater than 0, this is what we require
                  for the post requests.
  */
-const arrayOfExpenditureType: structures.arrayStructure = {
-  typeCategory: structures.typeCategory.array,
-  type: expenditureType,
+const arrayOfExpenditureSchema: kleen.arraySchema = {
+  arrayElementType: expenditureCategorySchema,
+  typeFailureError: {
+    errorCode: errorCodes.invalidCategories,
+    message: "You must pass an array of categories!"
+  },
   restriction: (arrayOfExpenditureCategories) => {
-    if(isNullOrUndefined(arrayOfExpenditureCategories)) {
-      return Promise.reject({
-        errorCode: errorCodes.invalidCategories,
-        message: "You must pass an array of categories, not null/undefined"
-      });
-    }
-
     if(arrayOfExpenditureCategories.length == 0) {
       return Promise.reject({
         errorCode: errorCodes.invalidCategories,
@@ -55,7 +53,7 @@ const arrayOfExpenditureType: structures.arrayStructure = {
       });
     };
   }
-}
+};
 
 
 /**
@@ -66,12 +64,11 @@ export const expenditureCategoryModel: model<expenditureCategory> = {
   stripSensitiveDataForResponse: (expenditureCategory: expenditureCategory) => {
     return omit(['_id'])(expenditureCategory);
   }
-}
+};
 
 
 /**
- * Checks that an aray of expenditure categories are valid.
+ * Validifies a `arrayOfExpenditureSchema`.
  */
-export const validExpenditureArray = (expenditureArray): Promise<void> => {
-  return validModel(expenditureArray, arrayOfExpenditureType);
-}
+export const validExpenditureArray =
+  kleen.validModel(arrayOfExpenditureSchema);

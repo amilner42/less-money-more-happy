@@ -6,14 +6,14 @@ import { Handler } from "express";
 /**
  * A mongo unique id.
  */
-type mongoID = string;
+export type mongoID = string;
 
 
 /**
  * IDs created on the frontend, I'm going to try out just using the index in
  * the list as the ID with basic incrementing.
  */
-type frontendID = number;
+ export type frontendID = number;
 
 
 /**
@@ -37,6 +37,27 @@ export interface color {
   dark: boolean;
 }
 
+
+/**
+ * A user earning.
+ */
+export interface earning {
+  id: frontendID;
+  date: Date;
+  amount: number;
+  fromEmployerID: frontendID;
+}
+
+
+/**
+ * A user employer.
+ */
+export interface employer {
+  id: frontendID;
+  name: string;
+}
+
+
 /**
  * An expenditure made by the user.
  */
@@ -49,188 +70,12 @@ export interface expenditure {
 
 
 /**
- * An expenditure category.
- */
-export interface expenditureCategory {
-  _id?: mongoID;
-  name: string;
-}
-
-
-/**
- * A category and it's respective goal.
- */
-export type expenditureCategoryWithGoals = {
-  id: frontendID;
-  name: string;
-  colorID: mongoID;
-  goalSpending?: string;
-  perNumberOfDays?: string;
-};
-
-
-/**
- * An employer that pays a user.
- */
-export interface employer {
-  id: number;
-  name: string;
-}
-
-
-/**
- * The user will input when they recieve money, this seems easiest.
- */
-export interface earning {
-  id: number;
-  date: Date;
-  amount: number;
-  fromEmployerID: number;
-}
-
-
-/**
- * A `user`.
- */
-export interface user {
-  _id?: mongoID;
-  email: string;
-  password?: string;
-  currentBalance?: number;
-  categoriesWithGoals?: expenditureCategoryWithGoals[];
-  expenditures?: expenditure[];
-  earnings?: earning[];
-  employers?: employer[];
-}
-
-
-/**
  * A `balance`.
  */
 export interface balance {
   balance: String; // string but value should be a float (money).
 }
 
-
-/**
- * A namespace for encapsulating all structures.
- *
- * Structures are used to model `type`s and `interface`s so that validation
- * can be performed at runtime based on the interface/type for a given
- * model. On top of the structure of a given model which can (hopefully) be
- * automatically created from a given interface/type, custom validation can
- * be added.
- */
-export namespace structures {
-
-  /**
-   * A `typeStructure` is one of the following four categories.
-   */
-  export enum typeCategory {
-    primitive,
-    array,
-    union,
-    interface
-  }
-
-  /**
-   * The 6 Javascript primitive types.
-   */
-  export enum primitiveType {
-    string,
-    number,
-    boolean,
-    null,
-    undefined,
-    symbol
-  }
-
-  /**
-   * Every type should extend `baseType` so that it specifies what category
-   * it is in, this makes programmtically sifting through types simpler.
-   */
-  export interface baseType {
-    typeCategory: typeCategory;
-  }
-
-  /**
-   * A restriction can be placed on any `restrictableType`, for which it should
-   * `Promise.reject(new invalidModelError)` if the `modelInstance` is invalid,
-   * otherwise it should `Promise.resolve()`` or simply return void.
-   *
-   * NOTE: There seems to be slightly strange behaviour when using throwing
-   * errors instead of `reject`ing them, so avoid directly throwing errors.
-   */
-  export type restriction = (modelInstance: any) => void | Promise<void>;
-
-  /**
-   * A restrictable type represents a type which can have restrictions.
-   * Currently all categories of types support restrictions except for
-   * unions (because in a union, each type should have it's own
-   * restrictions).
-   */
-  export interface restrictableType extends baseType {
-    restriction?: restriction;
-  }
-
-  /**
-   * A formal representation of the structure of a `type`.
-   */
-  export type typeStructure = primitiveStructure | arrayStructure | unionStructure | interfaceStructure;
-
- /**
-  * A formal representation of the structure of an `interface`.
-  */
-  export interface interfaceStructure extends restrictableType {
-    /**
-     * The properties on the interface.
-     */
-    properties: {
-      /**
-       * Each property has a type.
-       */
-      [propertyName: string]: typeStructure;
-    };
-  }
-
-  /**
-   * A formal representation of the structure of a primitive.
-   */
-  export interface primitiveStructure extends restrictableType {
-    /**
-     * The primitive type.
-     */
-    type: primitiveType;
-  }
-
-  /**
-   * A formal representation of the structure of an array.
-   *
-   * NOTE: The restrictions apply to the array itself, not the elements in
-   * the array, the restrictions on the elements themselves will be
-   * determined from the restrictions placed on the `type` of the element
-   * itself.
-   */
-  export interface arrayStructure extends restrictableType {
-    /**
-     * The type of a single element in the array.
-     */
-    type: typeStructure;
-  }
-
-  /**
-   * A formal representation of the structure of a union of types.
-   *
-   * NOTE: that a union has no restrictions because the restrcitions will be
-   * present on each individual type in the union.
-   */
-  export interface unionStructure extends baseType {
-    /**
-     * A union of all the types in `types`.
-     */
-    types: typeStructure[];
-  }
-}
 
 /**
  * All models (in `/models`) should export an implementation of this
@@ -278,13 +123,4 @@ export enum errorCodes {
   invalidEmployer,
   invalidUpdateCategory,
   invalidAddCategory
-}
-
-
-/**
- * The error we always send to the frontend.
- */
-export interface frontendError {
-  message: String;
-  errorCode: errorCodes;
 }

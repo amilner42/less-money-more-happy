@@ -1,58 +1,44 @@
 /// Module for valid error model.
 
-import { frontendError, structures, errorCodes} from '../types';
-import { validModel } from '../validifier';
-import { isNullOrUndefined } from '../util';
+import { errorCodes } from '../types';
+import * as kleen from 'kleen';
+import { positiveIntegerSchema } from "./shared-schemas";
 
 
 /**
- * The frontend error type for `validModel`.
+ * The error we always send to the frontend.
  */
-const frontendErrorType: structures.interfaceStructure = {
-  typeCategory: structures.typeCategory.interface,
-  properties:
-    {
-      "message":
-        {
-          typeCategory: structures.typeCategory.primitive,
-          type: structures.primitiveType.string,
-          restriction: (message) => {
-            if(isNullOrUndefined(message)) {
-              return Promise.reject({
-                message: "An error message cannot be null or undefined",
-                errorCode: errorCodes.internalError
-              });
-            }
-          }
-        },
-      "errorCode":
-        {
-          typeCategory: structures.typeCategory.primitive,
-          type: structures.primitiveType.number,
-          restriction: (errorCode) => {
-            if(isNullOrUndefined(errorCode)) {
-              return Promise.reject({
-                message: "An error errorCode cannot be null or undefined",
-                errorCode: errorCodes.internalError
-              });
-            }
-          }
-        }
-    },
-    restriction: (error) => {
-      if(isNullOrUndefined(error)) {
-        return Promise.reject({
-          message: "An error cannot be null or undefined",
-          errorCode: errorCodes.internalError
-        });
+export interface frontendError {
+  message: string;
+  errorCode: errorCodes;
+};
+
+
+/**
+ * The schema for `frontendError`.
+ */
+const frontendErrorSchema: kleen.objectSchema = {
+  objectProperties: {
+    "message": {
+      primitiveType: kleen.kindOfPrimitive.string,
+      typeFailureError: {
+        message: "The `message` field must be a string",
+        errorCode: errorCodes.internalError
       }
-    }
-}
+    },
+    "errorCode": positiveIntegerSchema({
+      message: "The `errorCode` field must be a positive integer corresponding to an error code.",
+      errorCode: errorCodes.internalError
+    })
+  },
+  typeFailureError: {
+    message: "A frontend error must have a message and errorCode.",
+    errorCode: errorCodes.internalError
+  }
+};
 
 
 /**
- * Throws error if error is not of the frontend error.
+ * Validifies a `frontendErrorSchema`.
  */
-export const validError = (error: any): Promise<void> => {
-  return validModel(error, frontendErrorType);
-}
+export const validFrontendError = kleen.validModel(frontendErrorSchema);

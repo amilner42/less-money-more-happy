@@ -2,14 +2,31 @@
 
 import { omit } from "ramda";
 
-import { model, user } from '../types';
+import { model, mongoID, earning, employer, expenditure } from '../types';
 import { takeLast } from "ramda";
 import { isNullOrUndefined } from "../util";
+import { expenditureCategoryWithGoals } from './';
+
 
 /**
  * This dictates how many expenditures/earnings we will send back to the user.
  */
 const MAX_ARRAY_RESULTS = 250;
+
+
+/**
+ * A `user`.
+ */
+export interface user {
+  _id?: mongoID;
+  email: string;
+  password?: string;
+  currentBalance?: number;
+  categoriesWithGoals?: expenditureCategoryWithGoals[];
+  expenditures?: expenditure[];
+  earnings?: earning[];
+  employers?: employer[];
+}
 
 
 /**
