@@ -477,15 +477,14 @@ $break6: 400px;
           left: 10px;
           top: 10px;
           font-size: 18px;
-          color: black;
-          border-bottom: 2px solid black;
+          color: $color4;
+          border-bottom: 2px solid $color4;
         }
 
-        .account-card-email {
+        .account-card-email-title {
           position: absolute;
-          text-align: right;
           left: 10px;
-          top: 40px;
+          top: 45px;
           font-size: 14px;
           color: $color4;
         }
