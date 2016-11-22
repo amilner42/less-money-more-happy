@@ -26,7 +26,8 @@ import { collection } from './db';
 import {
   prepareErrorForFrontend,
   renameMongoIDField,
-  isNullOrUndefined } from './util';
+  isNullOrUndefined,
+  roundNumber } from './util';
 import { validMoney } from './validifier';
 import {
   expenditureCategory,
@@ -131,11 +132,11 @@ export const routes: appRoutes = {
 
   '/account/setCurrentBalance': {
     /**
-     * Sets the balance for a user,
+     * Sets the balance for a user.
      */
     post: (req, res, next) => {
-      const user = req.user;
-      const balance = req.body.balance;
+      const user: user = req.user;
+      const balance: string = req.body.balance;
 
       if(validMoney(balance)) {
         user.currentBalance = parseFloat(balance);
@@ -404,7 +405,12 @@ export const routes: appRoutes = {
         .then((Users) => {
           // Update the user.
           user.expenditures.push(newExpenditure);
-          user.currentBalance -= newExpenditure.cost;
+          // We always need to round to 2 decimal places when working with
+          // numbers in javascript (to prevent 1.999999999999).
+          user.currentBalance = roundNumber(
+            user.currentBalance - newExpenditure.cost,
+            2
+          );
           return Users.save(user);
         })
         .then(() => {
@@ -448,7 +454,10 @@ export const routes: appRoutes = {
         return collection('users')
         .then((Users) => {
           user.earnings.push(newEarning);
-          user.currentBalance += newEarning.amount;
+          user.currentBalance = roundNumber(
+            user.currentBalance + newEarning.amount,
+            2
+          );
 
           return Users.save(user);
         })

@@ -40,3 +40,13 @@ export const renameMongoIDField = (mongoObject: { _id?: string, mongoID?: string
   delete mongoObject._id;
   return mongoObject;
 }
+
+
+/**
+ * Rounds a number so it has `xDecimalPlaces` decimal places.
+ */
+export const roundNumber = (num: number, xDecimalPlaces: number): number => {
+  const baseTenMultiplier = Math.pow(10,xDecimalPlaces);
+  const result = Math.round(num*baseTenMultiplier)/baseTenMultiplier;
+  return result;
+}

@@ -235,3 +235,20 @@ relativeBox html =
             [ ( "position", "relative" ) ]
         ]
         [ html ]
+
+
+{-| Formats money to make sure it either has 0 decimal places or 2, but not 1.
+-}
+padSingleDecimal : String -> String
+padSingleDecimal moneyAsString =
+    let
+        lastTwoChars =
+            String.right 2 moneyAsString
+
+        needsToBePadded =
+            String.startsWith "." lastTwoChars
+    in
+        if needsToBePadded then
+            moneyAsString ++ "0"
+        else
+            moneyAsString

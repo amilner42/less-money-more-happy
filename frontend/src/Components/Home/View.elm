@@ -222,10 +222,10 @@ mainView model =
                             [ class <| Util.withClassesIf "feed-item-amount" "negative" isExpenditure ]
                             [ case isExpenditure of
                                 True ->
-                                    text <| "-" ++ (toString value)
+                                    text <| "-" ++ (value |> toString |> Util.padSingleDecimal)
 
                                 False ->
-                                    text <| "+" ++ (toString value)
+                                    text <| "+" ++ (value |> toString |> Util.padSingleDecimal)
                             ]
                         ]
 
@@ -575,7 +575,8 @@ mainView model =
                     [ text <| "Current Balance: "
                     , span
                         [ class "money" ]
-                        [ text <| "$" ++ toString user.currentBalance ]
+                        [ text <| "$" ++ (user.currentBalance |> toString |> Util.padSingleDecimal)
+                        ]
                     ]
                 , div
                     [ class "feed" ]
