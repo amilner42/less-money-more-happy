@@ -601,7 +601,10 @@ goalsView model =
                 (\category ->
                     let
                         goalSpending =
-                            Maybe.withDefault "" category.goalSpending
+                            Maybe.withDefault "X" category.goalSpending
+
+                        perNumberOfDays =
+                            Maybe.withDefault "Y" category.perNumberOfDays
 
                         editCategory =
                             homeComponent.editCategories
@@ -618,41 +621,62 @@ goalsView model =
                     in
                         div
                             [ class "goal-category" ]
-                            [ h3
-                                []
+                            [ div
+                                [ class "goal-category-name" ]
                                 [ text category.name ]
-                            , ErrorBox.errorBox editCategory.error
-                            , button
-                                [ hidden <| not editCategory.editingCategory
-                                , disabled <| Util.isNotNothing editCategory.error
-                                , onClick <| EditGoalSave editCategory
+                            , div
+                                -- Visible while editing a category
+                                [ class "editing-goal"
+                                , hidden <| not editCategory.editingCategory
                                 ]
-                                [ text "SAVE" ]
-                            , button
-                                [ hidden <| not editCategory.editingCategory
-                                , onClick <|
-                                    EditGoalCancel
-                                        editCategory
-                                        category
+                                [ ErrorBox.errorBox editCategory.error
+                                , button
+                                    [ class "save-goal-button"
+                                    , onClick <| EditGoalSave editCategory
+                                    ]
+                                    [ text "SAVE" ]
+                                , button
+                                    [ class "cancel-goal-button"
+                                    , onClick <|
+                                        EditGoalCancel
+                                            editCategory
+                                            category
+                                    ]
+                                    [ text "CANCEL" ]
+                                , input
+                                    [ onInput <| OnEditGoalSpendingInput editCategory
+                                    , value editCategory.newGoalSpending
+                                    ]
+                                    []
+                                , text " dollars per "
+                                , input
+                                    [ onInput <| OnEditPerNumberOfDaysInput editCategory
+                                    , value editCategory.newPerNumberOfDays
+                                    ]
+                                    []
+                                , text " days!"
                                 ]
-                                [ text "CANCEL" ]
-                            , button
-                                [ hidden <| editCategory.editingCategory
-                                , onClick <| EditGoal editCategory
+                            , div
+                                -- Visible while not editing a category.
+                                [ class "not-editing-goal"
+                                , hidden <| editCategory.editingCategory
                                 ]
-                                [ text "EDIT" ]
-                            , input
-                                [ disabled <| not editCategory.editingCategory
-                                , onInput <| OnEditGoalSpendingInput editCategory
-                                , value editCategory.newGoalSpending
+                                [ text "My goal is to spend at most "
+                                , span
+                                    [ class "goal-spending" ]
+                                    [ text <| "$" ++ goalSpending ]
+                                , text " every "
+                                , span
+                                    [ class "goal-per-number-of-days" ]
+                                    [ text <| perNumberOfDays ]
+                                , text " days!"
+                                , button
+                                    [ class "edit-goal-button"
+                                    , hidden <| editCategory.editingCategory
+                                    , onClick <| EditGoal editCategory
+                                    ]
+                                    [ text "EDIT" ]
                                 ]
-                                []
-                            , input
-                                [ disabled <| not editCategory.editingCategory
-                                , onInput <| OnEditPerNumberOfDaysInput editCategory
-                                , value editCategory.newPerNumberOfDays
-                                ]
-                                []
                             ]
                 )
                 categories
