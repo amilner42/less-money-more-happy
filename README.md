@@ -5,6 +5,10 @@ spending in, whether you are meeting your goals, and tons of random stats.
 It's a MEEN stack App (Mongo, Express, Elm, Node) and it is also all in
 Typescript.
 
+NOTE: This was a random experiment, not a serious app.
+
+NOTE: Do not use this app as a template to build an app. Use [this](https://github.com/amilner42/web-app-kickstarter)
+
 ### Local Dependencies
 
 The project only has 3 local dependencies, `node` and `npm`, and `mongodb`.
